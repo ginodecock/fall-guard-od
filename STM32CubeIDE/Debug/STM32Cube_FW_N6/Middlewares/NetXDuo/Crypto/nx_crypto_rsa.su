@@ -1,0 +1,4 @@
+Y:/VM/stm-workspace/STM32CubeN6/Middlewares/ST/netxduo/crypto_libraries/src/nx_crypto_rsa.c:93:22:_nx_crypto_rsa_operation	152	static
+Y:/VM/stm-workspace/STM32CubeN6/Middlewares/ST/netxduo/crypto_libraries/src/nx_crypto_rsa.c:209:22:_nx_crypto_method_rsa_init	12	static
+Y:/VM/stm-workspace/STM32CubeN6/Middlewares/ST/netxduo/crypto_libraries/src/nx_crypto_rsa.c:292:22:_nx_crypto_method_rsa_cleanup	0	static
+Y:/VM/stm-workspace/STM32CubeN6/Middlewares/ST/netxduo/crypto_libraries/src/nx_crypto_rsa.c:366:22:_nx_crypto_method_rsa_operation	24	static

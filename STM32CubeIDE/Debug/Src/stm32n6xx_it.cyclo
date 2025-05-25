@@ -1,0 +1,10 @@
+Y:/VM/stm-workspace/fall-guard-od/Src/stm32n6xx_it.c:31:6:NMI_Handler	1
+Y:/VM/stm-workspace/fall-guard-od/Src/stm32n6xx_it.c:40:6:MemManage_Handler	1
+Y:/VM/stm-workspace/fall-guard-od/Src/stm32n6xx_it.c:53:6:BusFault_Handler	1
+Y:/VM/stm-workspace/fall-guard-od/Src/stm32n6xx_it.c:66:6:SecureFault_Handler	1
+Y:/VM/stm-workspace/fall-guard-od/Src/stm32n6xx_it.c:79:6:SVC_Handler	1
+Y:/VM/stm-workspace/fall-guard-od/Src/stm32n6xx_it.c:88:6:DebugMon_Handler	1
+Y:/VM/stm-workspace/fall-guard-od/Src/stm32n6xx_it.c:102:6:CSI_IRQHandler	1
+Y:/VM/stm-workspace/fall-guard-od/Src/stm32n6xx_it.c:107:6:DCMIPP_IRQHandler	1
+Y:/VM/stm-workspace/fall-guard-od/Src/stm32n6xx_it.c:115:6:TIM6_IRQHandler	1
+Y:/VM/stm-workspace/fall-guard-od/Src/stm32n6xx_it.c:128:6:ETH1_IRQHandler	1

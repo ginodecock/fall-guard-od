@@ -1,0 +1,7 @@
+Y:/VM/stm-workspace/fall-guard-od/Lib/AI_Runtime/Npu/ll_aton/ecloader.c:121:6:ec_copy_program	10
+Y:/VM/stm-workspace/fall-guard-od/Lib/AI_Runtime/Npu/ll_aton/ecloader.c:239:6:ec_copy_reloc_table	9
+Y:/VM/stm-workspace/fall-guard-od/Lib/AI_Runtime/Npu/ll_aton/ecloader.c:325:20:ec_get_reloc_table_ptr	3
+Y:/VM/stm-workspace/fall-guard-od/Lib/AI_Runtime/Npu/ll_aton/ecloader.c:360:14:ec_get_num_relocs	2
+Y:/VM/stm-workspace/fall-guard-od/Lib/AI_Runtime/Npu/ll_aton/ecloader.c:382:13:ec_get_reloc_id	3
+Y:/VM/stm-workspace/fall-guard-od/Lib/AI_Runtime/Npu/ll_aton/ecloader.c:422:6:ec_reloc	6
+Y:/VM/stm-workspace/fall-guard-od/Lib/AI_Runtime/Npu/ll_aton/ecloader.c:487:6:ec_reloc_by_id	7

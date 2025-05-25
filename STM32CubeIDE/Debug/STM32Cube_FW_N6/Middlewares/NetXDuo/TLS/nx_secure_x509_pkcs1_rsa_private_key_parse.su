@@ -1,0 +1,2 @@
+Y:/VM/stm-workspace/STM32CubeN6/Middlewares/ST/netxduo/nx_secure/src/nx_secure_x509_pkcs1_rsa_private_key_parse.c:352:13:_nx_secure_asn1_parse_unsigned_integer	8	static
+Y:/VM/stm-workspace/STM32CubeN6/Middlewares/ST/netxduo/nx_secure/src/nx_secure_x509_pkcs1_rsa_private_key_parse.c:79:6:_nx_secure_x509_pkcs1_rsa_private_key_parse	80	static

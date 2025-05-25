@@ -1,0 +1,3 @@
+Y:/VM/stm-workspace/STM32CubeN6/Middlewares/ST/netxduo/crypto_libraries/src/nx_crypto_cbc.c:128:21:_nx_crypto_cbc_encrypt	48	static
+Y:/VM/stm-workspace/STM32CubeN6/Middlewares/ST/netxduo/crypto_libraries/src/nx_crypto_cbc.c:229:21:_nx_crypto_cbc_decrypt	64	static
+Y:/VM/stm-workspace/STM32CubeN6/Middlewares/ST/netxduo/crypto_libraries/src/nx_crypto_cbc.c:323:21:_nx_crypto_cbc_encrypt_init	8	static

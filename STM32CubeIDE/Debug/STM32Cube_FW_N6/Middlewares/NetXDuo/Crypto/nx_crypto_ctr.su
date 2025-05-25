@@ -1,0 +1,3 @@
+Y:/VM/stm-workspace/STM32CubeN6/Middlewares/ST/netxduo/crypto_libraries/src/nx_crypto_ctr.c:67:28:_nx_crypto_ctr_xor	8	static
+Y:/VM/stm-workspace/STM32CubeN6/Middlewares/ST/netxduo/crypto_libraries/src/nx_crypto_ctr.c:210:21:_nx_crypto_ctr_encrypt	48	static
+Y:/VM/stm-workspace/STM32CubeN6/Middlewares/ST/netxduo/crypto_libraries/src/nx_crypto_ctr.c:294:21:_nx_crypto_ctr_encrypt_init	32	static

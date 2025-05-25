@@ -1,0 +1,1 @@
+STM32_SigningTool_CLI.exe -bin fall-guard-2.bin -pubk keys\publicKey00.pem keys\publicKey01.pem keys\publicKey02.pem keys\publicKey03.pem keys\publicKey04.pem keys\publicKey05.pem keys\publicKey06.pem keys\publicKey07.pem -prvk keys\privateKey00.pem -pwd g-dc1 -iv 0x00000000 -of 0x00000001 -la 0x34180000 -t fsbl -o output_trusted.stm32 -hv 2.3

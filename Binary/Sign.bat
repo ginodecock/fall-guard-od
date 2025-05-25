@@ -1,0 +1,1 @@
+STM32_SigningTool_CLI -bin %1  -nk -t ssbl -hv 2.3 -o ../../Binary/fall-guard-2_sign_0x70100000.bin

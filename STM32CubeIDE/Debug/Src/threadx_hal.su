@@ -1,0 +1,2 @@
+Y:/VM/stm-workspace/fall-guard-od/Src/threadx_hal.c:29:10:HAL_GetTick	0	static
+Y:/VM/stm-workspace/fall-guard-od/Src/threadx_hal.c:34:6:HAL_Delay	8	static,ignoring_inline_asm
