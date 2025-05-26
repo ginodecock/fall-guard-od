@@ -1,17 +1,15 @@
  /**
  ******************************************************************************
  * @file    stm32n6xx_it.c
- * @author  GPM Application Team
+ * @author  G-DC
  *
  ******************************************************************************
  * @attention
  *
- * Copyright (c) 2023 STMicroelectronics.
+ * Copyright (c) 2025 G-DC
  * All rights reserved.
  *
- * This software is licensed under terms that can be found in the LICENSE file
- * in the root directory of this software component.
- * If no LICENSE file comes with this software, it is provided AS-IS.
+ * This software is provided AS-IS.
  *
  ******************************************************************************
  */
