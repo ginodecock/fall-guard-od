@@ -1,15 +1,17 @@
  /**
  ******************************************************************************
  * @file    app.h
- * @author  G-DC
+ * @author  GPM Application Team
  *
  ******************************************************************************
  * @attention
  *
- * Copyright (c) 2025 G-DC
+ * Copyright (c) 2024 STMicroelectronics.
  * All rights reserved.
  *
- * This software is provided AS-IS.
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
  *
  ******************************************************************************
  */
@@ -25,7 +27,6 @@
 #include "nxd_mqtt_client.h"
 #include "nxd_sntp_client.h"
 #include "nxd_dns.h"
-#include "broker.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -55,8 +56,10 @@
 
 #define TOPIC_NAME                  "Fallguard"
 #define NB_MESSAGE                  10                    /*  if NB_MESSAGE = 0, client will publish messages infinitely */
-//#define MQTT_BROKER_NAME            "hostname fqdn" /* define here your own broker MQTT server */
-#define MQTT_PORT                   1883 /*NXD_MQTT_TLS_PORT*/
+
+#define MQTT_BROKER_NAME            "g-dc.be" /* MQTT Server */
+
+#define MQTT_PORT                   8883 /*NXD_MQTT_TLS_PORT*/
 
 #define QOS0                        0
 #define QOS1                        1

@@ -9,12 +9,12 @@ _estack = ORIGIN(AXISRAM1_2_S) + LENGTH(AXISRAM1_2_S); /* end of "AXISRAM1_2_S" 
 _sstack = _estack - _Min_Stack_Size;
 
 _Min_Heap_Size = 0x200; /* required amount of heap  */
-_Min_Stack_Size = 0x4000; /* required amount of stack */
+_Min_Stack_Size = 0x1000; /* required amount of stack */
 
 /* Memories definition */
 MEMORY
 {
-  AXISRAM1_2_S (xrw) : ORIGIN = 0x34000400, LENGTH =  1500K
+  AXISRAM1_2_S (xrw) : ORIGIN = 0x34000400, LENGTH =  2047K
   PSRAM (xrw)      : ORIGIN = 0x91000000, LENGTH =  16M
   RAM    (xrw)    : ORIGIN = 0x341C0000,   LENGTH = 256K
 }

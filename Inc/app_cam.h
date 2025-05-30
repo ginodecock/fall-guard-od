@@ -18,13 +18,12 @@
 #ifndef APP_CAM
 #define APP_CAM
 
+#include <stdint.h>
+
 #define CAMERA_FPS 30
 
-void CAM_Init(uint32_t *lcd_bg_width, uint32_t *lcd_bg_height, uint32_t *pitch_nn);
-void CAM_DeInit(void);
-void CAM_Start(void);
+void CAM_Init(void);
 void CAM_DisplayPipe_Start(uint8_t *display_pipe_dst, uint32_t cam_mode);
-void CAM_DisplayPipe_Stop(void);
 void CAM_NNPipe_Start(uint8_t *nn_pipe_dst, uint32_t cam_mode);
 void CAM_IspUpdate(void);
 

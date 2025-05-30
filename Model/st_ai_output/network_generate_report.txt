@@ -1,5 +1,5 @@
 ST Edge AI Core v2.1.0-20194 329b0e98d
-Created date          : 2025-05-25 17:36:13
+Created date          : 2025-05-26 17:55:44
 Parameters            : generate --no-inputs-allocation --no-outputs-allocation --model fall_guard_st_ssd_mobilenet_v1_256v2.tflite --target stm32n6 --st-neural-art default@user_neuralart.json
 
 Model name - fall_guard_st_ssd_mobilenet_v1_256v2
@@ -244,22 +244,19 @@ model: macc=76,248,981 weights=699,336 activations=-- io=--
 Compilation details
 ------------------------------------------------------------------------------------
 Compiler version: 1.1.0-31
-Compiler arguments:  -i Y:\VM\stm-workspace\fall-guard-od\Model\st_ai_output\fall_guard_st_ssd_mobilenet_v1_256v2_OE_3_2_0.onnx --json-quant-file Y:\VM\stm-workspace\fall-guard-od\Model\st_ai_output\fall_guard_st_ssd_mobilenet_v1_256v2_OE_3_2_0_Q.json -g network.c --load-mdesc C:\ST\STEdgeAI\2.1\Utilities\configs\stm32n6.mdesc --load-mpool Y:\VM\stm-workspace\fall-guard-od\Model\my_mpools\stm32n6-app2.mpool --save-mpool-file Y:\VM\stm-workspace\fall-guard-od\Model\st_ai_ws\neural_art__network\stm32n6-app2.mpool --out-dir-prefix Y:\VM\stm-workspace\fall-guard-od\Model\st_ai_ws\neural_art__network/ --all-buffers-info --no-hw-sw-parallelism --cache-maintenance --enable-virtual-mem-pools --native-float --optimization 3 --Os --Omax-ca-pipe 4 --Ocache-opt --enable-epoch-controller --output-info-file c_info.json
+Compiler arguments:  -i Y:\VM\stm-workspace\fall-guard-v2.0.0\Model\st_ai_output\fall_guard_st_ssd_mobilenet_v1_256v2_OE_3_2_0.onnx --json-quant-file Y:\VM\stm-workspace\fall-guard-v2.0.0\Model\st_ai_output\fall_guard_st_ssd_mobilenet_v1_256v2_OE_3_2_0_Q.json -g network.c --load-mdesc C:\ST\STEdgeAI\2.1\Utilities\configs\stm32n6.mdesc --load-mpool Y:\VM\stm-workspace\fall-guard-v2.0.0\Model\my_mpools\stm32n6-app2.mpool --save-mpool-file Y:\VM\stm-workspace\fall-guard-v2.0.0\Model\st_ai_ws\neural_art__network\stm32n6-app2.mpool --out-dir-prefix Y:\VM\stm-workspace\fall-guard-v2.0.0\Model\st_ai_ws\neural_art__network/ --enable-epoch-controller --all-buffers-info --no-hw-sw-parallelism --cache-maintenance --enable-virtual-mem-pools --native-float --optimization 3 --Os --Omax-ca-pipe 4 --Ocache-opt --output-info-file c_info.json
 ====================================================================================
 
 Memory usage information 
 ------------------------------------------------------------------------------------
-	flexMEM    [0x34000000 - 0x34000000]:          0  B /          0  B  (  0.00 % used) -- weights:          0  B (  0.00 % used)  activations:          0  B (  0.00 % used)
-	cpuRAM1    [0x34080000 - 0x34080000]:          0  B /          0  B  (  0.00 % used) -- weights:          0  B (  0.00 % used)  activations:          0  B (  0.00 % used)
-	cpuRAM2    [0x34100000 - 0x34200000]:    512.000 kB /      1.000 MB  ( 50.00 % used) -- weights:          0  B (  0.00 % used)  activations:    512.000 kB ( 50.00 % used)
-	npuRAM3    [0x34200000 - 0x34270000]:          0  B /    448.000 kB  (  0.00 % used) -- weights:          0  B (  0.00 % used)  activations:          0  B (  0.00 % used)
-	npuRAM4    [0x34270000 - 0x342E0000]:          0  B /    448.000 kB  (  0.00 % used) -- weights:          0  B (  0.00 % used)  activations:          0  B (  0.00 % used)
-	npuRAM5    [0x342E0000 - 0x34350000]:    320.000 kB /    448.000 kB  ( 71.43 % used) -- weights:          0  B (  0.00 % used)  activations:    320.000 kB ( 71.43 % used)
+	npuRAM3    [0x34200000 - 0x34270000]:    448.000 kB /    448.000 kB  (100.00 % used) -- weights:          0  B (  0.00 % used)  activations:    448.000 kB (100.00 % used)
+	npuRAM4    [0x34270000 - 0x342E0000]:    320.000 kB /    448.000 kB  ( 71.43 % used) -- weights:          0  B (  0.00 % used)  activations:    320.000 kB ( 71.43 % used)
+	npuRAM5    [0x342E0000 - 0x34350000]:          0  B /    448.000 kB  (  0.00 % used) -- weights:          0  B (  0.00 % used)  activations:          0  B (  0.00 % used)
 	npuRAM6    [0x34350000 - 0x343C0000]:          0  B /    448.000 kB  (  0.00 % used) -- weights:          0  B (  0.00 % used)  activations:          0  B (  0.00 % used)
-	octoFlash  [0x70380000 - 0x74080000]:    803.063 kB /     61.000 MB  (  1.29 % used) -- weights:    803.063 kB (  1.29 % used)  activations:          0  B (  0.00 % used)
+	octoFlash  [0x70380000 - 0x74280000]:    803.063 kB /     63.000 MB  (  1.24 % used) -- weights:    803.063 kB (  1.24 % used)  activations:          0  B (  0.00 % used)
 	hyperRAM   [0x90000000 - 0x91000000]:          0  B /     16.000 MB  (  0.00 % used) -- weights:          0  B (  0.00 % used)  activations:          0  B (  0.00 % used)
 ---
-Total:                                             1.597 MB                                  -- weights:    803.063 kB                  activations:    832.000 kB                   
+Total:                                             1.534 MB                                  -- weights:    803.063 kB                  activations:    768.000 kB                   
 ====================================================================================
 
 Memory to be allocated by the user: inputs (192.000 kB), outputs (293.312 kB)
@@ -272,9 +269,9 @@ Memory to be allocated by the user: inputs (192.000 kB), outputs (293.312 kB)
 
 Used memory ranges
 ------------------------------------------------------------------------------------
-	cpuRAM2    [0x34100000 - 0x34200000]: 0x34100000-0x34180000
-	npuRAM5    [0x342E0000 - 0x34350000]: 0x342E0000-0x34330000
-	octoFlash  [0x70380000 - 0x74080000]: 0x70380000-0x70448C50
+	npuRAM3    [0x34200000 - 0x34270000]: 0x34200000-0x34270000
+	npuRAM4    [0x34270000 - 0x342E0000]: 0x34270000-0x342C0000
+	octoFlash  [0x70380000 - 0x74280000]: 0x70380000-0x70448C50
 ====================================================================================
 
 Epochs details
@@ -363,10 +360,10 @@ epoch 67      EC
  RT total**                        28,880     219,324    152     133,317 
  ------------------------------- -------- ----------- ------ ----------- 
  weights                                0     822,337      0           0 
- activations                            0           0      0     851,968 
+ activations                            0           0      0     786,432 
  io                                     0           0      0     496,908 
  ------------------------------- -------- ----------- ------ ----------- 
- TOTAL                             28,880   1,041,661    152   1,482,193 
+ TOTAL                             28,880   1,041,661    152   1,416,657 
  ------------------------------- -------- ----------- ------ ----------- 
  *  toolchain objects (libm/libgcc*)
  ** RT AI runtime objects (kernels+infrastructure)
@@ -375,9 +372,9 @@ epoch 67      EC
   ---------------------------------------------------
                FLASH (ro)      %*    RAM (rw)      % 
   ---------------------------------------------------
-  RT total        248,356   23.2%     133,469   9.0% 
+  RT total        248,356   23.2%     133,469   9.4% 
   ---------------------------------------------------
-  TOTAL         1,070,693           1,482,345        
+  TOTAL         1,070,693           1,416,809        
   ---------------------------------------------------
   *  rt/total
 

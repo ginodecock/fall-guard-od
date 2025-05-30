@@ -1,7 +1,0 @@
-Y:/VM/stm-workspace/fall-guard-od/Src/app_cam.c:129:6:CAM_Init	1
-Y:/VM/stm-workspace/fall-guard-od/Src/app_cam.c:149:6:CAM_DeInit	1
-Y:/VM/stm-workspace/fall-guard-od/Src/app_cam.c:156:6:CAM_DisplayPipe_Start	1
-Y:/VM/stm-workspace/fall-guard-od/Src/app_cam.c:163:6:CAM_NNPipe_Start	1
-Y:/VM/stm-workspace/fall-guard-od/Src/app_cam.c:171:6:CAM_DisplayPipe_Stop	1
-Y:/VM/stm-workspace/fall-guard-od/Src/app_cam.c:178:6:CAM_IspUpdate	1
-Y:/VM/stm-workspace/fall-guard-od/Src/app_cam.c:190:5:CMW_CAMERA_PIPE_FrameEventCallback	2

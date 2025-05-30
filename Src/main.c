@@ -1,15 +1,17 @@
  /**
  ******************************************************************************
  * @file    main.c
- * @author  G-DC
+ * @author  GPM Application Team
  *
  ******************************************************************************
  * @attention
  *
- * Copyright (c) 2025 G-DC
+ * Copyright (c) 2023 STMicroelectronics.
  * All rights reserved.
  *
- * This software is provided AS-IS.
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
  *
  ******************************************************************************
  */
@@ -31,6 +33,8 @@
 #include "tx_initialize.h"
 #include "nx_api.h"
 #include "stm32n6xx_hal.h"
+//#include "stm32n6xx_hal_rtc.h"
+
 
 #define USE_STATIC_ALLOCATION                    1
 
@@ -61,6 +65,8 @@ __attribute__((section(".NetXPoolSection")))
 static TX_BYTE_POOL nx_app_byte_pool;
 */
 #endif
+
+
 
 /* USER CODE BEGIN Includes */
 #if defined(__ICCARM__)
@@ -96,7 +102,7 @@ static void IAC_Config();
 static void CONSOLE_Config(void);
 static int main_threadx(void);
 static void main_thread_fct(ULONG arg);
-static void set_clk_sleep_mode(void);
+
 /* Private variables ---------------------------------------------------------*/
 #ifndef ETH_DMA_RX_CH_CNT
 #define ETH_DMA_RX_CH_CNT         2U
@@ -133,6 +139,7 @@ ETH_DMADescTypeDef DMATxDscrTab[ETH_DMA_TX_CH_CNT][ETH_TX_DESC_CNT] __attribute_
 ETH_HandleTypeDef heth;
 RNG_HandleTypeDef hrng;
 
+
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
@@ -145,6 +152,9 @@ static void MX_RTC_Init(void);
 /* USER CODE BEGIN PFP */
 static void RISAF_Config(void);
 void MPU_Config(void);
+/* USER CODE END PFP */
+/* Private user code ---------------------------------------------------------*/
+/* USER CODE BEGIN 0 */
 void Success_Handler(void)
 {
    HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
@@ -154,6 +164,8 @@ void Success_Handler(void)
      HAL_Delay(1000);
    }
 }
+/* USER CODE END 0 */
+
 /**
   * @brief  The application entry point.
   * @retval int
@@ -167,19 +179,31 @@ int main(void)
   /* Set back system and CPU clock source to HSI */
   __HAL_RCC_CPUCLK_CONFIG(RCC_CPUCLKSOURCE_HSI);
   __HAL_RCC_SYSCLK_CONFIG(RCC_SYSCLKSOURCE_HSI);
+  /* USER CODE BEGIN 1 */
+  /* Enable and set up the MPU------------------------------------------------*/
   MPU_Config();
+  /* USER CODE END 1 */
+
+  /* Enable the CPU Cache */
+  /* Enable I-Cache---------------------------------------------------------*/
   SCB_EnableICache();
+
+  /* Enable D-Cache---------------------------------------------------------*/
   SCB_EnableDCache();
+
+  /* Power settings */
   HAL_PWREx_EnableVddIO2();
 
   HAL_Init();
   SystemClock_Config();
   RISAF_Config();
-  MX_GPIO_Init();
-  MX_ETH_Init();
-  MX_RNG_Init();
-  MX_RTC_Init();
-  MX_ThreadX_Init();
+  /* Initialize all configured peripherals */
+   MX_GPIO_Init();
+   MX_ETH_Init();
+   MX_RNG_Init();
+   MX_RTC_Init();
+   /* USER CODE BEGIN 2 */
+   MX_ThreadX_Init();
   SCB_EnableICache();
 
 #if defined(USE_DCACHE)
@@ -200,6 +224,9 @@ void tx_application_define(void *first_unused_memory)
   ret = tx_thread_create(&main_thread, "main", main_thread_fct, 0, main_tread_stack,
                          sizeof(main_tread_stack), priority, priority, time_slice, TX_AUTO_START);
   assert(ret == 0);
+
+
+
 }
 
 static void NPURam_enable()
@@ -408,9 +435,24 @@ static void CONSOLE_Config()
   */
 static void MX_RNG_Init(void)
 {
+  /* USER CODE BEGIN RNG_Init 0 */
+
+  /* USER CODE END RNG_Init 0 */
+
+  /* USER CODE BEGIN RNG_Init 1 */
+
+  /* USER CODE END RNG_Init 1 */
   hrng.Instance = RNG;
   hrng.Init.ClockErrorDetection = RNG_CED_ENABLE;
+  //if (HAL_RNG_Init(&hrng) != HAL_OK)
+  //{
+  //  Error_Handler();
+  //}
+  /* USER CODE BEGIN RNG_Init 2 */
+
+  /* USER CODE END RNG_Init 2 */
 }
+
 /**
   * @brief ETH Initialization Function
   * @param None
@@ -545,7 +587,24 @@ static void main_thread_fct(ULONG arg)
   Security_Config();
 
   IAC_Config();
-  set_clk_sleep_mode();
+  //set_clk_sleep_mode();
+  /* Keep all IP's enabled during WFE so they can wake up CPU. Fine tune
+   * this if you want to save maximum power
+   */
+  LL_BUS_EnableClockLowPower(~0);
+  LL_MEM_EnableClockLowPower(~0);
+  LL_AHB1_GRP1_EnableClockLowPower(~0);
+  LL_AHB2_GRP1_EnableClockLowPower(~0);
+  LL_AHB3_GRP1_EnableClockLowPower(~0);
+  LL_AHB4_GRP1_EnableClockLowPower(~0);
+  LL_AHB5_GRP1_EnableClockLowPower(~0);
+  LL_APB1_GRP1_EnableClockLowPower(~0);
+  LL_APB1_GRP2_EnableClockLowPower(~0);
+  LL_APB2_GRP1_EnableClockLowPower(~0);
+  LL_APB4_GRP1_EnableClockLowPower(~0);
+  LL_APB4_GRP2_EnableClockLowPower(~0);
+  LL_APB5_GRP1_EnableClockLowPower(~0);
+  LL_MISC_EnableClockLowPower(~0);
   app_run();
 }
 
@@ -667,9 +726,15 @@ static void RISAF_Config(void)
   */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-   if (htim->Instance == TIM6) {
+  /* USER CODE BEGIN Callback 0 */
+
+  /* USER CODE END Callback 0 */
+  if (htim->Instance == TIM6) {
     HAL_IncTick();
   }
+  /* USER CODE BEGIN Callback 1 */
+
+  /* USER CODE END Callback 1 */
 }
 
 /**
@@ -678,6 +743,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   */
 void Error_Handler(void)
 {
+  /* USER CODE BEGIN Error_Handler_Debug */
+  /* User can add his own implementation to report the HAL error return state */
   HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
   printf("Ethernet Critical error has occurred\r\n");
   while (1)
@@ -685,6 +752,7 @@ void Error_Handler(void)
     HAL_GPIO_TogglePin(LED_RED_GPIO_Port,LED_RED_Pin);
     HAL_Delay(1000);
   }
+  // USER CODE END Error_Handler_Debug */
 }
 #ifdef  USE_FULL_ASSERT
 
@@ -710,29 +778,4 @@ void assert_failed(uint8_t* file, uint32_t line)
 __attribute__ ((section (".keep_me"))) void app_clean_invalidate_dbg()
 {
   SCB_CleanInvalidateDCache();
-}
-static void set_clk_sleep_mode(void)
-{
-  /*** Enable sleep mode support during NPU inference *************************/
-  /* Configure peripheral clocks to remain active during sleep mode */
-  /* Keep all IP's enabled during WFE so they can wake up CPU. Fine tune
-   * this if you want to save maximum power
-   */
-  __HAL_RCC_XSPI1_CLK_SLEEP_ENABLE();    /* For display frame buffer */
-  __HAL_RCC_XSPI2_CLK_SLEEP_ENABLE();    /* For NN weights */
-  __HAL_RCC_NPU_CLK_SLEEP_ENABLE();      /* For NN inference */
-  __HAL_RCC_CACHEAXI_CLK_SLEEP_ENABLE(); /* For NN inference */
-  __HAL_RCC_LTDC_CLK_SLEEP_ENABLE();     /* For display */
-  __HAL_RCC_DMA2D_CLK_SLEEP_ENABLE();    /* For display */
-  __HAL_RCC_DCMIPP_CLK_SLEEP_ENABLE();   /* For camera configuration retention */
-  __HAL_RCC_CSI_CLK_SLEEP_ENABLE();      /* For camera configuration retention */
-
-  __HAL_RCC_FLEXRAM_MEM_CLK_SLEEP_ENABLE();
-  __HAL_RCC_AXISRAM1_MEM_CLK_SLEEP_ENABLE();
-  __HAL_RCC_AXISRAM2_MEM_CLK_SLEEP_ENABLE();
-  __HAL_RCC_AXISRAM3_MEM_CLK_SLEEP_ENABLE();
-  __HAL_RCC_AXISRAM4_MEM_CLK_SLEEP_ENABLE();
-  __HAL_RCC_AXISRAM5_MEM_CLK_SLEEP_ENABLE();
-  __HAL_RCC_AXISRAM6_MEM_CLK_SLEEP_ENABLE();
-
 }

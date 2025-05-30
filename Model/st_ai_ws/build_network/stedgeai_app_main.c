@@ -27,21 +27,15 @@ LL_ATON_DECLARE_NAMED_NN_INSTANCE_AND_INTERFACE(Default) // Defines NN_Instance_
 AI_ALIGNED(32)
 static ai_u8 activations_1[0];
 AI_ALIGNED(32)
-static ai_u8 activations_2[327680];
+static ai_u8 activations_2[0];
 AI_ALIGNED(32)
-static ai_u8 activations_3[0];
+static ai_u8 activations_3[327680];
 AI_ALIGNED(32)
-static ai_u8 activations_4[0];
+static ai_u8 activations_4[458752];
 AI_ALIGNED(32)
-static ai_u8 activations_5[524288];
+static ai_u8 activations_5[0];
 AI_ALIGNED(32)
 static ai_u8 activations_6[0];
-AI_ALIGNED(32)
-static ai_u8 activations_7[0];
-AI_ALIGNED(32)
-static ai_u8 activations_8[0];
-AI_ALIGNED(32)
-static ai_u8 activations_9[0];
 
 AI_ALIGNED(32)
 static ai_u8 weights_1[0];
@@ -54,21 +48,15 @@ static ai_u8 weights_4[0];
 AI_ALIGNED(32)
 static ai_u8 weights_5[0];
 AI_ALIGNED(32)
-static ai_u8 weights_6[0];
+static ai_u8 weights_6[822337];
 AI_ALIGNED(32)
 static ai_u8 weights_7[0];
 AI_ALIGNED(32)
 static ai_u8 weights_8[0];
 AI_ALIGNED(32)
-static ai_u8 weights_9[822337];
+static ai_u8 weights_9[0];
 AI_ALIGNED(32)
 static ai_u8 weights_10[0];
-AI_ALIGNED(32)
-static ai_u8 weights_11[0];
-AI_ALIGNED(32)
-static ai_u8 weights_12[0];
-AI_ALIGNED(32)
-static ai_u8 weights_13[0];
 
 /* 
  * Example of system initialization function

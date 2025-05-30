@@ -22,12 +22,9 @@ mpool_reloc_info_t mpool_reloc_info[] = {
   {"AXISRAM5", "_mem_pool_AXISRAM5_Default", 0x342e0000, 1, 0},
   {"AXISRAM4", "_mem_pool_AXISRAM4_Default", 0x34270000, 1, 0},
   {"AXISRAM3", "_mem_pool_AXISRAM3_Default", 0x34200000, 1, 0},
-  {"AXISRAM2", "_mem_pool_AXISRAM2_Default", 0x34100000, 1, 0},
-  {"AXISRAM1", "_mem_pool_AXISRAM1_Default", 0x34080000, 1, 0},
-  {"AXIFLEXMEM", "_mem_pool_AXIFLEXMEM_Default", 0x34000000, 1, 0},
   {"xSPI1", "_mem_pool_xSPI1_Default", 0x90000000, 1, 0},
   {"xSPI2", "_mem_pool_xSPI2_Default", 0x70380000, 1, 0},
-  {"AXISRAM2_AXISRAM3_AXISRAM4_AXISRAM5_AXISRAM6", "_mem_pool_AXISRAM2_AXISRAM3_AXISRAM4_AXISRAM5_AXISRAM6_Default", 0x34100000, 1, 0},
+  {"AXISRAM3_AXISRAM4_AXISRAM5_AXISRAM6", "_mem_pool_AXISRAM3_AXISRAM4_AXISRAM5_AXISRAM6_Default", 0x34200000, 1, 0},
   {"_user_io_input_0", "_mem_pool__user_io_input_0_Default", 0x1, 0, 1},
   {"_user_io_output_0", "_mem_pool__user_io_output_0_Default", 0x3, 0, 1},
   {"_user_io_output_1", "_mem_pool__user_io_output_1_Default", 0x5, 0, 1},
@@ -547,7 +544,7 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 6 [STREAM_ENG_V2 6] */
-    /* Emit conf for STREAM_ENG_V2 node=Identity_1 input ports=0 range=8[0,109200] */
+    /* Emit conf for STREAM_ENG_V2 node=Identity_1 input ports=0 range=5[0,109200] */
 
     static const LL_Streng_TensorInitTypeDef Identity_1_dma_init_in_0_1 = {
       /* from memory with batch=1 */
@@ -585,7 +582,7 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma output units from cycle: */
     /* Unit= 4 [STREAM_ENG_V2 4] */
-    /* Emit conf for STREAM_ENG_V2 node=Identity_1 output ports=0 range=15[0,109200] */
+    /* Emit conf for STREAM_ENG_V2 node=Identity_1 output ports=0 range=12[0,109200] */
 
     const LL_Streng_TensorInitTypeDef Identity_1_dma_init_out_0_1 = {
       /* to memory with batch=1 */
@@ -711,7 +708,7 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 3 [STREAM_ENG_V2 3] */
-    /* Emit conf for STREAM_ENG_V2 node=Quantize_7 input ports=0 range=12[0,196608] */
+    /* Emit conf for STREAM_ENG_V2 node=Quantize_7 input ports=0 range=9[0,196608] */
 
     const LL_Streng_TensorInitTypeDef Quantize_7_dma_init_in_0_2 = {
       /* from memory with batch=3 */
@@ -747,7 +744,7 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma output units from cycle: */
     /* Unit= 8 [STREAM_ENG_V2 8] */
-    /* Emit conf for STREAM_ENG_V2 node=Quantize_7 output ports=0 range=1[0,196608] */
+    /* Emit conf for STREAM_ENG_V2 node=Quantize_7 output ports=0 range=8[0,196608] */
 
     static const LL_Streng_TensorInitTypeDef Quantize_7_dma_init_out_0_2 = {
       /* to memory with batch=3 */
@@ -756,7 +753,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Quantize_7_out_0 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Quantize_7_out_0 */
       .offset_start = 0,
       .offset_end = 196608,
       .offset_limit = 196672,
@@ -779,7 +776,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 196608 */
+    /* npuRAM3 <- 196608 */
 
     static const LL_Switch_InitTypeDef switch_init_in_2[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, ARITH, 0, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 3, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Quantize_7 IN: in unit=ARITH_ACC_V2 0 in port=0 out unit=STREAM_ENG_V2 3 out port=0 */
@@ -1022,7 +1019,7 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 5 [STREAM_ENG_V2 5] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_9 input ports=0 range=1[0,196608] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_9 input ports=0 range=8[0,196608] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_9_dma_init_in_0_3 = {
       /* 256x256x3(8 bits) */
@@ -1031,7 +1028,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 1,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_9_zero_off_out_1 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_9_zero_off_out_1 */
       .offset_start = 0,
       .offset_end = 196608,
       .offset_limit = 196672,
@@ -1053,7 +1050,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(5, &Conv2D_9_dma_init_in_0_3, 1);
 
     /* Unit= 3 [STREAM_ENG_V2 3] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_9 input ports=1 range=8[821296,821512] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_9 input ports=1 range=5[821296,821512] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_9_dma_init_in_1_3 = {
       /* 8x3x3x3(8 bits) */
@@ -1088,12 +1085,12 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 393216 */
+    /* npuRAM3 -> 393216 */
     /* octoFlash -> 216 */
 
     /* Dma output units from cycle: */
     /* Unit= 2 [STREAM_ENG_V2 2] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_14_suboff_9 output ports=0 range=1[196608,327680] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_14_suboff_9 output ports=0 range=8[524288,655360] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_14_suboff_9_dma_init_out_0_3 = {
       /* to memory canonical from batch=4 */
@@ -1101,9 +1098,9 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_14_zero_off_out_10 */
-      .offset_start = 196608,
-      .offset_limit = 327744,
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_14_zero_off_out_10 */
+      .offset_start = 524288,
+      .offset_limit = 655424,
       .frame_count = 0,
       .fwidth = 128,
       .fheight = 128,
@@ -1123,7 +1120,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 131072 */
+    /* npuRAM4 <- 131072 */
 
     static const LL_Switch_InitTypeDef switch_init_in_3[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 0, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 5, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_9 IN: in unit=CONV_ACC_V2 0 in port=0 out unit=STREAM_ENG_V2 5 out port=0 */
@@ -1478,7 +1475,7 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 8 [STREAM_ENG_V2 8] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_14 input ports=0 range=1[196608,327680] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_14 input ports=0 range=8[524288,655360] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_14_dma_init_in_0_4 = {
       /* 128x128x8(8 bits) */
@@ -1487,10 +1484,10 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_14_zero_off_out_10 */
-      .offset_start = 196608,
-      .offset_end = 327680,
-      .offset_limit = 327744,
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_14_zero_off_out_10 */
+      .offset_start = 524288,
+      .offset_end = 655360,
+      .offset_limit = 655424,
       .frame_count = 0,
       .fwidth = 0,
       .fheight = 0,
@@ -1509,7 +1506,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(8, &Conv2D_14_dma_init_in_0_4, 1);
 
     /* Unit= 9 [STREAM_ENG_V2 9] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_14 input ports=1 range=8[819728,820304] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_14 input ports=1 range=5[819728,820304] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_14_dma_init_in_1_4 = {
       /* 8x3x3x8(8 bits) */
@@ -1543,7 +1540,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(9, &Conv2D_14_dma_init_in_1_4, 1);
 
     /* Unit= 0 [STREAM_ENG_V2 0] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_18 input ports=1 range=8[821520,821648] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_18 input ports=1 range=5[821520,821648] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_18_dma_init_in_1_4 = {
       /* 16x1x1x8(8 bits) */
@@ -1578,12 +1575,12 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 131072 */
+    /* npuRAM4 -> 131072 */
     /* octoFlash -> 704 */
 
     /* Dma output units from cycle: */
     /* Unit= 1 [STREAM_ENG_V2 1] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_18_mul_scale_21 output ports=0 range=11[0,524288] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_18_mul_scale_21 output ports=0 range=8[0,524288] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_18_mul_scale_21_dma_init_out_0_4 = {
       /* to memory with batch=16 */
@@ -1592,7 +1589,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x34100000UL) /* Equivalent hex address = 0x34100000UL */}, /* Conv2D_18_mul_scale_out_22 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_18_mul_scale_out_22 */
       .offset_start = 0,
       .offset_end = 524288,
       .offset_limit = 524352,
@@ -1615,7 +1612,8 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* cpuRAM2 <- 524288 */
+    /* npuRAM4 <- 65536 */
+    /* npuRAM3 <- 458752 */
 
     static const LL_Switch_InitTypeDef switch_init_in_4[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 1, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 8, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_14 IN: in unit=CONV_ACC_V2 1 in port=0 out unit=STREAM_ENG_V2 8 out port=0 */
@@ -1790,7 +1788,7 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 2 [STREAM_ENG_V2 2] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_18_off_bias_24 input ports=0 range=11[0,524288] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_18_off_bias_24 input ports=0 range=8[0,524288] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_18_off_bias_24_dma_init_in_0_5 = {
       /* from memory with batch=16 */
@@ -1799,7 +1797,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x34100000UL) /* Equivalent hex address = 0x34100000UL */}, /* Conv2D_18_mul_scale_out_22 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_18_mul_scale_out_22 */
       .offset_start = 0,
       .offset_end = 524288,
       .offset_limit = 524352,
@@ -1822,11 +1820,12 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* cpuRAM2 -> 524288 */
+    /* npuRAM4 -> 65536 */
+    /* npuRAM3 -> 458752 */
 
     /* Dma output units from cycle: */
     /* Unit= 9 [STREAM_ENG_V2 9] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_23_suboff_27 output ports=0 range=1[0,262144] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_23_suboff_27 output ports=0 range=8[524288,786432] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_23_suboff_27_dma_init_out_0_5 = {
       /* to memory from canonical with batch=8 */
@@ -1834,9 +1833,9 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_23_zero_off_out_28 */
-      .offset_start = 0,
-      .offset_limit = 262208,
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_23_zero_off_out_28 */
+      .offset_start = 524288,
+      .offset_limit = 786496,
       .frame_count = 0,
       .fwidth = 2,
       .fheight = 128,
@@ -1856,7 +1855,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 262144 */
+    /* npuRAM4 <- 262144 */
 
     static const LL_Switch_InitTypeDef switch_init_in_5[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, ARITH, 0, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 2, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_18_off_bias_24 IN: in unit=ARITH_ACC_V2 0 in port=0 out unit=STREAM_ENG_V2 2 out port=0 */
@@ -2103,7 +2102,7 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 8 [STREAM_ENG_V2 8] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_23 input ports=0 range=1[0,262144] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_23 input ports=0 range=8[524288,786432] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_23_dma_init_in_0_6 = {
       /* 128x128x8(8 bits) */
@@ -2112,10 +2111,10 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_23_zero_off_out_28 */
-      .offset_start = 0,
-      .offset_end = 131072,
-      .offset_limit = 262208,
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_23_zero_off_out_28 */
+      .offset_start = 524288,
+      .offset_end = 655360,
+      .offset_limit = 786496,
       .frame_count = 0,
       .fwidth = 0,
       .fheight = 0,
@@ -2134,7 +2133,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(8, &Conv2D_23_dma_init_in_0_6, 1);
 
     /* Unit= 0 [STREAM_ENG_V2 0] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_23 input ports=1 range=8[816896,818048] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_23 input ports=1 range=5[816896,818048] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_23_dma_init_in_1_6 = {
       /* 16x3x3x8(8 bits) */
@@ -2169,12 +2168,12 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 262144 */
+    /* npuRAM4 -> 262144 */
     /* octoFlash -> 1152 */
 
     /* Dma output units from cycle: */
     /* Unit= 2 [STREAM_ENG_V2 2] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_27_suboff_36 output ports=0 range=1[262144,327680] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_27_suboff_36 output ports=0 range=8[131072,196608] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_27_suboff_36_dma_init_out_0_6 = {
       /* to memory canonical from batch=8 */
@@ -2182,9 +2181,9 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_27_zero_off_out_37 */
-      .offset_start = 262144,
-      .offset_limit = 327744,
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_27_zero_off_out_37 */
+      .offset_start = 131072,
+      .offset_limit = 196672,
       .frame_count = 0,
       .fwidth = 64,
       .fheight = 64,
@@ -2204,7 +2203,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 65536 */
+    /* npuRAM3 <- 65536 */
 
     static const LL_Switch_InitTypeDef switch_init_in_6[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 3, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 8, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_23 IN: in unit=CONV_ACC_V2 3 in port=0 out unit=STREAM_ENG_V2 8 out port=0 */
@@ -2463,7 +2462,7 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 2 [STREAM_ENG_V2 2] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_27 input ports=0 range=1[262144,327680] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_27 input ports=0 range=8[131072,196608] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_27_dma_init_in_0_7 = {
       /* 64x64x16(8 bits) */
@@ -2472,10 +2471,10 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_27_zero_off_out_37 */
-      .offset_start = 262144,
-      .offset_end = 327680,
-      .offset_limit = 327744,
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_27_zero_off_out_37 */
+      .offset_start = 131072,
+      .offset_end = 196608,
+      .offset_limit = 196672,
       .frame_count = 0,
       .fwidth = 0,
       .fheight = 0,
@@ -2494,7 +2493,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(2, &Conv2D_27_dma_init_in_0_7, 1);
 
     /* Unit= 7 [STREAM_ENG_V2 7] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_27 input ports=1 range=8[820304,820816] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_27 input ports=1 range=5[820304,820816] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_27_dma_init_in_1_7 = {
       /* 32x1x1x16(8 bits) */
@@ -2529,12 +2528,12 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 131072 */
+    /* npuRAM3 -> 131072 */
     /* octoFlash -> 512 */
 
     /* Dma output units from cycle: */
     /* Unit= 8 [STREAM_ENG_V2 8] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_32_suboff_45 output ports=0 range=1[0,131072] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_32_suboff_45 output ports=0 range=8[0,131072] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_32_suboff_45_dma_init_out_0_7 = {
       /* to memory canonical from batch=16 */
@@ -2542,7 +2541,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_32_zero_off_out_46 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_32_zero_off_out_46 */
       .offset_start = 0,
       .offset_limit = 131136,
       .frame_count = 0,
@@ -2564,7 +2563,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 131072 */
+    /* npuRAM3 <- 131072 */
 
     static const LL_Switch_InitTypeDef switch_init_in_7[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 0, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 2, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_27 IN: in unit=CONV_ACC_V2 0 in port=0 out unit=STREAM_ENG_V2 2 out port=0 */
@@ -2823,14 +2822,14 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 8 [STREAM_ENG_V2 8] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_32 input ports=0 range=1[0,131072] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_32 input ports=0 range=8[0,131072] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_32_dma_init_in_0_8 = {
       .dir = 0,
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_32_zero_off_out_46 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_32_zero_off_out_46 */
       .offset_start = 0,
       .offset_limit = 131136,
       .frame_count = 0,
@@ -2851,7 +2850,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(8, &Conv2D_32_dma_init_in_0_8, 1);
 
     /* Unit= 0 [STREAM_ENG_V2 0] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_32 input ports=1 range=8[808160,810464] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_32 input ports=1 range=5[808160,810464] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_32_dma_init_in_1_8 = {
       /* 32x3x3x8(8 bits) */
@@ -2886,12 +2885,12 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 131072 */
+    /* npuRAM3 -> 131072 */
     /* octoFlash -> 2304 */
 
     /* Dma output units from cycle: */
     /* Unit= 3 [STREAM_ENG_V2 3] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_36_suboff_54 output ports=0 range=1[131072,262144] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_36_suboff_54 output ports=0 range=8[131072,262144] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_36_suboff_54_dma_init_out_0_8 = {
       /* to memory canonical from batch=8 */
@@ -2899,7 +2898,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_36_zero_off_out_55 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_36_zero_off_out_55 */
       .offset_start = 131072,
       .offset_limit = 262208,
       .frame_count = 0,
@@ -2921,7 +2920,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 131072 */
+    /* npuRAM3 <- 131072 */
 
     static const LL_Switch_InitTypeDef switch_init_in_8[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 1, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 8, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_32 IN: in unit=CONV_ACC_V2 1 in port=0 out unit=STREAM_ENG_V2 8 out port=0 */
@@ -3180,7 +3179,7 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 5 [STREAM_ENG_V2 5] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_36 input ports=0 range=1[131072,262144] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_36 input ports=0 range=8[131072,262144] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_36_dma_init_in_0_9 = {
       /* 64x64x32(8 bits) */
@@ -3190,7 +3189,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_36_zero_off_out_55 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_36_zero_off_out_55 */
       .offset_start = 131072,
       .offset_end = 262145,
       .offset_limit = 262208,
@@ -3212,7 +3211,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(5, &Conv2D_36_dma_init_in_0_9, 1);
 
     /* Unit= 0 [STREAM_ENG_V2 0] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_36 input ports=1 range=8[818048,819074] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_36 input ports=1 range=5[818048,819074] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_36_dma_init_in_1_9 = {
       /* 32x1x1x32(8 bits) */
@@ -3247,12 +3246,12 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 262144 */
+    /* npuRAM3 -> 262144 */
     /* octoFlash -> 1024 */
 
     /* Dma output units from cycle: */
     /* Unit= 2 [STREAM_ENG_V2 2] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_41_suboff_63 output ports=0 range=1[0,131072] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_41_suboff_63 output ports=0 range=8[0,131072] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_41_suboff_63_dma_init_out_0_9 = {
       /* to memory canonical from batch=16 */
@@ -3260,7 +3259,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_41_zero_off_out_64 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_41_zero_off_out_64 */
       .offset_start = 0,
       .offset_limit = 131136,
       .frame_count = 0,
@@ -3282,7 +3281,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 131072 */
+    /* npuRAM3 <- 131072 */
 
     static const LL_Switch_InitTypeDef switch_init_in_9[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 2, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 5, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_36 IN: in unit=CONV_ACC_V2 2 in port=0 out unit=STREAM_ENG_V2 5 out port=0 */
@@ -3541,14 +3540,14 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 4 [STREAM_ENG_V2 4] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_41 input ports=0 range=1[0,131072] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_41 input ports=0 range=8[0,131072] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_41_dma_init_in_0_10 = {
       .dir = 0,
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_41_zero_off_out_64 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_41_zero_off_out_64 */
       .offset_start = 0,
       .offset_limit = 131136,
       .frame_count = 0,
@@ -3569,7 +3568,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(4, &Conv2D_41_dma_init_in_0_10, 1);
 
     /* Unit= 6 [STREAM_ENG_V2 6] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_41 input ports=1 range=8[810464,812768] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_41 input ports=1 range=5[810464,812768] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_41_dma_init_in_1_10 = {
       /* 32x3x3x8(8 bits) */
@@ -3604,12 +3603,12 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 131072 */
+    /* npuRAM3 -> 131072 */
     /* octoFlash -> 2304 */
 
     /* Dma output units from cycle: */
     /* Unit= 8 [STREAM_ENG_V2 8] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_45_suboff_72 output ports=0 range=1[131072,163840] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_45_suboff_72 output ports=0 range=8[131072,163840] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_45_suboff_72_dma_init_out_0_10 = {
       /* to memory canonical from batch=8 */
@@ -3617,7 +3616,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_45_zero_off_out_73 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_45_zero_off_out_73 */
       .offset_start = 131072,
       .offset_limit = 163904,
       .frame_count = 0,
@@ -3639,7 +3638,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 32768 */
+    /* npuRAM3 <- 32768 */
 
     static const LL_Switch_InitTypeDef switch_init_in_10[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 3, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 4, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_41 IN: in unit=CONV_ACC_V2 3 in port=0 out unit=STREAM_ENG_V2 4 out port=0 */
@@ -3898,7 +3897,7 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 0 [STREAM_ENG_V2 0] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_45 input ports=0 range=1[131072,163840] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_45 input ports=0 range=8[131072,163840] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_45_dma_init_in_0_11 = {
       /* 32x32x32(8 bits) */
@@ -3908,7 +3907,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_45_zero_off_out_73 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_45_zero_off_out_73 */
       .offset_start = 131072,
       .offset_end = 163841,
       .offset_limit = 163904,
@@ -3930,7 +3929,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(0, &Conv2D_45_dma_init_in_0_11, 1);
 
     /* Unit= 5 [STREAM_ENG_V2 5] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_45 input ports=1 range=8[812768,814820] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_45 input ports=1 range=5[812768,814820] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_45_dma_init_in_1_11 = {
       /* 64x1x1x32(8 bits) */
@@ -3965,12 +3964,12 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 131072 */
+    /* npuRAM3 -> 131072 */
     /* octoFlash -> 2048 */
 
     /* Dma output units from cycle: */
     /* Unit= 9 [STREAM_ENG_V2 9] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_50_suboff_81 output ports=0 range=1[0,65536] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_50_suboff_81 output ports=0 range=8[0,65536] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_50_suboff_81_dma_init_out_0_11 = {
       /* to memory canonical from batch=16 */
@@ -3978,7 +3977,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_50_zero_off_out_82 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_50_zero_off_out_82 */
       .offset_start = 0,
       .offset_limit = 65600,
       .frame_count = 0,
@@ -4000,7 +3999,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 65536 */
+    /* npuRAM3 <- 65536 */
 
     static const LL_Switch_InitTypeDef switch_init_in_11[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 0, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 0, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_45 IN: in unit=CONV_ACC_V2 0 in port=0 out unit=STREAM_ENG_V2 0 out port=0 */
@@ -4259,14 +4258,14 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 8 [STREAM_ENG_V2 8] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_50 input ports=0 range=1[0,65536] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_50 input ports=0 range=8[0,65536] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_50_dma_init_in_0_12 = {
       .dir = 0,
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_50_zero_off_out_82 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_50_zero_off_out_82 */
       .offset_start = 0,
       .offset_limit = 65600,
       .frame_count = 0,
@@ -4287,7 +4286,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(8, &Conv2D_50_dma_init_in_0_12, 1);
 
     /* Unit= 3 [STREAM_ENG_V2 3] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_50 input ports=1 range=8[769120,773728] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_50 input ports=1 range=5[769120,773728] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_50_dma_init_in_1_12 = {
       /* 64x3x3x8(8 bits) */
@@ -4322,12 +4321,12 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 65536 */
+    /* npuRAM3 -> 65536 */
     /* octoFlash -> 4608 */
 
     /* Dma output units from cycle: */
     /* Unit= 1 [STREAM_ENG_V2 1] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_54_suboff_90 output ports=0 range=1[65536,131072] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_54_suboff_90 output ports=0 range=8[65536,131072] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_54_suboff_90_dma_init_out_0_12 = {
       /* to memory canonical from batch=8 */
@@ -4335,7 +4334,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_54_zero_off_out_91 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_54_zero_off_out_91 */
       .offset_start = 65536,
       .offset_limit = 131136,
       .frame_count = 0,
@@ -4357,7 +4356,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 65536 */
+    /* npuRAM3 <- 65536 */
 
     static const LL_Switch_InitTypeDef switch_init_in_12[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 1, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 8, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_50 IN: in unit=CONV_ACC_V2 1 in port=0 out unit=STREAM_ENG_V2 8 out port=0 */
@@ -4665,7 +4664,7 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 2 [STREAM_ENG_V2 2] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_54 input ports=0 range=1[65536,131072] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_54 input ports=0 range=8[65536,131072] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_54_dma_init_in_0_13 = {
       /* 32x32x64(8 bits) */
@@ -4675,7 +4674,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_54_zero_off_out_91 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_54_zero_off_out_91 */
       .offset_start = 65536,
       .offset_end = 131074,
       .offset_limit = 131136,
@@ -4697,7 +4696,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(2, &Conv2D_54_dma_init_in_0_13, 1);
 
     /* Unit= 8 [STREAM_ENG_V2 8] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_54 input ports=1 range=8[799936,804040] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_54 input ports=1 range=5[799936,804040] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_54_dma_init_in_1_13 = {
       /* 64x1x1x64(8 bits) */
@@ -4732,12 +4731,12 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 262144 */
+    /* npuRAM3 -> 262144 */
     /* octoFlash -> 4096 */
 
     /* Dma output units from cycle: */
     /* Unit= 6 [STREAM_ENG_V2 6] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_59_suboff_99 output ports=0 range=1[0,65536] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_59_suboff_99 output ports=0 range=8[0,65536] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_59_suboff_99_dma_init_out_0_13 = {
       /* to memory canonical from batch=16 */
@@ -4745,7 +4744,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_59_zero_off_out_100 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_59_zero_off_out_100 */
       .offset_start = 0,
       .offset_limit = 65600,
       .frame_count = 0,
@@ -4766,7 +4765,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(6, &Conv2D_59_suboff_99_dma_init_out_0_13, 1);
 
     /* Unit= 9 [STREAM_ENG_V2 9] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_268_suboff_444 output ports=0 range=1[131072,196608] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_268_suboff_444 output ports=0 range=8[131072,196608] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_268_suboff_444_dma_init_out_0_13 = {
       /* to memory canonical from batch=16 */
@@ -4774,7 +4773,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_268_zero_off_out_445 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_268_zero_off_out_445 */
       .offset_start = 131072,
       .offset_limit = 196672,
       .frame_count = 0,
@@ -4796,7 +4795,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 131072 */
+    /* npuRAM3 <- 131072 */
 
     static const LL_Switch_InitTypeDef switch_init_in_13[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 2, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 2, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_54 IN: in unit=CONV_ACC_V2 2 in port=0 out unit=STREAM_ENG_V2 2 out port=0 */
@@ -5159,14 +5158,14 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 2 [STREAM_ENG_V2 2] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_59 input ports=0 range=1[0,65536] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_59 input ports=0 range=8[0,65536] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_59_dma_init_in_0_14 = {
       .dir = 0,
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_59_zero_off_out_100 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_59_zero_off_out_100 */
       .offset_start = 0,
       .offset_limit = 65600,
       .frame_count = 0,
@@ -5187,7 +5186,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(2, &Conv2D_59_dma_init_in_0_14, 1);
 
     /* Unit= 9 [STREAM_ENG_V2 9] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_59 input ports=1 range=8[773728,778336] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_59 input ports=1 range=5[773728,778336] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_59_dma_init_in_1_14 = {
       /* 64x3x3x8(8 bits) */
@@ -5221,7 +5220,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(9, &Conv2D_59_dma_init_in_1_14, 1);
 
     /* Unit= 5 [STREAM_ENG_V2 5] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_268 input ports=0 range=1[131072,196608] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_268 input ports=0 range=8[131072,196608] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_268_dma_init_in_0_14 = {
       /* 32x32x64(8 bits) */
@@ -5231,7 +5230,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_268_zero_off_out_445 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_268_zero_off_out_445 */
       .offset_start = 131072,
       .offset_end = 196610,
       .offset_limit = 196672,
@@ -5253,7 +5252,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(5, &Conv2D_268_dma_init_in_0_14, 1);
 
     /* Unit= 8 [STREAM_ENG_V2 8] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_268 input ports=1 range=8[814832,816884] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_268 input ports=1 range=5[814832,816884] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_268_dma_init_in_1_14 = {
       /* 32x1x1x64(8 bits) */
@@ -5288,12 +5287,12 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 196608 */
+    /* npuRAM3 -> 196608 */
     /* octoFlash -> 6656 */
 
     /* Dma output units from cycle: */
     /* Unit= 1 [STREAM_ENG_V2 1] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_63_suboff_108 output ports=0 range=1[196608,212992] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_63_suboff_108 output ports=0 range=8[196608,212992] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_63_suboff_108_dma_init_out_0_14 = {
       /* to memory canonical from batch=8 */
@@ -5301,7 +5300,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_63_zero_off_out_109 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_63_zero_off_out_109 */
       .offset_start = 196608,
       .offset_limit = 213056,
       .frame_count = 0,
@@ -5322,7 +5321,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(1, &Conv2D_63_suboff_108_dma_init_out_0_14, 1);
 
     /* Unit= 4 [STREAM_ENG_V2 4] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_268_mul_scale_447 output ports=0 range=1[65536,131072] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_268_mul_scale_447 output ports=0 range=8[65536,131072] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_268_mul_scale_447_dma_init_out_0_14 = {
       /* to memory with batch=16 */
@@ -5331,7 +5330,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_268_mul_scale_out_448 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_268_mul_scale_out_448 */
       .offset_start = 65536,
       .offset_end = 98304,
       .offset_limit = 131136,
@@ -5354,7 +5353,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 81920 */
+    /* npuRAM3 <- 81920 */
 
     static const LL_Switch_InitTypeDef switch_init_in_14[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 3, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 2, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_59 IN: in unit=CONV_ACC_V2 3 in port=0 out unit=STREAM_ENG_V2 2 out port=0 */
@@ -5680,7 +5679,7 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 0 [STREAM_ENG_V2 0] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_268_off_bias_450 input ports=0 range=1[65536,131072] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_268_off_bias_450 input ports=0 range=8[65536,131072] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_268_off_bias_450_dma_init_in_0_15 = {
       /* from memory with batch=16 */
@@ -5689,7 +5688,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_268_mul_scale_out_448 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_268_mul_scale_out_448 */
       .offset_start = 65536,
       .offset_end = 98304,
       .offset_limit = 131136,
@@ -5711,7 +5710,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(0, &Conv2D_268_off_bias_450_dma_init_in_0_15, 1);
 
     /* Unit= 7 [STREAM_ENG_V2 7] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_63 input ports=0 range=1[196608,212992] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_63 input ports=0 range=8[196608,212992] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_63_dma_init_in_0_15 = {
       /* 16x16x64(8 bits) */
@@ -5721,7 +5720,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_63_zero_off_out_109 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_63_zero_off_out_109 */
       .offset_start = 196608,
       .offset_end = 212994,
       .offset_limit = 213056,
@@ -5743,7 +5742,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(7, &Conv2D_63_dma_init_in_0_15, 1);
 
     /* Unit= 3 [STREAM_ENG_V2 3] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_63 input ports=1 range=8[699280,707488] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_63 input ports=1 range=5[699280,707488] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_63_dma_init_in_1_15 = {
       /* 128x1x1x64(8 bits) */
@@ -5778,12 +5777,12 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 196608 */
+    /* npuRAM3 -> 196608 */
     /* octoFlash -> 8192 */
 
     /* Dma output units from cycle: */
     /* Unit= 1 [STREAM_ENG_V2 1] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_268_off_bias_450 output ports=0 range=1[0,32768] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_268_off_bias_450 output ports=0 range=8[0,32768] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_268_off_bias_450_dma_init_out_0_15 = {
       /* to memory with batch=16 */
@@ -5792,7 +5791,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_268_off_bias_out_451 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_268_off_bias_out_451 */
       .offset_start = 0,
       .offset_end = 16384,
       .offset_limit = 32832,
@@ -5814,7 +5813,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(1, &Conv2D_268_off_bias_450_dma_init_out_0_15, 1);
 
     /* Unit= 2 [STREAM_ENG_V2 2] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_68_suboff_117 output ports=0 range=1[32768,65536] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_68_suboff_117 output ports=0 range=8[32768,65536] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_68_suboff_117_dma_init_out_0_15 = {
       /* to memory canonical from batch=16 */
@@ -5822,7 +5821,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_68_zero_off_out_118 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_68_zero_off_out_118 */
       .offset_start = 32768,
       .offset_limit = 65600,
       .frame_count = 0,
@@ -5844,7 +5843,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 65536 */
+    /* npuRAM3 <- 65536 */
 
     static const LL_Switch_InitTypeDef switch_init_in_15[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, ARITH, 0, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 0, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_268_off_bias_450 IN: in unit=ARITH_ACC_V2 0 in port=0 out unit=STREAM_ENG_V2 0 out port=0 */
@@ -6113,14 +6112,14 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 9 [STREAM_ENG_V2 9] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_68 input ports=0 range=1[32768,65536] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_68 input ports=0 range=8[32768,65536] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_68_dma_init_in_0_16 = {
       .dir = 0,
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_68_zero_off_out_118 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_68_zero_off_out_118 */
       .offset_start = 32768,
       .offset_limit = 65600,
       .frame_count = 0,
@@ -6141,7 +6140,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(9, &Conv2D_68_dma_init_in_0_16, 1);
 
     /* Unit= 8 [STREAM_ENG_V2 8] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_68 input ports=1 range=8[643984,653200] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_68 input ports=1 range=5[643984,653200] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_68_dma_init_in_1_16 = {
       /* 128x3x3x8(8 bits) */
@@ -6176,12 +6175,12 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 32768 */
+    /* npuRAM3 -> 32768 */
     /* octoFlash -> 9216 */
 
     /* Dma output units from cycle: */
     /* Unit= 0 [STREAM_ENG_V2 0] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_72_suboff_126 output ports=0 range=1[65536,98304] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_72_suboff_126 output ports=0 range=8[65536,98304] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_72_suboff_126_dma_init_out_0_16 = {
       /* to memory canonical from batch=8 */
@@ -6189,7 +6188,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_72_zero_off_out_127 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_72_zero_off_out_127 */
       .offset_start = 65536,
       .offset_limit = 98368,
       .frame_count = 0,
@@ -6211,7 +6210,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 32768 */
+    /* npuRAM3 <- 32768 */
 
     static const LL_Switch_InitTypeDef switch_init_in_16[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 2, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 9, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_68 IN: in unit=CONV_ACC_V2 2 in port=0 out unit=STREAM_ENG_V2 9 out port=0 */
@@ -6470,7 +6469,7 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 1 [STREAM_ENG_V2 1] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_72 input ports=0 range=1[65536,98304] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_72 input ports=0 range=8[65536,98304] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_72_dma_init_in_0_17 = {
       /* 16x16x128(8 bits) */
@@ -6480,7 +6479,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_72_zero_off_out_127 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_72_zero_off_out_127 */
       .offset_start = 65536,
       .offset_end = 98305,
       .offset_limit = 98368,
@@ -6502,7 +6501,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(1, &Conv2D_72_dma_init_in_0_17, 1);
 
     /* Unit= 5 [STREAM_ENG_V2 5] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_72 input ports=1 range=8[561984,578376] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_72 input ports=1 range=5[561984,578376] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_72_dma_init_in_1_17 = {
       /* 128x1x1x128(8 bits) */
@@ -6537,12 +6536,12 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 262144 */
+    /* npuRAM3 -> 262144 */
     /* octoFlash -> 16384 */
 
     /* Dma output units from cycle: */
     /* Unit= 6 [STREAM_ENG_V2 6] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_77_suboff_135 output ports=0 range=1[32768,65536] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_77_suboff_135 output ports=0 range=8[32768,65536] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_77_suboff_135_dma_init_out_0_17 = {
       /* to memory canonical from batch=16 */
@@ -6550,7 +6549,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_77_zero_off_out_136 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_77_zero_off_out_136 */
       .offset_start = 32768,
       .offset_limit = 65600,
       .frame_count = 0,
@@ -6572,7 +6571,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 32768 */
+    /* npuRAM3 <- 32768 */
 
     static const LL_Switch_InitTypeDef switch_init_in_17[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 0, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 1, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_72 IN: in unit=CONV_ACC_V2 0 in port=0 out unit=STREAM_ENG_V2 1 out port=0 */
@@ -6831,14 +6830,14 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 8 [STREAM_ENG_V2 8] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_77 input ports=0 range=1[32768,65536] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_77 input ports=0 range=8[32768,65536] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_77_dma_init_in_0_18 = {
       .dir = 0,
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_77_zero_off_out_136 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_77_zero_off_out_136 */
       .offset_start = 32768,
       .offset_limit = 65600,
       .frame_count = 0,
@@ -6859,7 +6858,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(8, &Conv2D_77_dma_init_in_0_18, 1);
 
     /* Unit= 0 [STREAM_ENG_V2 0] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_77 input ports=1 range=8[653200,662416] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_77 input ports=1 range=5[653200,662416] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_77_dma_init_in_1_18 = {
       /* 128x3x3x8(8 bits) */
@@ -6894,12 +6893,12 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 32768 */
+    /* npuRAM3 -> 32768 */
     /* octoFlash -> 9216 */
 
     /* Dma output units from cycle: */
     /* Unit= 3 [STREAM_ENG_V2 3] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_81_suboff_144 output ports=0 range=1[65536,98304] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_81_suboff_144 output ports=0 range=8[65536,98304] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_81_suboff_144_dma_init_out_0_18 = {
       /* to memory canonical from batch=8 */
@@ -6907,7 +6906,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_81_zero_off_out_145 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_81_zero_off_out_145 */
       .offset_start = 65536,
       .offset_limit = 98368,
       .frame_count = 0,
@@ -6929,7 +6928,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 32768 */
+    /* npuRAM3 <- 32768 */
 
     static const LL_Switch_InitTypeDef switch_init_in_18[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 3, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 8, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_77 IN: in unit=CONV_ACC_V2 3 in port=0 out unit=STREAM_ENG_V2 8 out port=0 */
@@ -7188,7 +7187,7 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 3 [STREAM_ENG_V2 3] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_81 input ports=0 range=1[65536,98304] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_81 input ports=0 range=8[65536,98304] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_81_dma_init_in_0_19 = {
       /* 16x16x128(8 bits) */
@@ -7198,7 +7197,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_81_zero_off_out_145 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_81_zero_off_out_145 */
       .offset_start = 65536,
       .offset_end = 98305,
       .offset_limit = 98368,
@@ -7220,7 +7219,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(3, &Conv2D_81_dma_init_in_0_19, 1);
 
     /* Unit= 6 [STREAM_ENG_V2 6] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_81 input ports=1 range=8[578384,594776] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_81 input ports=1 range=5[578384,594776] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_81_dma_init_in_1_19 = {
       /* 128x1x1x128(8 bits) */
@@ -7255,12 +7254,12 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 262144 */
+    /* npuRAM3 -> 262144 */
     /* octoFlash -> 16384 */
 
     /* Dma output units from cycle: */
     /* Unit= 5 [STREAM_ENG_V2 5] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_86_suboff_153 output ports=0 range=1[32768,65536] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_86_suboff_153 output ports=0 range=8[32768,65536] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_86_suboff_153_dma_init_out_0_19 = {
       /* to memory canonical from batch=16 */
@@ -7268,7 +7267,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_86_zero_off_out_154 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_86_zero_off_out_154 */
       .offset_start = 32768,
       .offset_limit = 65600,
       .frame_count = 0,
@@ -7290,7 +7289,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 32768 */
+    /* npuRAM3 <- 32768 */
 
     static const LL_Switch_InitTypeDef switch_init_in_19[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 1, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 3, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_81 IN: in unit=CONV_ACC_V2 1 in port=0 out unit=STREAM_ENG_V2 3 out port=0 */
@@ -7549,14 +7548,14 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 6 [STREAM_ENG_V2 6] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_86 input ports=0 range=1[32768,65536] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_86 input ports=0 range=8[32768,65536] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_86_dma_init_in_0_20 = {
       .dir = 0,
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_86_zero_off_out_154 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_86_zero_off_out_154 */
       .offset_start = 32768,
       .offset_limit = 65600,
       .frame_count = 0,
@@ -7577,7 +7576,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(6, &Conv2D_86_dma_init_in_0_20, 1);
 
     /* Unit= 0 [STREAM_ENG_V2 0] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_86 input ports=1 range=8[662416,671632] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_86 input ports=1 range=5[662416,671632] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_86_dma_init_in_1_20 = {
       /* 128x3x3x8(8 bits) */
@@ -7612,12 +7611,12 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 32768 */
+    /* npuRAM3 -> 32768 */
     /* octoFlash -> 9216 */
 
     /* Dma output units from cycle: */
     /* Unit= 3 [STREAM_ENG_V2 3] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_90_suboff_162 output ports=0 range=1[65536,98304] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_90_suboff_162 output ports=0 range=8[65536,98304] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_90_suboff_162_dma_init_out_0_20 = {
       /* to memory canonical from batch=8 */
@@ -7625,7 +7624,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_90_zero_off_out_163 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_90_zero_off_out_163 */
       .offset_start = 65536,
       .offset_limit = 98368,
       .frame_count = 0,
@@ -7647,7 +7646,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 32768 */
+    /* npuRAM3 <- 32768 */
 
     static const LL_Switch_InitTypeDef switch_init_in_20[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 2, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 6, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_86 IN: in unit=CONV_ACC_V2 2 in port=0 out unit=STREAM_ENG_V2 6 out port=0 */
@@ -7906,7 +7905,7 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 0 [STREAM_ENG_V2 0] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_90 input ports=0 range=1[65536,98304] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_90 input ports=0 range=8[65536,98304] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_90_dma_init_in_0_21 = {
       /* 16x16x128(8 bits) */
@@ -7916,7 +7915,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_90_zero_off_out_163 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_90_zero_off_out_163 */
       .offset_start = 65536,
       .offset_end = 98305,
       .offset_limit = 98368,
@@ -7938,7 +7937,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(0, &Conv2D_90_dma_init_in_0_21, 1);
 
     /* Unit= 8 [STREAM_ENG_V2 8] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_90 input ports=1 range=8[594784,611176] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_90 input ports=1 range=5[594784,611176] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_90_dma_init_in_1_21 = {
       /* 128x1x1x128(8 bits) */
@@ -7973,12 +7972,12 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 262144 */
+    /* npuRAM3 -> 262144 */
     /* octoFlash -> 16384 */
 
     /* Dma output units from cycle: */
     /* Unit= 9 [STREAM_ENG_V2 9] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_95_suboff_171 output ports=0 range=1[32768,65536] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_95_suboff_171 output ports=0 range=8[32768,65536] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_95_suboff_171_dma_init_out_0_21 = {
       /* to memory canonical from batch=16 */
@@ -7986,7 +7985,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_95_zero_off_out_172 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_95_zero_off_out_172 */
       .offset_start = 32768,
       .offset_limit = 65600,
       .frame_count = 0,
@@ -8008,7 +8007,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 32768 */
+    /* npuRAM3 <- 32768 */
 
     static const LL_Switch_InitTypeDef switch_init_in_21[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 0, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 0, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_90 IN: in unit=CONV_ACC_V2 0 in port=0 out unit=STREAM_ENG_V2 0 out port=0 */
@@ -8267,14 +8266,14 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 4 [STREAM_ENG_V2 4] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_95 input ports=0 range=1[32768,65536] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_95 input ports=0 range=8[32768,65536] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_95_dma_init_in_0_22 = {
       .dir = 0,
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_95_zero_off_out_172 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_95_zero_off_out_172 */
       .offset_start = 32768,
       .offset_limit = 65600,
       .frame_count = 0,
@@ -8295,7 +8294,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(4, &Conv2D_95_dma_init_in_0_22, 1);
 
     /* Unit= 8 [STREAM_ENG_V2 8] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_95 input ports=1 range=8[671632,680848] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_95 input ports=1 range=5[671632,680848] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_95_dma_init_in_1_22 = {
       /* 128x3x3x8(8 bits) */
@@ -8330,12 +8329,12 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 32768 */
+    /* npuRAM3 -> 32768 */
     /* octoFlash -> 9216 */
 
     /* Dma output units from cycle: */
     /* Unit= 7 [STREAM_ENG_V2 7] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_99_suboff_180 output ports=0 range=1[65536,98304] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_99_suboff_180 output ports=0 range=8[65536,98304] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_99_suboff_180_dma_init_out_0_22 = {
       /* to memory canonical from batch=8 */
@@ -8343,7 +8342,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_99_zero_off_out_181 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_99_zero_off_out_181 */
       .offset_start = 65536,
       .offset_limit = 98368,
       .frame_count = 0,
@@ -8365,7 +8364,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 32768 */
+    /* npuRAM3 <- 32768 */
 
     static const LL_Switch_InitTypeDef switch_init_in_22[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 3, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 4, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_95 IN: in unit=CONV_ACC_V2 3 in port=0 out unit=STREAM_ENG_V2 4 out port=0 */
@@ -8624,7 +8623,7 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 7 [STREAM_ENG_V2 7] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_99 input ports=0 range=1[65536,98304] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_99 input ports=0 range=8[65536,98304] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_99_dma_init_in_0_23 = {
       /* 16x16x128(8 bits) */
@@ -8634,7 +8633,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_99_zero_off_out_181 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_99_zero_off_out_181 */
       .offset_start = 65536,
       .offset_end = 98305,
       .offset_limit = 98368,
@@ -8656,7 +8655,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(7, &Conv2D_99_dma_init_in_0_23, 1);
 
     /* Unit= 4 [STREAM_ENG_V2 4] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_99 input ports=1 range=8[611184,627576] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_99 input ports=1 range=5[611184,627576] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_99_dma_init_in_1_23 = {
       /* 128x1x1x128(8 bits) */
@@ -8691,12 +8690,12 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 262144 */
+    /* npuRAM3 -> 262144 */
     /* octoFlash -> 16384 */
 
     /* Dma output units from cycle: */
     /* Unit= 1 [STREAM_ENG_V2 1] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_104_suboff_189 output ports=0 range=1[32768,65536] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_104_suboff_189 output ports=0 range=8[32768,65536] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_104_suboff_189_dma_init_out_0_23 = {
       /* to memory canonical from batch=16 */
@@ -8704,7 +8703,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_104_zero_off_out_190 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_104_zero_off_out_190 */
       .offset_start = 32768,
       .offset_limit = 65600,
       .frame_count = 0,
@@ -8726,7 +8725,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 32768 */
+    /* npuRAM3 <- 32768 */
 
     static const LL_Switch_InitTypeDef switch_init_in_23[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 1, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 7, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_99 IN: in unit=CONV_ACC_V2 1 in port=0 out unit=STREAM_ENG_V2 7 out port=0 */
@@ -8985,14 +8984,14 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 9 [STREAM_ENG_V2 9] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_104 input ports=0 range=1[32768,65536] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_104 input ports=0 range=8[32768,65536] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_104_dma_init_in_0_24 = {
       .dir = 0,
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_104_zero_off_out_190 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_104_zero_off_out_190 */
       .offset_start = 32768,
       .offset_limit = 65600,
       .frame_count = 0,
@@ -9013,7 +9012,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(9, &Conv2D_104_dma_init_in_0_24, 1);
 
     /* Unit= 4 [STREAM_ENG_V2 4] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_104 input ports=1 range=8[680848,690064] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_104 input ports=1 range=5[680848,690064] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_104_dma_init_in_1_24 = {
       /* 128x3x3x8(8 bits) */
@@ -9048,12 +9047,12 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 32768 */
+    /* npuRAM3 -> 32768 */
     /* octoFlash -> 9216 */
 
     /* Dma output units from cycle: */
     /* Unit= 3 [STREAM_ENG_V2 3] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_108_suboff_198 output ports=0 range=1[98304,131072] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_108_suboff_198 output ports=0 range=8[98304,131072] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_108_suboff_198_dma_init_out_0_24 = {
       /* to memory canonical from batch=8 */
@@ -9061,7 +9060,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_108_zero_off_out_199 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_108_zero_off_out_199 */
       .offset_start = 98304,
       .offset_limit = 131136,
       .frame_count = 0,
@@ -9083,7 +9082,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 32768 */
+    /* npuRAM3 <- 32768 */
 
     static const LL_Switch_InitTypeDef switch_init_in_24[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 2, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 9, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_104 IN: in unit=CONV_ACC_V2 2 in port=0 out unit=STREAM_ENG_V2 9 out port=0 */
@@ -9391,7 +9390,7 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 2 [STREAM_ENG_V2 2] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_108 input ports=0 range=1[98304,131072] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_108 input ports=0 range=8[98304,131072] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_108_dma_init_in_0_25 = {
       /* 16x16x128(8 bits) */
@@ -9401,7 +9400,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_108_zero_off_out_199 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_108_zero_off_out_199 */
       .offset_start = 98304,
       .offset_end = 131073,
       .offset_limit = 131136,
@@ -9423,7 +9422,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(2, &Conv2D_108_dma_init_in_0_25, 1);
 
     /* Unit= 8 [STREAM_ENG_V2 8] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_108 input ports=1 range=8[627584,643976] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_108 input ports=1 range=5[627584,643976] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_108_dma_init_in_1_25 = {
       /* 128x1x1x128(8 bits) */
@@ -9458,12 +9457,12 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 262144 */
+    /* npuRAM3 -> 262144 */
     /* octoFlash -> 16384 */
 
     /* Dma output units from cycle: */
     /* Unit= 9 [STREAM_ENG_V2 9] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_247_suboff_417 output ports=0 range=1[65536,98304] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_247_suboff_417 output ports=0 range=8[65536,98304] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_247_suboff_417_dma_init_out_0_25 = {
       /* to memory canonical from batch=16 */
@@ -9471,7 +9470,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_247_zero_off_out_418 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_247_zero_off_out_418 */
       .offset_start = 65536,
       .offset_limit = 98368,
       .frame_count = 0,
@@ -9492,7 +9491,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(9, &Conv2D_247_suboff_417_dma_init_out_0_25, 1);
 
     /* Unit= 7 [STREAM_ENG_V2 7] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_113_suboff_207 output ports=0 range=1[32768,65536] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_113_suboff_207 output ports=0 range=8[32768,65536] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_113_suboff_207_dma_init_out_0_25 = {
       /* to memory canonical from batch=16 */
@@ -9500,7 +9499,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_113_zero_off_out_208 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_113_zero_off_out_208 */
       .offset_start = 32768,
       .offset_limit = 65600,
       .frame_count = 0,
@@ -9522,7 +9521,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 65536 */
+    /* npuRAM3 <- 65536 */
 
     static const LL_Switch_InitTypeDef switch_init_in_25[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 0, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 2, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_108 IN: in unit=CONV_ACC_V2 0 in port=0 out unit=STREAM_ENG_V2 2 out port=0 */
@@ -9885,7 +9884,7 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 5 [STREAM_ENG_V2 5] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_247 input ports=0 range=1[65536,98304] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_247 input ports=0 range=8[65536,98304] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_247_dma_init_in_0_26 = {
       /* 16x16x128(8 bits) */
@@ -9895,7 +9894,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_247_zero_off_out_418 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_247_zero_off_out_418 */
       .offset_start = 65536,
       .offset_end = 98305,
       .offset_limit = 98368,
@@ -9917,7 +9916,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(5, &Conv2D_247_dma_init_in_0_26, 1);
 
     /* Unit= 4 [STREAM_ENG_V2 4] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_247 input ports=1 range=8[804048,808146] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_247 input ports=1 range=5[804048,808146] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_247_dma_init_in_1_26 = {
       /* 32x1x1x128(8 bits) */
@@ -9951,14 +9950,14 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(4, &Conv2D_247_dma_init_in_1_26, 1);
 
     /* Unit= 0 [STREAM_ENG_V2 0] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_113 input ports=0 range=1[32768,65536] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_113 input ports=0 range=8[32768,65536] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_113_dma_init_in_0_26 = {
       .dir = 0,
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_113_zero_off_out_208 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_113_zero_off_out_208 */
       .offset_start = 32768,
       .offset_limit = 65600,
       .frame_count = 0,
@@ -9979,7 +9978,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(0, &Conv2D_113_dma_init_in_0_26, 1);
 
     /* Unit= 2 [STREAM_ENG_V2 2] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_113 input ports=1 range=8[690064,699280] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_113 input ports=1 range=5[690064,699280] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_113_dma_init_in_1_26 = {
       /* 128x3x3x8(8 bits) */
@@ -10014,12 +10013,12 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 98304 */
+    /* npuRAM3 -> 98304 */
     /* octoFlash -> 13312 */
 
     /* Dma output units from cycle: */
     /* Unit= 1 [STREAM_ENG_V2 1] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_247_off_bias_423 output ports=0 range=1[106496,114688] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_247_off_bias_423 output ports=0 range=8[106496,114688] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_247_off_bias_423_dma_init_out_0_26 = {
       /* to memory with batch=16 */
@@ -10028,7 +10027,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_247_off_bias_out_424 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_247_off_bias_out_424 */
       .offset_start = 106496,
       .offset_end = 110592,
       .offset_limit = 114752,
@@ -10050,7 +10049,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(1, &Conv2D_247_off_bias_423_dma_init_out_0_26, 1);
 
     /* Unit= 3 [STREAM_ENG_V2 3] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_113_off_bias_213 output ports=0 range=1[98304,106496] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_113_off_bias_213 output ports=0 range=8[98304,106496] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_113_off_bias_213_dma_init_out_0_26 = {
       /* to memory with batch=8 */
@@ -10059,7 +10058,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_113_off_bias_out_214 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_113_off_bias_out_214 */
       .offset_start = 98304,
       .offset_end = 98816,
       .offset_limit = 106560,
@@ -10082,7 +10081,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 16384 */
+    /* npuRAM3 <- 16384 */
 
     static const LL_Switch_InitTypeDef switch_init_in_26[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 3, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 5, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_247 IN: in unit=CONV_ACC_V2 3 in port=0 out unit=STREAM_ENG_V2 5 out port=0 */
@@ -10214,7 +10213,7 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 2 [STREAM_ENG_V2 2] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_117_suboff_216 input ports=0 range=1[98304,106496] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_117_suboff_216 input ports=0 range=8[98304,106496] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_117_suboff_216_dma_init_in_0_27 = {
       /* from memory with batch=8 */
@@ -10223,7 +10222,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Clip_116_out_0 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Clip_116_out_0 */
       .offset_start = 98304,
       .offset_end = 98816,
       .offset_limit = 106560,
@@ -10246,11 +10245,11 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 8192 */
+    /* npuRAM3 -> 8192 */
 
     /* Dma output units from cycle: */
     /* Unit= 9 [STREAM_ENG_V2 9] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_117_suboff_216 output ports=0 range=1[49152,57344] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_117_suboff_216 output ports=0 range=8[49152,57344] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_117_suboff_216_dma_init_out_0_27 = {
       /* to memory canonical from batch=8 */
@@ -10258,7 +10257,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_117_zero_off_out_217 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_117_zero_off_out_217 */
       .offset_start = 49152,
       .offset_limit = 57408,
       .frame_count = 0,
@@ -10280,7 +10279,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 8192 */
+    /* npuRAM3 <- 8192 */
 
     static const LL_Switch_InitTypeDef switch_init_in_27[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, ARITH, 0, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 2, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_117_suboff_216 IN: in unit=ARITH_ACC_V2 0 in port=0 out unit=STREAM_ENG_V2 2 out port=0 */
@@ -10523,7 +10522,7 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 0 [STREAM_ENG_V2 0] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_117 input ports=0 range=1[49152,57344] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_117 input ports=0 range=8[49152,57344] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_117_dma_init_in_0_28 = {
       /* 8x8x128(8 bits) */
@@ -10533,7 +10532,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_117_zero_off_out_217 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_117_zero_off_out_217 */
       .offset_start = 49152,
       .offset_end = 57345,
       .offset_limit = 57408,
@@ -10555,7 +10554,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(0, &Conv2D_117_dma_init_in_0_28, 1);
 
     /* Unit= 7 [STREAM_ENG_V2 7] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_117 input ports=1 range=8[437040,469824] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_117 input ports=1 range=5[437040,469824] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_117_dma_init_in_1_28 = {
       /* 256x1x1x128(8 bits) */
@@ -10590,12 +10589,12 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 131072 */
+    /* npuRAM3 -> 131072 */
     /* octoFlash -> 32768 */
 
     /* Dma output units from cycle: */
     /* Unit= 5 [STREAM_ENG_V2 5] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_122_suboff_225 output ports=0 range=1[32768,49152] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_122_suboff_225 output ports=0 range=8[32768,49152] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_122_suboff_225_dma_init_out_0_28 = {
       /* to memory canonical from batch=16 */
@@ -10603,7 +10602,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_122_zero_off_out_226 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_122_zero_off_out_226 */
       .offset_start = 32768,
       .offset_limit = 49216,
       .frame_count = 0,
@@ -10625,7 +10624,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 16384 */
+    /* npuRAM3 <- 16384 */
 
     static const LL_Switch_InitTypeDef switch_init_in_28[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 2, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 0, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_117 IN: in unit=CONV_ACC_V2 2 in port=0 out unit=STREAM_ENG_V2 0 out port=0 */
@@ -10884,14 +10883,14 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 3 [STREAM_ENG_V2 3] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_122 input ports=0 range=1[32768,49152] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_122 input ports=0 range=8[32768,49152] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_122_dma_init_in_0_29 = {
       .dir = 0,
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_122_zero_off_out_226 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_122_zero_off_out_226 */
       .offset_start = 32768,
       .offset_limit = 49216,
       .frame_count = 0,
@@ -10912,7 +10911,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(3, &Conv2D_122_dma_init_in_0_29, 1);
 
     /* Unit= 2 [STREAM_ENG_V2 2] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_122 input ports=1 range=8[469824,488256] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_122 input ports=1 range=5[469824,488256] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_122_dma_init_in_1_29 = {
       /* 256x3x3x8(8 bits) */
@@ -10947,12 +10946,12 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 16384 */
+    /* npuRAM3 -> 16384 */
     /* octoFlash -> 18432 */
 
     /* Dma output units from cycle: */
     /* Unit= 9 [STREAM_ENG_V2 9] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_126_suboff_234 output ports=0 range=1[65536,81920] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_126_suboff_234 output ports=0 range=8[65536,81920] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_126_suboff_234_dma_init_out_0_29 = {
       /* to memory canonical from batch=8 */
@@ -10960,7 +10959,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_126_zero_off_out_235 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_126_zero_off_out_235 */
       .offset_start = 65536,
       .offset_limit = 81984,
       .frame_count = 0,
@@ -10982,7 +10981,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 16384 */
+    /* npuRAM3 <- 16384 */
 
     static const LL_Switch_InitTypeDef switch_init_in_29[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 0, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 3, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_122 IN: in unit=CONV_ACC_V2 0 in port=0 out unit=STREAM_ENG_V2 3 out port=0 */
@@ -11344,7 +11343,7 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 9 [STREAM_ENG_V2 9] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_126 input ports=0 range=1[65536,81920] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_126 input ports=0 range=8[65536,81920] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_126_dma_init_in_0_30 = {
       .dir = 0,
@@ -11352,7 +11351,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_126_zero_off_out_235 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_126_zero_off_out_235 */
       .offset_start = 65536,
       .offset_limit = 81984,
       .frame_count = 0,
@@ -11373,7 +11372,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(9, &Conv2D_126_dma_init_in_0_30, 1);
 
     /* Unit= 4 [STREAM_ENG_V2 4] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_126 input ports=1 range=8[109200,174768] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_126 input ports=1 range=5[109200,174768] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_126_dma_init_in_1_30 = {
       /* 256x1x1x256(8 bits) */
@@ -11407,7 +11406,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(4, &Conv2D_126_dma_init_in_1_30, 1);
 
     /* Unit= 1 [STREAM_ENG_V2 1] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_126_ca_pipe_1 input ports=0 range=1[65536,81920] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_126_ca_pipe_1 input ports=0 range=8[65536,81920] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_126_ca_pipe_1_dma_init_in_0_30 = {
       .dir = 0,
@@ -11415,7 +11414,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_126_zero_off_out_235_copy_in_1 ca pipe offset=1 */
+      .addr_base = {(unsigned char *)ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_126_zero_off_out_235_copy_in_1 ca pipe offset=1 */
       .offset_start = 65664,
       .offset_limit = 81984,
       .frame_count = 0,
@@ -11437,12 +11436,12 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 262144 */
+    /* npuRAM3 -> 262144 */
     /* octoFlash -> 65536 */
 
     /* Dma output units from cycle: */
     /* Unit= 5 [STREAM_ENG_V2 5] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_131_suboff_243 output ports=0 range=1[32768,49152] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_131_suboff_243 output ports=0 range=8[32768,49152] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_131_suboff_243_dma_init_out_0_30 = {
       /* to memory canonical from batch=16 */
@@ -11450,7 +11449,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_131_zero_off_out_244 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_131_zero_off_out_244 */
       .offset_start = 32768,
       .offset_limit = 49216,
       .frame_count = 0,
@@ -11471,7 +11470,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(5, &Conv2D_131_suboff_243_dma_init_out_0_30, 1);
 
     /* Unit= 8 [STREAM_ENG_V2 8] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_226_suboff_396 output ports=0 range=1[49152,65536] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_226_suboff_396 output ports=0 range=8[49152,65536] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_226_suboff_396_dma_init_out_0_30 = {
       /* to memory canonical from batch=16 */
@@ -11479,7 +11478,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_226_zero_off_out_397 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_226_zero_off_out_397 */
       .offset_start = 49152,
       .offset_limit = 65600,
       .frame_count = 0,
@@ -11501,7 +11500,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 32768 */
+    /* npuRAM3 <- 32768 */
 
     static const LL_Switch_InitTypeDef switch_init_in_30[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 1, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 9, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_126 IN: in unit=CONV_ACC_V2 1 in port=0 out unit=STREAM_ENG_V2 9 out port=0 */
@@ -11928,14 +11927,14 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 1 [STREAM_ENG_V2 1] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_131 input ports=0 range=1[32768,49152] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_131 input ports=0 range=8[32768,49152] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_131_dma_init_in_0_31 = {
       .dir = 0,
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_131_zero_off_out_244 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_131_zero_off_out_244 */
       .offset_start = 32768,
       .offset_limit = 49216,
       .frame_count = 0,
@@ -11956,7 +11955,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(1, &Conv2D_131_dma_init_in_0_31, 1);
 
     /* Unit= 8 [STREAM_ENG_V2 8] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_131 input ports=1 range=8[488256,506688] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_131 input ports=1 range=5[488256,506688] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_131_dma_init_in_1_31 = {
       /* 256x3x3x8(8 bits) */
@@ -11990,7 +11989,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(8, &Conv2D_131_dma_init_in_1_31, 1);
 
     /* Unit= 4 [STREAM_ENG_V2 4] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_226 input ports=0 range=1[49152,65536] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_226 input ports=0 range=8[49152,65536] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_226_dma_init_in_0_31 = {
       .dir = 0,
@@ -11998,7 +11997,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_226_zero_off_out_397 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_226_zero_off_out_397 */
       .offset_start = 49152,
       .offset_limit = 65600,
       .frame_count = 0,
@@ -12019,7 +12018,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(4, &Conv2D_226_dma_init_in_0_31, 1);
 
     /* Unit= 6 [STREAM_ENG_V2 6] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_226 input ports=1 range=8[732112,740308] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_226 input ports=1 range=5[732112,740308] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_226_dma_init_in_1_31 = {
       /* 32x1x1x256(8 bits) */
@@ -12053,7 +12052,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(6, &Conv2D_226_dma_init_in_1_31, 1);
 
     /* Unit= 9 [STREAM_ENG_V2 9] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_226_ca_pipe_1 input ports=0 range=1[49152,65536] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_226_ca_pipe_1 input ports=0 range=8[49152,65536] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_226_ca_pipe_1_dma_init_in_0_31 = {
       .dir = 0,
@@ -12061,7 +12060,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_226_zero_off_out_397_copy_in_2 ca pipe offset=1 */
+      .addr_base = {(unsigned char *)ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_226_zero_off_out_397_copy_in_2 ca pipe offset=1 */
       .offset_start = 49280,
       .offset_limit = 65600,
       .frame_count = 0,
@@ -12083,12 +12082,12 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 49152 */
+    /* npuRAM3 -> 49152 */
     /* octoFlash -> 26624 */
 
     /* Dma output units from cycle: */
     /* Unit= 3 [STREAM_ENG_V2 3] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_226_off_bias_402 output ports=0 range=1[69632,71680] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_226_off_bias_402 output ports=0 range=8[69632,71680] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_226_off_bias_402_dma_init_out_0_31 = {
       /* to memory with batch=16 */
@@ -12097,7 +12096,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_226_off_bias_out_403 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_226_off_bias_out_403 */
       .offset_start = 69632,
       .offset_end = 70656,
       .offset_limit = 71744,
@@ -12119,7 +12118,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(3, &Conv2D_226_off_bias_402_dma_init_out_0_31, 1);
 
     /* Unit= 7 [STREAM_ENG_V2 7] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_131_off_bias_249 output ports=0 range=1[65536,69632] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_131_off_bias_249 output ports=0 range=8[65536,69632] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_131_off_bias_249_dma_init_out_0_31 = {
       /* to memory with batch=8 */
@@ -12128,7 +12127,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_131_off_bias_out_250 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_131_off_bias_out_250 */
       .offset_start = 65536,
       .offset_end = 65664,
       .offset_limit = 69696,
@@ -12151,7 +12150,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 6144 */
+    /* npuRAM3 <- 6144 */
 
     static const LL_Switch_InitTypeDef switch_init_in_31[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 2, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 1, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_131 IN: in unit=CONV_ACC_V2 2 in port=0 out unit=STREAM_ENG_V2 1 out port=0 */
@@ -12293,7 +12292,7 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 2 [STREAM_ENG_V2 2] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_135_suboff_252 input ports=0 range=1[65536,69632] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_135_suboff_252 input ports=0 range=8[65536,69632] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_135_suboff_252_dma_init_in_0_32 = {
       /* from memory with batch=8 */
@@ -12302,7 +12301,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Clip_134_out_0 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Clip_134_out_0 */
       .offset_start = 65536,
       .offset_end = 65664,
       .offset_limit = 69696,
@@ -12325,11 +12324,11 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 4096 */
+    /* npuRAM3 -> 4096 */
 
     /* Dma output units from cycle: */
     /* Unit= 7 [STREAM_ENG_V2 7] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_135_suboff_252 output ports=0 range=1[36864,40960] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_135_suboff_252 output ports=0 range=8[36864,40960] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_135_suboff_252_dma_init_out_0_32 = {
       /* to memory canonical from batch=8 */
@@ -12337,7 +12336,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_135_zero_off_out_253 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_135_zero_off_out_253 */
       .offset_start = 36864,
       .offset_limit = 41024,
       .frame_count = 0,
@@ -12359,7 +12358,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 4096 */
+    /* npuRAM3 <- 4096 */
 
     static const LL_Switch_InitTypeDef switch_init_in_32[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, ARITH, 0, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 2, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_135_suboff_252 IN: in unit=ARITH_ACC_V2 0 in port=0 out unit=STREAM_ENG_V2 2 out port=0 */
@@ -12606,7 +12605,7 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 2 [STREAM_ENG_V2 2] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_135 input ports=0 range=1[36864,40960] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_135 input ports=0 range=8[36864,40960] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_135_dma_init_in_0_33 = {
       .dir = 0,
@@ -12614,7 +12613,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_135_zero_off_out_253 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_135_zero_off_out_253 */
       .offset_start = 36864,
       .offset_limit = 41024,
       .frame_count = 0,
@@ -12635,7 +12634,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(2, &Conv2D_135_dma_init_in_0_33, 1);
 
     /* Unit= 7 [STREAM_ENG_V2 7] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_135 input ports=1 range=8[174768,240336] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_135 input ports=1 range=5[174768,240336] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_135_dma_init_in_1_33 = {
       /* 256x1x1x256(8 bits) */
@@ -12669,7 +12668,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(7, &Conv2D_135_dma_init_in_1_33, 1);
 
     /* Unit= 8 [STREAM_ENG_V2 8] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_135 input ports=2 range=1[40960,41472] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_135 input ports=2 range=8[40960,41472] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_135_dma_init_in_2_33 = {
       /* partial accumulator 512 (16 bits) */
@@ -12680,7 +12679,7 @@ void trace_ec__ec_blob_1(void) {
       .sync_with_other = 1,
       .nbits_unsigned = 0,
       .sync_dma = 9,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* ATONN_ACCUMULATOR_PORT */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* ATONN_ACCUMULATOR_PORT */
       .offset_start = 40960,
       .offset_end = 41472,
       .offset_limit = 41536,
@@ -12703,12 +12702,12 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 81920 */
+    /* npuRAM3 -> 81920 */
     /* octoFlash -> 65536 */
 
     /* Dma output units from cycle: */
     /* Unit= 9 [STREAM_ENG_V2 9] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_135 output ports=0 range=1[40960,41472] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_135 output ports=0 range=8[40960,41472] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_135_dma_init_out_0_33 = {
       /* partial accumulator 512 (16 bits) */
@@ -12717,7 +12716,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_135_out_0 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_135_out_0 */
       .offset_start = 40960,
       .offset_end = 41472,
       .offset_limit = 41536,
@@ -12739,7 +12738,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(9, &Conv2D_135_dma_init_out_0_33, 1);
 
     /* Unit= 6 [STREAM_ENG_V2 6] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_140_suboff_261 output ports=0 range=1[32768,36864] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_140_suboff_261 output ports=0 range=8[32768,36864] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_140_suboff_261_dma_init_out_0_33 = {
       /* to memory canonical from batch=16 */
@@ -12747,7 +12746,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_140_zero_off_out_262 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_140_zero_off_out_262 */
       .offset_start = 32768,
       .offset_limit = 36928,
       .frame_count = 0,
@@ -12769,7 +12768,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 24576 */
+    /* npuRAM3 <- 24576 */
 
     static const LL_Switch_InitTypeDef switch_init_in_33[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 3, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 2, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_135 IN: in unit=CONV_ACC_V2 3 in port=0 out unit=STREAM_ENG_V2 2 out port=0 */
@@ -12846,7 +12845,7 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 3 [STREAM_ENG_V2 3] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_140_conv_identity input ports=0 range=1[32768,36864] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_140_conv_identity input ports=0 range=8[32768,36864] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_140_conv_identity_dma_init_in_0_34 = {
       /* memory canonical to batch=8 */
@@ -12854,7 +12853,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_140_zero_off_out_262_copy_in_30 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_140_zero_off_out_262_copy_in_30 */
       .offset_start = 32768,
       .offset_limit = 36928,
       .frame_count = 0,
@@ -12876,11 +12875,11 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 4096 */
+    /* npuRAM3 -> 4096 */
 
     /* Dma output units from cycle: */
     /* Unit= 8 [STREAM_ENG_V2 8] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_140_conv_identity output ports=0 range=1[36864,40960] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_140_conv_identity output ports=0 range=8[36864,40960] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_140_conv_identity_dma_init_out_0_34 = {
       /* to memory with batch=8 */
@@ -12889,7 +12888,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_140_zero_off_out_262_cp_in_30 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_140_zero_off_out_262_cp_in_30 */
       .offset_start = 36864,
       .offset_end = 36992,
       .offset_limit = 41024,
@@ -12912,7 +12911,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 4096 */
+    /* npuRAM3 <- 4096 */
 
     static const LL_Switch_InitTypeDef switch_init_in_34[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, STRENG, 8, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 3, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_140_conv_identity OUT: in unit=STREAM_ENG_V2 8 in port=0 out unit=STREAM_ENG_V2 3 out port=0 */
@@ -13151,7 +13150,7 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 3 [STREAM_ENG_V2 3] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_140 input ports=0 range=1[36864,40960] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_140 input ports=0 range=8[36864,40960] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_140_dma_init_in_0_35 = {
       /* 4x4x8(8 bits) */
@@ -13160,7 +13159,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_140_zero_off_out_262 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_140_zero_off_out_262 */
       .offset_start = 36864,
       .offset_end = 36992,
       .offset_limit = 41024,
@@ -13182,7 +13181,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(3, &Conv2D_140_dma_init_in_0_35, 1);
 
     /* Unit= 7 [STREAM_ENG_V2 7] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_140 input ports=1 range=8[506688,525120] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_140 input ports=1 range=5[506688,525120] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_140_dma_init_in_1_35 = {
       /* 256x3x3x8(8 bits) */
@@ -13217,12 +13216,12 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 4096 */
+    /* npuRAM3 -> 4096 */
     /* octoFlash -> 18432 */
 
     /* Dma output units from cycle: */
     /* Unit= 2 [STREAM_ENG_V2 2] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_144_suboff_270 output ports=0 range=1[45056,49152] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_144_suboff_270 output ports=0 range=8[45056,49152] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_144_suboff_270_dma_init_out_0_35 = {
       /* to memory canonical from batch=8 */
@@ -13230,7 +13229,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_144_zero_off_out_271 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_144_zero_off_out_271 */
       .offset_start = 45056,
       .offset_limit = 49216,
       .frame_count = 0,
@@ -13252,7 +13251,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 4096 */
+    /* npuRAM3 <- 4096 */
 
     static const LL_Switch_InitTypeDef switch_init_in_35[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 0, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 3, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_140 IN: in unit=CONV_ACC_V2 0 in port=0 out unit=STREAM_ENG_V2 3 out port=0 */
@@ -13564,7 +13563,7 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 2 [STREAM_ENG_V2 2] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_144 input ports=0 range=1[45056,49152] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_144 input ports=0 range=8[45056,49152] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_144_dma_init_in_0_36 = {
       .dir = 0,
@@ -13572,7 +13571,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_144_zero_off_out_271 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_144_zero_off_out_271 */
       .offset_start = 45056,
       .offset_limit = 49216,
       .frame_count = 0,
@@ -13593,7 +13592,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(2, &Conv2D_144_dma_init_in_0_36, 1);
 
     /* Unit= 8 [STREAM_ENG_V2 8] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_144 input ports=1 range=8[240336,305904] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_144 input ports=1 range=5[240336,305904] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_144_dma_init_in_1_36 = {
       /* 256x1x1x256(8 bits) */
@@ -13627,7 +13626,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(8, &Conv2D_144_dma_init_in_1_36, 1);
 
     /* Unit= 6 [STREAM_ENG_V2 6] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_144 input ports=2 range=1[49152,49664] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_144 input ports=2 range=8[49152,49664] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_144_dma_init_in_2_36 = {
       /* partial accumulator 512 (16 bits) */
@@ -13638,7 +13637,7 @@ void trace_ec__ec_blob_1(void) {
       .sync_with_other = 1,
       .nbits_unsigned = 0,
       .sync_dma = 7,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* ATONN_ACCUMULATOR_PORT */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* ATONN_ACCUMULATOR_PORT */
       .offset_start = 49152,
       .offset_end = 49664,
       .offset_limit = 49728,
@@ -13661,12 +13660,12 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 81920 */
+    /* npuRAM3 -> 81920 */
     /* octoFlash -> 65536 */
 
     /* Dma output units from cycle: */
     /* Unit= 7 [STREAM_ENG_V2 7] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_144 output ports=0 range=1[49152,49664] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_144 output ports=0 range=8[49152,49664] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_144_dma_init_out_0_36 = {
       /* partial accumulator 512 (16 bits) */
@@ -13675,7 +13674,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_144_out_0 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_144_out_0 */
       .offset_start = 49152,
       .offset_end = 49664,
       .offset_limit = 49728,
@@ -13697,7 +13696,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(7, &Conv2D_144_dma_init_out_0_36, 1);
 
     /* Unit= 9 [STREAM_ENG_V2 9] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_149_suboff_279 output ports=0 range=1[32768,36864] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_149_suboff_279 output ports=0 range=8[32768,36864] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_149_suboff_279_dma_init_out_0_36 = {
       /* to memory canonical from batch=16 */
@@ -13705,7 +13704,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_149_zero_off_out_280 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_149_zero_off_out_280 */
       .offset_start = 32768,
       .offset_limit = 36928,
       .frame_count = 0,
@@ -13726,7 +13725,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(9, &Conv2D_149_suboff_279_dma_init_out_0_36, 1);
 
     /* Unit= 5 [STREAM_ENG_V2 5] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_205_suboff_369 output ports=0 range=1[40960,45056] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_205_suboff_369 output ports=0 range=8[40960,45056] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_205_suboff_369_dma_init_out_0_36 = {
       /* to memory canonical from batch=16 */
@@ -13734,7 +13733,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_205_zero_off_out_370 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_205_zero_off_out_370 */
       .offset_start = 40960,
       .offset_limit = 45120,
       .frame_count = 0,
@@ -13756,7 +13755,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 28672 */
+    /* npuRAM3 <- 28672 */
 
     static const LL_Switch_InitTypeDef switch_init_in_36[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 1, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 2, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_144 IN: in unit=CONV_ACC_V2 1 in port=0 out unit=STREAM_ENG_V2 2 out port=0 */
@@ -13990,7 +13989,7 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 6 [STREAM_ENG_V2 6] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_149_conv_identity input ports=0 range=1[32768,36864] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_149_conv_identity input ports=0 range=8[32768,36864] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_149_conv_identity_dma_init_in_0_37 = {
       /* memory canonical to batch=8 */
@@ -13998,7 +13997,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_149_zero_off_out_280_copy_in_31 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_149_zero_off_out_280_copy_in_31 */
       .offset_start = 32768,
       .offset_limit = 36928,
       .frame_count = 0,
@@ -14019,7 +14018,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(6, &Conv2D_149_conv_identity_dma_init_in_0_37, 1);
 
     /* Unit= 2 [STREAM_ENG_V2 2] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_205 input ports=0 range=1[40960,45056] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_205 input ports=0 range=8[40960,45056] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_205_dma_init_in_0_37 = {
       .dir = 0,
@@ -14027,7 +14026,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_205_zero_off_out_370 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_205_zero_off_out_370 */
       .offset_start = 40960,
       .offset_limit = 45120,
       .frame_count = 0,
@@ -14048,7 +14047,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(2, &Conv2D_205_dma_init_in_0_37, 1);
 
     /* Unit= 8 [STREAM_ENG_V2 8] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_205 input ports=1 range=8[723904,732100] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_205 input ports=1 range=5[723904,732100] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_205_dma_init_in_1_37 = {
       /* 32x1x1x256(8 bits) */
@@ -14082,7 +14081,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(8, &Conv2D_205_dma_init_in_1_37, 1);
 
     /* Unit= 4 [STREAM_ENG_V2 4] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_205 input ports=2 range=1[45056,45568] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_205 input ports=2 range=8[45056,45568] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_205_dma_init_in_2_37 = {
       /* partial accumulator 512 (16 bits) */
@@ -14093,7 +14092,7 @@ void trace_ec__ec_blob_1(void) {
       .sync_with_other = 1,
       .nbits_unsigned = 0,
       .sync_dma = 3,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* ATONN_ACCUMULATOR_PORT */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* ATONN_ACCUMULATOR_PORT */
       .offset_start = 45056,
       .offset_end = 45568,
       .offset_limit = 45632,
@@ -14116,12 +14115,12 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 14336 */
+    /* npuRAM3 -> 14336 */
     /* octoFlash -> 8192 */
 
     /* Dma output units from cycle: */
     /* Unit= 5 [STREAM_ENG_V2 5] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_149_conv_identity output ports=0 range=1[36864,40960] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_149_conv_identity output ports=0 range=8[36864,40960] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_149_conv_identity_dma_init_out_0_37 = {
       /* to memory with batch=8 */
@@ -14130,7 +14129,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_149_zero_off_out_280_cp_in_31 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_149_zero_off_out_280_cp_in_31 */
       .offset_start = 36864,
       .offset_end = 36992,
       .offset_limit = 41024,
@@ -14152,7 +14151,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(5, &Conv2D_149_conv_identity_dma_init_out_0_37, 1);
 
     /* Unit= 3 [STREAM_ENG_V2 3] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_205 output ports=0 range=1[45056,45568] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_205 output ports=0 range=8[45056,45568] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_205_dma_init_out_0_37 = {
       /* partial accumulator 512 (16 bits) */
@@ -14161,7 +14160,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_205_out_0 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_205_out_0 */
       .offset_start = 45056,
       .offset_end = 45568,
       .offset_limit = 45632,
@@ -14183,7 +14182,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(3, &Conv2D_205_dma_init_out_0_37, 1);
 
     /* Unit= 0 [STREAM_ENG_V2 0] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_205_off_bias_375 output ports=0 range=1[45568,46080] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_205_off_bias_375 output ports=0 range=8[45568,46080] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_205_off_bias_375_dma_init_out_0_37 = {
       /* to memory with batch=16 */
@@ -14192,7 +14191,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_205_off_bias_out_376 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_205_off_bias_out_376 */
       .offset_start = 45568,
       .offset_end = 45824,
       .offset_limit = 46144,
@@ -14215,7 +14214,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 7168 */
+    /* npuRAM3 <- 7168 */
 
     static const LL_Switch_InitTypeDef switch_init_in_37[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, STRENG, 5, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 6, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_149_conv_identity OUT: in unit=STREAM_ENG_V2 5 in port=0 out unit=STREAM_ENG_V2 6 out port=0 */
@@ -14484,7 +14483,7 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 8 [STREAM_ENG_V2 8] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_149 input ports=0 range=1[36864,40960] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_149 input ports=0 range=8[36864,40960] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_149_dma_init_in_0_38 = {
       /* 4x4x8(8 bits) */
@@ -14493,7 +14492,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_149_zero_off_out_280 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_149_zero_off_out_280 */
       .offset_start = 36864,
       .offset_end = 36992,
       .offset_limit = 41024,
@@ -14515,7 +14514,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(8, &Conv2D_149_dma_init_in_0_38, 1);
 
     /* Unit= 2 [STREAM_ENG_V2 2] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_149 input ports=1 range=8[525120,543552] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_149 input ports=1 range=5[525120,543552] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_149_dma_init_in_1_38 = {
       /* 256x3x3x8(8 bits) */
@@ -14550,12 +14549,12 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 4096 */
+    /* npuRAM3 -> 4096 */
     /* octoFlash -> 18432 */
 
     /* Dma output units from cycle: */
     /* Unit= 7 [STREAM_ENG_V2 7] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_153_suboff_288 output ports=0 range=1[32768,33792] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_153_suboff_288 output ports=0 range=8[32768,33792] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_153_suboff_288_dma_init_out_0_38 = {
       /* to memory canonical from batch=8 */
@@ -14563,7 +14562,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_153_zero_off_out_289 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_153_zero_off_out_289 */
       .offset_start = 32768,
       .offset_limit = 33856,
       .frame_count = 0,
@@ -14585,7 +14584,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 1024 */
+    /* npuRAM3 <- 1024 */
 
     static const LL_Switch_InitTypeDef switch_init_in_38[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 3, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 8, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_149 IN: in unit=CONV_ACC_V2 3 in port=0 out unit=STREAM_ENG_V2 8 out port=0 */
@@ -14848,7 +14847,7 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 2 [STREAM_ENG_V2 2] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_153 input ports=0 range=1[32768,33792] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_153 input ports=0 range=8[32768,33792] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_153_dma_init_in_0_39 = {
       .dir = 0,
@@ -14856,7 +14855,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_153_zero_off_out_289 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_153_zero_off_out_289 */
       .offset_start = 32768,
       .offset_limit = 33856,
       .frame_count = 0,
@@ -14877,7 +14876,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(2, &Conv2D_153_dma_init_in_0_39, 1);
 
     /* Unit= 6 [STREAM_ENG_V2 6] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_153 input ports=1 range=8[305904,371472] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_153 input ports=1 range=5[305904,371472] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_153_dma_init_in_1_39 = {
       /* 256x1x1x256(8 bits) */
@@ -14911,7 +14910,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(6, &Conv2D_153_dma_init_in_1_39, 1);
 
     /* Unit= 4 [STREAM_ENG_V2 4] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_153 input ports=2 range=1[33792,33920] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_153 input ports=2 range=8[33792,33920] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_153_dma_init_in_2_39 = {
       /* partial accumulator 128 (16 bits) */
@@ -14922,7 +14921,7 @@ void trace_ec__ec_blob_1(void) {
       .sync_with_other = 1,
       .nbits_unsigned = 0,
       .sync_dma = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* ATONN_ACCUMULATOR_PORT */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* ATONN_ACCUMULATOR_PORT */
       .offset_start = 33792,
       .offset_end = 33920,
       .offset_limit = 33984,
@@ -14945,12 +14944,12 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 20480 */
+    /* npuRAM3 -> 20480 */
     /* octoFlash -> 65536 */
 
     /* Dma output units from cycle: */
     /* Unit= 0 [STREAM_ENG_V2 0] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_153 output ports=0 range=1[33792,33920] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_153 output ports=0 range=8[33792,33920] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_153_dma_init_out_0_39 = {
       /* partial accumulator 128 (16 bits) */
@@ -14959,7 +14958,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_153_out_0 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_153_out_0 */
       .offset_start = 33792,
       .offset_end = 33920,
       .offset_limit = 33984,
@@ -14981,7 +14980,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(0, &Conv2D_153_dma_init_out_0_39, 1);
 
     /* Unit= 3 [STREAM_ENG_V2 3] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_158_suboff_297 output ports=0 range=1[71680,72704] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_158_suboff_297 output ports=0 range=8[71680,72704] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_158_suboff_297_dma_init_out_0_39 = {
       /* to memory canonical from batch=16 */
@@ -14989,7 +14988,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_158_zero_off_out_298 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_158_zero_off_out_298 */
       .offset_start = 71680,
       .offset_limit = 72768,
       .frame_count = 0,
@@ -15011,7 +15010,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 6144 */
+    /* npuRAM3 <- 6144 */
 
     static const LL_Switch_InitTypeDef switch_init_in_39[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 0, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 2, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_153 IN: in unit=CONV_ACC_V2 0 in port=0 out unit=STREAM_ENG_V2 2 out port=0 */
@@ -15088,7 +15087,7 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 7 [STREAM_ENG_V2 7] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_158_conv_identity input ports=0 range=1[71680,72704] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_158_conv_identity input ports=0 range=8[71680,72704] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_158_conv_identity_dma_init_in_0_40 = {
       /* memory canonical to batch=8 */
@@ -15096,7 +15095,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_158_zero_off_out_298_copy_in_32 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_158_zero_off_out_298_copy_in_32 */
       .offset_start = 71680,
       .offset_limit = 72768,
       .frame_count = 0,
@@ -15118,11 +15117,11 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 1024 */
+    /* npuRAM3 -> 1024 */
 
     /* Dma output units from cycle: */
     /* Unit= 4 [STREAM_ENG_V2 4] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_158_conv_identity output ports=0 range=1[72704,73728] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_158_conv_identity output ports=0 range=8[72704,73728] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_158_conv_identity_dma_init_out_0_40 = {
       /* to memory with batch=8 */
@@ -15131,7 +15130,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_158_zero_off_out_298_cp_in_32 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_158_zero_off_out_298_cp_in_32 */
       .offset_start = 72704,
       .offset_end = 72736,
       .offset_limit = 73792,
@@ -15154,7 +15153,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 1024 */
+    /* npuRAM3 <- 1024 */
 
     static const LL_Switch_InitTypeDef switch_init_in_40[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, STRENG, 4, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 7, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_158_conv_identity OUT: in unit=STREAM_ENG_V2 4 in port=0 out unit=STREAM_ENG_V2 7 out port=0 */
@@ -15393,7 +15392,7 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 6 [STREAM_ENG_V2 6] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_158 input ports=0 range=1[72704,73728] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_158 input ports=0 range=8[72704,73728] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_158_dma_init_in_0_41 = {
       /* 2x2x8(8 bits) */
@@ -15402,7 +15401,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_158_zero_off_out_298 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_158_zero_off_out_298 */
       .offset_start = 72704,
       .offset_end = 72736,
       .offset_limit = 73792,
@@ -15424,7 +15423,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(6, &Conv2D_158_dma_init_in_0_41, 1);
 
     /* Unit= 4 [STREAM_ENG_V2 4] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_158 input ports=1 range=8[543552,561984] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_158 input ports=1 range=5[543552,561984] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_158_dma_init_in_1_41 = {
       /* 256x3x3x8(8 bits) */
@@ -15459,12 +15458,12 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 1024 */
+    /* npuRAM3 -> 1024 */
     /* octoFlash -> 18432 */
 
     /* Dma output units from cycle: */
     /* Unit= 5 [STREAM_ENG_V2 5] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_162_suboff_306 output ports=0 range=1[73728,74752] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_162_suboff_306 output ports=0 range=8[73728,74752] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_162_suboff_306_dma_init_out_0_41 = {
       /* to memory canonical from batch=8 */
@@ -15472,7 +15471,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_162_zero_off_out_307 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_162_zero_off_out_307 */
       .offset_start = 73728,
       .offset_limit = 74816,
       .frame_count = 0,
@@ -15494,7 +15493,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 1024 */
+    /* npuRAM3 <- 1024 */
 
     static const LL_Switch_InitTypeDef switch_init_in_41[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 1, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 6, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_158 IN: in unit=CONV_ACC_V2 1 in port=0 out unit=STREAM_ENG_V2 6 out port=0 */
@@ -15757,7 +15756,7 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 4 [STREAM_ENG_V2 4] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_162 input ports=0 range=1[73728,74752] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_162 input ports=0 range=8[73728,74752] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_162_dma_init_in_0_42 = {
       .dir = 0,
@@ -15765,7 +15764,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_162_zero_off_out_307 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_162_zero_off_out_307 */
       .offset_start = 73728,
       .offset_limit = 74816,
       .frame_count = 0,
@@ -15786,7 +15785,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(4, &Conv2D_162_dma_init_in_0_42, 1);
 
     /* Unit= 9 [STREAM_ENG_V2 9] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_162 input ports=1 range=8[371472,437040] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_162 input ports=1 range=5[371472,437040] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_162_dma_init_in_1_42 = {
       /* 256x1x1x256(8 bits) */
@@ -15820,7 +15819,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(9, &Conv2D_162_dma_init_in_1_42, 1);
 
     /* Unit= 2 [STREAM_ENG_V2 2] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_162 input ports=2 range=1[33312,33440] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_162 input ports=2 range=8[33312,33440] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_162_dma_init_in_2_42 = {
       /* partial accumulator 128 (16 bits) */
@@ -15831,7 +15830,7 @@ void trace_ec__ec_blob_1(void) {
       .sync_with_other = 1,
       .nbits_unsigned = 0,
       .sync_dma = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* ATONN_ACCUMULATOR_PORT */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* ATONN_ACCUMULATOR_PORT */
       .offset_start = 33312,
       .offset_end = 33440,
       .offset_limit = 33504,
@@ -15854,12 +15853,12 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 20480 */
+    /* npuRAM3 -> 20480 */
     /* octoFlash -> 65536 */
 
     /* Dma output units from cycle: */
     /* Unit= 0 [STREAM_ENG_V2 0] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_162 output ports=0 range=1[33312,33440] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_162 output ports=0 range=8[33312,33440] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_162_dma_init_out_0_42 = {
       /* partial accumulator 128 (16 bits) */
@@ -15868,7 +15867,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_162_out_0 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_162_out_0 */
       .offset_start = 33312,
       .offset_end = 33440,
       .offset_limit = 33504,
@@ -15890,7 +15889,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(0, &Conv2D_162_dma_init_out_0_42, 1);
 
     /* Unit= 1 [STREAM_ENG_V2 1] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_162_off_bias_312 output ports=0 range=1[71680,72704] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_162_off_bias_312 output ports=0 range=8[71680,72704] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_162_off_bias_312_dma_init_out_0_42 = {
       /* to memory canonical from batch=16 */
@@ -15898,7 +15897,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_162_off_bias_out_313 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_162_off_bias_out_313 */
       .offset_start = 71680,
       .offset_limit = 72768,
       .frame_count = 0,
@@ -15919,7 +15918,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(1, &Conv2D_162_off_bias_312_dma_init_out_0_42, 1);
 
     /* Unit= 3 [STREAM_ENG_V2 3] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_184_suboff_342 output ports=0 range=1[72704,73728] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_184_suboff_342 output ports=0 range=8[72704,73728] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_184_suboff_342_dma_init_out_0_42 = {
       /* to memory canonical from batch=16 */
@@ -15927,7 +15926,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_184_zero_off_out_343 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_184_zero_off_out_343 */
       .offset_start = 72704,
       .offset_limit = 73792,
       .frame_count = 0,
@@ -15949,7 +15948,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 7168 */
+    /* npuRAM3 <- 7168 */
 
     static const LL_Switch_InitTypeDef switch_init_in_42[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 2, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 4, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_162 IN: in unit=CONV_ACC_V2 2 in port=0 out unit=STREAM_ENG_V2 4 out port=0 */
@@ -16317,7 +16316,7 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 2 [STREAM_ENG_V2 2] */
-    /* Emit conf for STREAM_ENG_V2 node=AveragePool_166 input ports=0 range=1[71680,72704] */
+    /* Emit conf for STREAM_ENG_V2 node=AveragePool_166 input ports=0 range=8[71680,72704] */
 
     static const LL_Streng_TensorInitTypeDef AveragePool_166_dma_init_in_0_43 = {
       /* memory canonical to batch=8 */
@@ -16325,7 +16324,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Clip_165_out_0 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Clip_165_out_0 */
       .offset_start = 71680,
       .offset_limit = 72768,
       .frame_count = 0,
@@ -16346,7 +16345,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(2, &AveragePool_166_dma_init_in_0_43, 1);
 
     /* Unit= 3 [STREAM_ENG_V2 3] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_184 input ports=0 range=1[72704,73728] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_184 input ports=0 range=8[72704,73728] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_184_dma_init_in_0_43 = {
       .dir = 0,
@@ -16354,7 +16353,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_184_zero_off_out_343 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_184_zero_off_out_343 */
       .offset_start = 72704,
       .offset_limit = 73792,
       .frame_count = 0,
@@ -16375,7 +16374,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(3, &Conv2D_184_dma_init_in_0_43, 1);
 
     /* Unit= 9 [STREAM_ENG_V2 9] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_184 input ports=1 range=8[715696,723892] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_184 input ports=1 range=5[715696,723892] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_184_dma_init_in_1_43 = {
       /* 32x1x1x256(8 bits) */
@@ -16409,7 +16408,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(9, &Conv2D_184_dma_init_in_1_43, 1);
 
     /* Unit= 4 [STREAM_ENG_V2 4] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_184 input ports=2 range=1[33184,33312] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_184 input ports=2 range=8[33184,33312] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_184_dma_init_in_2_43 = {
       /* partial accumulator 128 (16 bits) */
@@ -16420,7 +16419,7 @@ void trace_ec__ec_blob_1(void) {
       .sync_with_other = 1,
       .nbits_unsigned = 0,
       .sync_dma = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* ATONN_ACCUMULATOR_PORT */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* ATONN_ACCUMULATOR_PORT */
       .offset_start = 33184,
       .offset_end = 33312,
       .offset_limit = 33376,
@@ -16443,12 +16442,12 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 3584 */
+    /* npuRAM3 -> 3584 */
     /* octoFlash -> 8192 */
 
     /* Dma output units from cycle: */
     /* Unit= 0 [STREAM_ENG_V2 0] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_169_suboff_315 output ports=0 range=1[32768,33024] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_169_suboff_315 output ports=0 range=8[32768,33024] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_169_suboff_315_dma_init_out_0_43 = {
       /* to memory with batch=8 */
@@ -16457,7 +16456,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_169_zero_off_out_316 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_169_zero_off_out_316 */
       .offset_start = 32768,
       .offset_end = 32776,
       .offset_limit = 33088,
@@ -16479,7 +16478,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(0, &Conv2D_169_suboff_315_dma_init_out_0_43, 1);
 
     /* Unit= 1 [STREAM_ENG_V2 1] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_184 output ports=0 range=1[33184,33312] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_184 output ports=0 range=8[33184,33312] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_184_dma_init_out_0_43 = {
       /* partial accumulator 128 (16 bits) */
@@ -16488,7 +16487,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_184_out_0 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_184_out_0 */
       .offset_start = 33184,
       .offset_end = 33312,
       .offset_limit = 33376,
@@ -16510,7 +16509,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(1, &Conv2D_184_dma_init_out_0_43, 1);
 
     /* Unit= 6 [STREAM_ENG_V2 6] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_184_off_bias_348 output ports=0 range=1[33024,33152] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_184_off_bias_348 output ports=0 range=8[33024,33152] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_184_off_bias_348_dma_init_out_0_43 = {
       /* to memory with batch=16 */
@@ -16519,7 +16518,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_184_off_bias_out_349 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_184_off_bias_out_349 */
       .offset_start = 33024,
       .offset_end = 33088,
       .offset_limit = 33216,
@@ -16542,7 +16541,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 1024 */
+    /* npuRAM3 <- 1024 */
 
     static const LL_Switch_InitTypeDef switch_init_in_43[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, POOL, 0, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 2, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* AveragePool_166 IN: in unit=POOL_ACC_V2 0 in port=0 out unit=STREAM_ENG_V2 2 out port=0 */
@@ -16984,7 +16983,7 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 5 [STREAM_ENG_V2 5] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_169 input ports=0 range=1[32768,33024] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_169 input ports=0 range=8[32768,33024] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_169_dma_init_in_0_44 = {
       .dir = 0,
@@ -16992,7 +16991,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 1,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_169_zero_off_out_316 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_169_zero_off_out_316 */
       .offset_start = 32768,
       .offset_limit = 33088,
       .frame_count = 0,
@@ -17013,7 +17012,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(5, &Conv2D_169_dma_init_in_0_44, 1);
 
     /* Unit= 2 [STREAM_ENG_V2 2] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_169 input ports=1 range=8[707488,715684] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_169 input ports=1 range=5[707488,715684] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_169_dma_init_in_1_44 = {
       /* 32x1x1x256(8 bits) */
@@ -17047,7 +17046,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(2, &Conv2D_169_dma_init_in_1_44, 1);
 
     /* Unit= 9 [STREAM_ENG_V2 9] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_178 input ports=1 range=8[820816,821296] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_178 input ports=1 range=5[820816,821296] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_178_dma_init_in_1_44 = {
       /* 15x1x1x32(8 bits) */
@@ -17081,7 +17080,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(9, &Conv2D_178_dma_init_in_1_44, 1);
 
     /* Unit= 6 [STREAM_ENG_V2 6] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_172 input ports=1 range=8[819088,819728] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_172 input ports=1 range=5[819088,819728] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_172_dma_init_in_1_44 = {
       /* 20x1x1x32(8 bits) */
@@ -17116,12 +17115,12 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 512 */
+    /* npuRAM3 -> 512 */
     /* octoFlash -> 9312 */
 
     /* Dma output units from cycle: */
     /* Unit= 8 [STREAM_ENG_V2 8] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_169_off_bias_321 output ports=0 range=1[33152,33184] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_169_off_bias_321 output ports=0 range=8[33152,33184] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_169_off_bias_321_dma_init_out_0_44 = {
       /* to memory with batch=16 */
@@ -17130,7 +17129,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_169_off_bias_out_322 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_169_off_bias_out_322 */
       .offset_start = 33152,
       .offset_end = 33168,
       .offset_limit = 33248,
@@ -17152,7 +17151,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(8, &Conv2D_169_off_bias_321_dma_init_out_0_44, 1);
 
     /* Unit= 3 [STREAM_ENG_V2 3] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_178_off_bias_339 output ports=0 range=1[33920,33935] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_178_off_bias_339 output ports=0 range=8[33920,33935] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_178_off_bias_339_dma_init_out_0_44 = {
       /* to memory with batch=15 */
@@ -17161,7 +17160,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_178_off_bias_out_340 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_178_off_bias_out_340 */
       .offset_start = 33920,
       .offset_end = 33935,
       .offset_limit = 34000,
@@ -17183,7 +17182,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(3, &Conv2D_178_off_bias_339_dma_init_out_0_44, 1);
 
     /* Unit= 7 [STREAM_ENG_V2 7] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_172 output ports=0 range=1[33312,33352] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_172 output ports=0 range=8[33312,33352] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_172_dma_init_out_0_44 = {
       /* to memory with batch=20 */
@@ -17192,7 +17191,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_172_out_0 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_172_out_0 */
       .offset_start = 33312,
       .offset_end = 33352,
       .offset_limit = 33416,
@@ -17215,7 +17214,7 @@ void trace_ec__ec_blob_1(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 67 */
+    /* npuRAM3 <- 67 */
 
     static const LL_Switch_InitTypeDef switch_init_in_44[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 0, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 5, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_169 IN: in unit=CONV_ACC_V2 0 in port=0 out unit=STREAM_ENG_V2 5 out port=0 */
@@ -17465,7 +17464,7 @@ void trace_ec__ec_blob_1(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 7 [STREAM_ENG_V2 7] */
-    /* Emit conf for STREAM_ENG_V2 node=Add_187 input ports=0 range=1[33024,33152] */
+    /* Emit conf for STREAM_ENG_V2 node=Add_187 input ports=0 range=8[33024,33152] */
 
     static const LL_Streng_TensorInitTypeDef Add_187_dma_init_in_0_45 = {
       /* from memory with batch=16 */
@@ -17474,7 +17473,7 @@ void trace_ec__ec_blob_1(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Dequantize_186_out_0 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Dequantize_186_out_0 */
       .offset_start = 33024,
       .offset_end = 33088,
       .offset_limit = 33216,
@@ -17496,7 +17495,7 @@ void trace_ec__ec_blob_1(void) {
     LL_Streng_TensorInit(7, &Add_187_dma_init_in_0_45, 1);
 
     /* Unit= 3 [STREAM_ENG_V2 3] */
-    /* Emit conf for STREAM_ENG_V2 node=Add_187 input ports=1 range=1[33152,33184] */
+    /* Emit conf for STREAM_ENG_V2 node=Add_187 input ports=1 range=8[33152,33184] */
 
     static const LL_Streng_TensorInitTypeDef Add_187_dma_init_in_1_45 = {
       /* from memory with batch=16
@@ -17507,7 +17506,7 @@ spanning across 32 bytes */
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Dequantize_171_out_0 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Dequantize_171_out_0 */
       .offset_start = 33152,
       .offset_end = 33168,
       .offset_limit = 33248,
@@ -17529,7 +17528,7 @@ spanning across 32 bytes */
     LL_Streng_TensorInit(3, &Add_187_dma_init_in_1_45, 1);
 
     /* Unit= 2 [STREAM_ENG_V2 2] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_172_mul_scale_327 input ports=0 range=1[33312,33352] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_172_mul_scale_327 input ports=0 range=8[33312,33352] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_172_mul_scale_327_dma_init_in_0_45 = {
       /* from memory with batch=20 */
@@ -17538,7 +17537,7 @@ spanning across 32 bytes */
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_172_out_0 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_172_out_0 */
       .offset_start = 33312,
       .offset_end = 33352,
       .offset_limit = 33416,
@@ -17560,7 +17559,7 @@ spanning across 32 bytes */
     LL_Streng_TensorInit(2, &Conv2D_172_mul_scale_327_dma_init_in_0_45, 1);
 
     /* Unit= 4 [STREAM_ENG_V2 4] */
-    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id988 input ports=0 range=1[33920,33935] */
+    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id988 input ports=0 range=8[33920,33935] */
 
     static const LL_Streng_TensorInitTypeDef Identity_inserted_id988_dma_init_in_0_45 = {
       /* from memory with batch=1 */
@@ -17569,7 +17568,7 @@ spanning across 32 bytes */
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Reshape_182_out_0_inserted_out986_inserted_in988 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Reshape_182_out_0_inserted_out986_inserted_in988 */
       .offset_start = 33920,
       .offset_end = 33923,
       .offset_limit = 34000,
@@ -17592,11 +17591,11 @@ spanning across 32 bytes */
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 311 */
+    /* npuRAM3 -> 311 */
 
     /* Dma output units from cycle: */
     /* Unit= 8 [STREAM_ENG_V2 8] */
-    /* Emit conf for STREAM_ENG_V2 node=Add_187 output ports=0 range=1[33792,33920] */
+    /* Emit conf for STREAM_ENG_V2 node=Add_187 output ports=0 range=8[33792,33920] */
 
     static const LL_Streng_TensorInitTypeDef Add_187_dma_init_out_0_45 = {
       /* to memory canonical from batch=16 */
@@ -17604,7 +17603,7 @@ spanning across 32 bytes */
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Add_187_out_0 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Add_187_out_0 */
       .offset_start = 33792,
       .offset_limit = 33984,
       .frame_count = 0,
@@ -17625,7 +17624,7 @@ spanning across 32 bytes */
     LL_Streng_TensorInit(8, &Add_187_dma_init_out_0_45, 1);
 
     /* Unit= 1 [STREAM_ENG_V2 1] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_172_off_bias_330 output ports=0 range=1[34048,34068] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_172_off_bias_330 output ports=0 range=8[34048,34068] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_172_off_bias_330_dma_init_out_0_45 = {
       /* to memory with batch=20 */
@@ -17634,7 +17633,7 @@ spanning across 32 bytes */
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_172_off_bias_out_331 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_172_off_bias_out_331 */
       .offset_start = 34048,
       .offset_end = 34068,
       .offset_limit = 34136,
@@ -17656,7 +17655,7 @@ spanning across 32 bytes */
     LL_Streng_TensorInit(1, &Conv2D_172_off_bias_330_dma_init_out_0_45, 1);
 
     /* Unit= 0 [STREAM_ENG_V2 0] */
-    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id988 output ports=0 range=1[172336,172351] */
+    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id988 output ports=0 range=8[172336,172351] */
 
     static const LL_Streng_TensorInitTypeDef Identity_inserted_id988_dma_init_out_0_45 = {
       /* to memory canonical from batch=1 */
@@ -17664,7 +17663,7 @@ spanning across 32 bytes */
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Reshape_182_out_0_inserted_out986_inserted_out988 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Reshape_182_out_0_inserted_out986_inserted_out988 */
       .offset_start = 172336,
       .offset_limit = 172416,
       .frame_count = 0,
@@ -17686,7 +17685,7 @@ spanning across 32 bytes */
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 163 */
+    /* npuRAM3 <- 163 */
 
     static const LL_Switch_InitTypeDef switch_init_in_45[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, ARITH, 0, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 7, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Add_187 IN: in unit=ARITH_ACC_V2 0 in port=0 out unit=STREAM_ENG_V2 7 out port=0 */
@@ -17821,7 +17820,7 @@ void trace_ec__ec_blob_47(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 9 [STREAM_ENG_V2 9] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_198_conv_identity input ports=0 range=1[33792,33920] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_198_conv_identity input ports=0 range=8[33792,33920] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_198_conv_identity_dma_init_in_0_47 = {
       /* memory canonical to batch=8 */
@@ -17829,7 +17828,7 @@ void trace_ec__ec_blob_47(void) {
       .noblk = 0,
       .align_right = 1,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_198_zero_off_out_361_copy_in_33 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_198_zero_off_out_361_copy_in_33 */
       .offset_start = 33792,
       .offset_limit = 33984,
       .frame_count = 0,
@@ -17850,7 +17849,7 @@ void trace_ec__ec_blob_47(void) {
     LL_Streng_TensorInit(9, &Conv2D_198_conv_identity_dma_init_in_0_47, 1);
 
     /* Unit= 8 [STREAM_ENG_V2 8] */
-    /* Emit conf for STREAM_ENG_V2 node=Add_208 input ports=0 range=1[45568,46080] */
+    /* Emit conf for STREAM_ENG_V2 node=Add_208 input ports=0 range=8[45568,46080] */
 
     static const LL_Streng_TensorInitTypeDef Add_208_dma_init_in_0_47 = {
       /* from memory with batch=16 */
@@ -17859,7 +17858,7 @@ void trace_ec__ec_blob_47(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Dequantize_207_out_0 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Dequantize_207_out_0 */
       .offset_start = 45568,
       .offset_end = 45824,
       .offset_limit = 46144,
@@ -17881,7 +17880,7 @@ void trace_ec__ec_blob_47(void) {
     LL_Streng_TensorInit(8, &Add_208_dma_init_in_0_47, 1);
 
     /* Unit= 3 [STREAM_ENG_V2 3] */
-    /* Emit conf for STREAM_ENG_V2 node=Add_208 input ports=1 range=1[32768,33280] */
+    /* Emit conf for STREAM_ENG_V2 node=Add_208 input ports=1 range=8[32768,33280] */
 
     static const LL_Streng_TensorInitTypeDef Add_208_dma_init_in_1_47 = {
       /* memory canonical to batch=16 */
@@ -17889,7 +17888,7 @@ void trace_ec__ec_blob_47(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Resize_204_out_0 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Resize_204_out_0 */
       .offset_start = 32768,
       .offset_limit = 33344,
       .frame_count = 0,
@@ -17910,7 +17909,7 @@ void trace_ec__ec_blob_47(void) {
     LL_Streng_TensorInit(3, &Add_208_dma_init_in_1_47, 1);
 
     /* Unit= 6 [STREAM_ENG_V2 6] */
-    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id991 input ports=0 range=1[34048,34068] */
+    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id991 input ports=0 range=8[34048,34068] */
 
     static const LL_Streng_TensorInitTypeDef Identity_inserted_id991_dma_init_in_0_47 = {
       /* from memory with batch=1 */
@@ -17919,7 +17918,7 @@ void trace_ec__ec_blob_47(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Reshape_176_out_0_inserted_out989_inserted_in991 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Reshape_176_out_0_inserted_out989_inserted_in991 */
       .offset_start = 34048,
       .offset_end = 34052,
       .offset_limit = 34136,
@@ -17942,11 +17941,11 @@ void trace_ec__ec_blob_47(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 1172 */
+    /* npuRAM3 -> 1172 */
 
     /* Dma output units from cycle: */
     /* Unit= 7 [STREAM_ENG_V2 7] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_198_conv_identity output ports=0 range=1[33920,34048] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_198_conv_identity output ports=0 range=8[33920,34048] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_198_conv_identity_dma_init_out_0_47 = {
       /* to memory with batch=8 */
@@ -17955,7 +17954,7 @@ void trace_ec__ec_blob_47(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Add_187_out_0_cp_in_33 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Add_187_out_0_cp_in_33 */
       .offset_start = 33920,
       .offset_end = 33952,
       .offset_limit = 34112,
@@ -17977,7 +17976,7 @@ void trace_ec__ec_blob_47(void) {
     LL_Streng_TensorInit(7, &Conv2D_198_conv_identity_dma_init_out_0_47, 1);
 
     /* Unit= 2 [STREAM_ENG_V2 2] */
-    /* Emit conf for STREAM_ENG_V2 node=Add_208 output ports=0 range=1[33280,33792] */
+    /* Emit conf for STREAM_ENG_V2 node=Add_208 output ports=0 range=8[33280,33792] */
 
     static const LL_Streng_TensorInitTypeDef Add_208_dma_init_out_0_47 = {
       /* to memory canonical from batch=16 */
@@ -17985,7 +17984,7 @@ void trace_ec__ec_blob_47(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Add_208_out_0 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Add_208_out_0 */
       .offset_start = 33280,
       .offset_limit = 33856,
       .frame_count = 0,
@@ -18006,7 +18005,7 @@ void trace_ec__ec_blob_47(void) {
     LL_Streng_TensorInit(2, &Add_208_dma_init_out_0_47, 1);
 
     /* Unit= 5 [STREAM_ENG_V2 5] */
-    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id991 output ports=0 range=1[153552,153572] */
+    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id991 output ports=0 range=8[153552,153572] */
 
     static const LL_Streng_TensorInitTypeDef Identity_inserted_id991_dma_init_out_0_47 = {
       /* to memory canonical from batch=1 */
@@ -18014,7 +18013,7 @@ void trace_ec__ec_blob_47(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Reshape_176_out_0_inserted_out989_inserted_out991 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Reshape_176_out_0_inserted_out989_inserted_out991 */
       .offset_start = 153552,
       .offset_limit = 153640,
       .frame_count = 0,
@@ -18036,7 +18035,7 @@ void trace_ec__ec_blob_47(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 660 */
+    /* npuRAM3 <- 660 */
 
     static const LL_Switch_InitTypeDef switch_init_in_47[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, STRENG, 7, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 9, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_198_conv_identity OUT: in unit=STREAM_ENG_V2 7 in port=0 out unit=STREAM_ENG_V2 9 out port=0 */
@@ -18412,7 +18411,7 @@ void trace_ec__ec_blob_49(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 4 [STREAM_ENG_V2 4] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_198 input ports=0 range=1[33920,34048] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_198 input ports=0 range=8[33920,34048] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_198_dma_init_in_0_49 = {
       /* 2x2x8(8 bits) */
@@ -18421,7 +18420,7 @@ void trace_ec__ec_blob_49(void) {
       .noblk = 0,
       .align_right = 1,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_198_zero_off_out_361 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_198_zero_off_out_361 */
       .offset_start = 33920,
       .offset_end = 33952,
       .offset_limit = 34112,
@@ -18443,7 +18442,7 @@ void trace_ec__ec_blob_49(void) {
     LL_Streng_TensorInit(4, &Conv2D_198_dma_init_in_0_49, 1);
 
     /* Unit= 3 [STREAM_ENG_V2 3] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_198 input ports=1 range=8[746080,751840] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_198 input ports=1 range=5[746080,751840] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_198_dma_init_in_1_49 = {
       /* 20x3x3x32(8 bits) */
@@ -18477,7 +18476,7 @@ void trace_ec__ec_blob_49(void) {
     LL_Streng_TensorInit(3, &Conv2D_198_dma_init_in_1_49, 1);
 
     /* Unit= 1 [STREAM_ENG_V2 1] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_191 input ports=0 range=1[33920,34048] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_191 input ports=0 range=8[33920,34048] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_191_dma_init_in_0_49 = {
       /* 2x2x8(8 bits) */
@@ -18486,7 +18485,7 @@ void trace_ec__ec_blob_49(void) {
       .noblk = 0,
       .align_right = 1,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_191_zero_off_out_352 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_191_zero_off_out_352 */
       .offset_start = 33920,
       .offset_end = 33952,
       .offset_limit = 34112,
@@ -18508,7 +18507,7 @@ void trace_ec__ec_blob_49(void) {
     LL_Streng_TensorInit(1, &Conv2D_191_dma_init_in_0_49, 1);
 
     /* Unit= 9 [STREAM_ENG_V2 9] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_191 input ports=1 range=8[778336,782656] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_191 input ports=1 range=5[778336,782656] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_191_dma_init_in_1_49 = {
       /* 15x3x3x32(8 bits) */
@@ -18542,7 +18541,7 @@ void trace_ec__ec_blob_49(void) {
     LL_Streng_TensorInit(9, &Conv2D_191_dma_init_in_1_49, 1);
 
     /* Unit= 5 [STREAM_ENG_V2 5] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_219_conv_identity input ports=0 range=1[33280,33792] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_219_conv_identity input ports=0 range=8[33280,33792] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_219_conv_identity_dma_init_in_0_49 = {
       /* memory canonical to batch=8 */
@@ -18550,7 +18549,7 @@ void trace_ec__ec_blob_49(void) {
       .noblk = 0,
       .align_right = 1,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_219_zero_off_out_388_copy_in_34 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_219_zero_off_out_388_copy_in_34 */
       .offset_start = 33280,
       .offset_limit = 33856,
       .frame_count = 0,
@@ -18572,12 +18571,12 @@ void trace_ec__ec_blob_49(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 768 */
+    /* npuRAM3 -> 768 */
     /* octoFlash -> 10080 */
 
     /* Dma output units from cycle: */
     /* Unit= 2 [STREAM_ENG_V2 2] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_198_off_bias_366 output ports=0 range=1[33792,33872] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_198_off_bias_366 output ports=0 range=8[33792,33872] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_198_off_bias_366_dma_init_out_0_49 = {
       /* to memory canonical from batch=4 */
@@ -18585,7 +18584,7 @@ void trace_ec__ec_blob_49(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_198_off_bias_out_367 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_198_off_bias_out_367 */
       .offset_start = 33792,
       .offset_limit = 33936,
       .frame_count = 0,
@@ -18606,7 +18605,7 @@ void trace_ec__ec_blob_49(void) {
     LL_Streng_TensorInit(2, &Conv2D_198_off_bias_366_dma_init_out_0_49, 1);
 
     /* Unit= 6 [STREAM_ENG_V2 6] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_191_off_bias_357 output ports=0 range=1[68048,68108] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_191_off_bias_357 output ports=0 range=8[68048,68108] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_191_off_bias_357_dma_init_out_0_49 = {
       /* to memory canonical from batch=3 */
@@ -18614,7 +18613,7 @@ void trace_ec__ec_blob_49(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_191_off_bias_out_358 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_191_off_bias_out_358 */
       .offset_start = 68048,
       .offset_limit = 68176,
       .frame_count = 0,
@@ -18635,7 +18634,7 @@ void trace_ec__ec_blob_49(void) {
     LL_Streng_TensorInit(6, &Conv2D_191_off_bias_357_dma_init_out_0_49, 1);
 
     /* Unit= 7 [STREAM_ENG_V2 7] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_219_conv_identity output ports=0 range=1[32768,33280] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_219_conv_identity output ports=0 range=8[32768,33280] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_219_conv_identity_dma_init_out_0_49 = {
       /* to memory with batch=8 */
@@ -18644,7 +18643,7 @@ void trace_ec__ec_blob_49(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Add_208_out_0_cp_in_34 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Add_208_out_0_cp_in_34 */
       .offset_start = 32768,
       .offset_end = 32896,
       .offset_limit = 33344,
@@ -18667,7 +18666,7 @@ void trace_ec__ec_blob_49(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 652 */
+    /* npuRAM3 <- 652 */
 
     static const LL_Switch_InitTypeDef switch_init_in_49[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 3, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 4, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_198 IN: in unit=CONV_ACC_V2 3 in port=0 out unit=STREAM_ENG_V2 4 out port=0 */
@@ -19058,7 +19057,7 @@ void trace_ec__ec_blob_49(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 1 [STREAM_ENG_V2 1] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_219 input ports=0 range=1[32768,33280] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_219 input ports=0 range=8[32768,33280] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_219_dma_init_in_0_50 = {
       /* 4x4x8(8 bits) */
@@ -19067,7 +19066,7 @@ void trace_ec__ec_blob_49(void) {
       .noblk = 0,
       .align_right = 1,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_219_zero_off_out_388 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_219_zero_off_out_388 */
       .offset_start = 32768,
       .offset_end = 32896,
       .offset_limit = 33344,
@@ -19089,7 +19088,7 @@ void trace_ec__ec_blob_49(void) {
     LL_Streng_TensorInit(1, &Conv2D_219_dma_init_in_0_50, 1);
 
     /* Unit= 9 [STREAM_ENG_V2 9] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_219 input ports=1 range=8[751840,757600] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_219 input ports=1 range=5[751840,757600] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_219_dma_init_in_1_50 = {
       /* 20x3x3x32(8 bits) */
@@ -19123,7 +19122,7 @@ void trace_ec__ec_blob_49(void) {
     LL_Streng_TensorInit(9, &Conv2D_219_dma_init_in_1_50, 1);
 
     /* Unit= 2 [STREAM_ENG_V2 2] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_219 input ports=2 range=1[67824,67952] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_219 input ports=2 range=8[67824,67952] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_219_dma_init_in_2_50 = {
       /* partial accumulator 128 (16 bits) */
@@ -19134,7 +19133,7 @@ void trace_ec__ec_blob_49(void) {
       .sync_with_other = 1,
       .nbits_unsigned = 0,
       .sync_dma = 4,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* ATONN_ACCUMULATOR_PORT */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* ATONN_ACCUMULATOR_PORT */
       .offset_start = 67824,
       .offset_end = 67952,
       .offset_limit = 68016,
@@ -19156,7 +19155,7 @@ void trace_ec__ec_blob_49(void) {
     LL_Streng_TensorInit(2, &Conv2D_219_dma_init_in_2_50, 1);
 
     /* Unit= 5 [STREAM_ENG_V2 5] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_212 input ports=0 range=1[32768,33280] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_212 input ports=0 range=8[32768,33280] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_212_dma_init_in_0_50 = {
       /* 4x4x8(8 bits) */
@@ -19165,7 +19164,7 @@ void trace_ec__ec_blob_49(void) {
       .noblk = 0,
       .align_right = 1,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_212_zero_off_out_379 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_212_zero_off_out_379 */
       .offset_start = 32768,
       .offset_end = 32896,
       .offset_limit = 33344,
@@ -19187,7 +19186,7 @@ void trace_ec__ec_blob_49(void) {
     LL_Streng_TensorInit(5, &Conv2D_212_dma_init_in_0_50, 1);
 
     /* Unit= 0 [STREAM_ENG_V2 0] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_212 input ports=1 range=8[782656,786976] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_212 input ports=1 range=5[782656,786976] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_212_dma_init_in_1_50 = {
       /* 15x3x3x32(8 bits) */
@@ -19221,7 +19220,7 @@ void trace_ec__ec_blob_49(void) {
     LL_Streng_TensorInit(0, &Conv2D_212_dma_init_in_1_50, 1);
 
     /* Unit= 7 [STREAM_ENG_V2 7] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_212 input ports=2 range=1[67952,68048] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_212 input ports=2 range=8[67952,68048] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_212_dma_init_in_2_50 = {
       /* partial accumulator 96 (16 bits) */
@@ -19232,7 +19231,7 @@ void trace_ec__ec_blob_49(void) {
       .sync_with_other = 1,
       .nbits_unsigned = 0,
       .sync_dma = 6,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* ATONN_ACCUMULATOR_PORT */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* ATONN_ACCUMULATOR_PORT */
       .offset_start = 67952,
       .offset_end = 68048,
       .offset_limit = 68112,
@@ -19255,12 +19254,12 @@ void trace_ec__ec_blob_49(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 5504 */
+    /* npuRAM3 -> 5504 */
     /* octoFlash -> 10080 */
 
     /* Dma output units from cycle: */
     /* Unit= 4 [STREAM_ENG_V2 4] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_219 output ports=0 range=1[67824,67952] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_219 output ports=0 range=8[67824,67952] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_219_dma_init_out_0_50 = {
       /* partial accumulator 128 (16 bits) */
@@ -19269,7 +19268,7 @@ void trace_ec__ec_blob_49(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_219_out_0 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_219_out_0 */
       .offset_start = 67824,
       .offset_end = 67952,
       .offset_limit = 68016,
@@ -19291,7 +19290,7 @@ void trace_ec__ec_blob_49(void) {
     LL_Streng_TensorInit(4, &Conv2D_219_dma_init_out_0_50, 1);
 
     /* Unit= 3 [STREAM_ENG_V2 3] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_219_off_bias_393 output ports=0 range=1[33280,33600] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_219_off_bias_393 output ports=0 range=8[33280,33600] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_219_off_bias_393_dma_init_out_0_50 = {
       /* to memory canonical from batch=4 */
@@ -19299,7 +19298,7 @@ void trace_ec__ec_blob_49(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_219_off_bias_out_394 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_219_off_bias_out_394 */
       .offset_start = 33280,
       .offset_limit = 33664,
       .frame_count = 0,
@@ -19320,7 +19319,7 @@ void trace_ec__ec_blob_49(void) {
     LL_Streng_TensorInit(3, &Conv2D_219_off_bias_393_dma_init_out_0_50, 1);
 
     /* Unit= 6 [STREAM_ENG_V2 6] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_212 output ports=0 range=1[67952,68048] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_212 output ports=0 range=8[67952,68048] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_212_dma_init_out_0_50 = {
       /* partial accumulator 96 (16 bits) */
@@ -19329,7 +19328,7 @@ void trace_ec__ec_blob_49(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_212_out_0 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_212_out_0 */
       .offset_start = 67952,
       .offset_end = 68048,
       .offset_limit = 68112,
@@ -19351,7 +19350,7 @@ void trace_ec__ec_blob_49(void) {
     LL_Streng_TensorInit(6, &Conv2D_212_dma_init_out_0_50, 1);
 
     /* Unit= 8 [STREAM_ENG_V2 8] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_212_off_bias_384 output ports=0 range=1[67584,67824] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_212_off_bias_384 output ports=0 range=8[67584,67824] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_212_off_bias_384_dma_init_out_0_50 = {
       /* to memory canonical from batch=3 */
@@ -19359,7 +19358,7 @@ void trace_ec__ec_blob_49(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_212_off_bias_out_385 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_212_off_bias_out_385 */
       .offset_start = 67584,
       .offset_limit = 67888,
       .frame_count = 0,
@@ -19381,7 +19380,7 @@ void trace_ec__ec_blob_49(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 5600 */
+    /* npuRAM3 <- 5600 */
 
     static const LL_Switch_InitTypeDef switch_init_in_50[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 1, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 1, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_219 IN: in unit=CONV_ACC_V2 1 in port=0 out unit=STREAM_ENG_V2 1 out port=0 */
@@ -19541,7 +19540,7 @@ void trace_ec__ec_blob_49(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 4 [STREAM_ENG_V2 4] */
-    /* Emit conf for STREAM_ENG_V2 node=Add_229 input ports=0 range=1[69632,71680] */
+    /* Emit conf for STREAM_ENG_V2 node=Add_229 input ports=0 range=8[69632,71680] */
 
     static const LL_Streng_TensorInitTypeDef Add_229_dma_init_in_0_51 = {
       /* from memory with batch=16 */
@@ -19550,7 +19549,7 @@ void trace_ec__ec_blob_49(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Dequantize_228_out_0 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Dequantize_228_out_0 */
       .offset_start = 69632,
       .offset_end = 70656,
       .offset_limit = 71744,
@@ -19572,7 +19571,7 @@ void trace_ec__ec_blob_49(void) {
     LL_Streng_TensorInit(4, &Add_229_dma_init_in_0_51, 1);
 
     /* Unit= 6 [STREAM_ENG_V2 6] */
-    /* Emit conf for STREAM_ENG_V2 node=Add_229 input ports=1 range=1[71680,73728] */
+    /* Emit conf for STREAM_ENG_V2 node=Add_229 input ports=1 range=8[71680,73728] */
 
     static const LL_Streng_TensorInitTypeDef Add_229_dma_init_in_1_51 = {
       /* memory canonical to batch=16 */
@@ -19580,7 +19579,7 @@ void trace_ec__ec_blob_49(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Resize_225_out_0 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Resize_225_out_0 */
       .offset_start = 71680,
       .offset_limit = 73792,
       .frame_count = 0,
@@ -19601,7 +19600,7 @@ void trace_ec__ec_blob_49(void) {
     LL_Streng_TensorInit(6, &Add_229_dma_init_in_1_51, 1);
 
     /* Unit= 2 [STREAM_ENG_V2 2] */
-    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id994 input ports=0 range=1[33792,33872] */
+    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id994 input ports=0 range=8[33792,33872] */
 
     static const LL_Streng_TensorInitTypeDef Identity_inserted_id994_dma_init_in_0_51 = {
       /* from memory with batch=1 */
@@ -19610,7 +19609,7 @@ void trace_ec__ec_blob_49(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Reshape_202_out_0_inserted_out992_inserted_in994 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Reshape_202_out_0_inserted_out992_inserted_in994 */
       .offset_start = 33792,
       .offset_end = 33796,
       .offset_limit = 33936,
@@ -19632,7 +19631,7 @@ void trace_ec__ec_blob_49(void) {
     LL_Streng_TensorInit(2, &Identity_inserted_id994_dma_init_in_0_51, 1);
 
     /* Unit= 5 [STREAM_ENG_V2 5] */
-    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id997 input ports=0 range=1[68048,68108] */
+    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id997 input ports=0 range=8[68048,68108] */
 
     static const LL_Streng_TensorInitTypeDef Identity_inserted_id997_dma_init_in_0_51 = {
       /* from memory with batch=1 */
@@ -19641,7 +19640,7 @@ void trace_ec__ec_blob_49(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Reshape_195_out_0_inserted_out995_inserted_in997 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Reshape_195_out_0_inserted_out995_inserted_in997 */
       .offset_start = 68048,
       .offset_end = 68051,
       .offset_limit = 68176,
@@ -19663,7 +19662,7 @@ void trace_ec__ec_blob_49(void) {
     LL_Streng_TensorInit(5, &Identity_inserted_id997_dma_init_in_0_51, 1);
 
     /* Unit= 1 [STREAM_ENG_V2 1] */
-    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1006 input ports=0 range=1[33280,33600] */
+    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1006 input ports=0 range=8[33280,33600] */
 
     static const LL_Streng_TensorInitTypeDef Identity_inserted_id1006_dma_init_in_0_51 = {
       /* from memory with batch=1 */
@@ -19672,7 +19671,7 @@ void trace_ec__ec_blob_49(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Reshape_223_out_0_inserted_out1004_inserted_in1006 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Reshape_223_out_0_inserted_out1004_inserted_in1006 */
       .offset_start = 33280,
       .offset_end = 33284,
       .offset_limit = 33664,
@@ -19695,11 +19694,11 @@ void trace_ec__ec_blob_49(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 4556 */
+    /* npuRAM3 -> 4556 */
 
     /* Dma output units from cycle: */
     /* Unit= 7 [STREAM_ENG_V2 7] */
-    /* Emit conf for STREAM_ENG_V2 node=Add_229 output ports=0 range=1[40960,43008] */
+    /* Emit conf for STREAM_ENG_V2 node=Add_229 output ports=0 range=8[40960,43008] */
 
     static const LL_Streng_TensorInitTypeDef Add_229_dma_init_out_0_51 = {
       /* to memory canonical from batch=16 */
@@ -19707,7 +19706,7 @@ void trace_ec__ec_blob_49(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Add_229_out_0 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Add_229_out_0 */
       .offset_start = 40960,
       .offset_limit = 43072,
       .frame_count = 0,
@@ -19728,7 +19727,7 @@ void trace_ec__ec_blob_49(void) {
     LL_Streng_TensorInit(7, &Add_229_dma_init_out_0_51, 1);
 
     /* Unit= 0 [STREAM_ENG_V2 0] */
-    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id994 output ports=0 range=1[153472,153552] */
+    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id994 output ports=0 range=8[153472,153552] */
 
     static const LL_Streng_TensorInitTypeDef Identity_inserted_id994_dma_init_out_0_51 = {
       /* to memory canonical from batch=1 */
@@ -19736,7 +19735,7 @@ void trace_ec__ec_blob_49(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Reshape_202_out_0_inserted_out992_inserted_out994 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Reshape_202_out_0_inserted_out992_inserted_out994 */
       .offset_start = 153472,
       .offset_limit = 153616,
       .frame_count = 0,
@@ -19757,7 +19756,7 @@ void trace_ec__ec_blob_49(void) {
     LL_Streng_TensorInit(0, &Identity_inserted_id994_dma_init_out_0_51, 1);
 
     /* Unit= 9 [STREAM_ENG_V2 9] */
-    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id997 output ports=0 range=1[172272,172332] */
+    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id997 output ports=0 range=8[172272,172332] */
 
     static const LL_Streng_TensorInitTypeDef Identity_inserted_id997_dma_init_out_0_51 = {
       /* to memory canonical from batch=1 */
@@ -19765,7 +19764,7 @@ void trace_ec__ec_blob_49(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Reshape_195_out_0_inserted_out995_inserted_out997 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Reshape_195_out_0_inserted_out995_inserted_out997 */
       .offset_start = 172272,
       .offset_limit = 172400,
       .frame_count = 0,
@@ -19786,7 +19785,7 @@ void trace_ec__ec_blob_49(void) {
     LL_Streng_TensorInit(9, &Identity_inserted_id997_dma_init_out_0_51, 1);
 
     /* Unit= 3 [STREAM_ENG_V2 3] */
-    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1006 output ports=0 range=1[153152,153472] */
+    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1006 output ports=0 range=8[153152,153472] */
 
     static const LL_Streng_TensorInitTypeDef Identity_inserted_id1006_dma_init_out_0_51 = {
       /* to memory canonical from batch=1 */
@@ -19794,7 +19793,7 @@ void trace_ec__ec_blob_49(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Reshape_223_out_0_inserted_out1004_inserted_out1006 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Reshape_223_out_0_inserted_out1004_inserted_out1006 */
       .offset_start = 153152,
       .offset_limit = 153536,
       .frame_count = 0,
@@ -19816,7 +19815,7 @@ void trace_ec__ec_blob_49(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 2508 */
+    /* npuRAM3 <- 2508 */
 
     static const LL_Switch_InitTypeDef switch_init_in_51[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, ARITH, 0, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 4, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Add_229 IN: in unit=ARITH_ACC_V2 0 in port=0 out unit=STREAM_ENG_V2 4 out port=0 */
@@ -19949,7 +19948,7 @@ void trace_ec__ec_blob_53(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 6 [STREAM_ENG_V2 6] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_240_conv_identity input ports=0 range=1[40960,43008] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_240_conv_identity input ports=0 range=8[40960,43008] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_240_conv_identity_dma_init_in_0_53 = {
       /* memory canonical to batch=8 */
@@ -19957,7 +19956,7 @@ void trace_ec__ec_blob_53(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Dequantize_231_out_0_copy_in_35 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Dequantize_231_out_0_copy_in_35 */
       .offset_start = 40960,
       .offset_limit = 43072,
       .frame_count = 0,
@@ -19978,7 +19977,7 @@ void trace_ec__ec_blob_53(void) {
     LL_Streng_TensorInit(6, &Conv2D_240_conv_identity_dma_init_in_0_53, 1);
 
     /* Unit= 0 [STREAM_ENG_V2 0] */
-    /* Emit conf for STREAM_ENG_V2 node=Add_250 input ports=0 range=1[106496,114688] */
+    /* Emit conf for STREAM_ENG_V2 node=Add_250 input ports=0 range=8[106496,114688] */
 
     static const LL_Streng_TensorInitTypeDef Add_250_dma_init_in_0_53 = {
       /* from memory with batch=16 */
@@ -19987,7 +19986,7 @@ void trace_ec__ec_blob_53(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Dequantize_249_out_0 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Dequantize_249_out_0 */
       .offset_start = 106496,
       .offset_end = 110592,
       .offset_limit = 114752,
@@ -20009,7 +20008,7 @@ void trace_ec__ec_blob_53(void) {
     LL_Streng_TensorInit(0, &Add_250_dma_init_in_0_53, 1);
 
     /* Unit= 9 [STREAM_ENG_V2 9] */
-    /* Emit conf for STREAM_ENG_V2 node=Add_250 input ports=1 range=1[32768,40960] */
+    /* Emit conf for STREAM_ENG_V2 node=Add_250 input ports=1 range=8[32768,40960] */
 
     static const LL_Streng_TensorInitTypeDef Add_250_dma_init_in_1_53 = {
       /* memory canonical to batch=16 */
@@ -20017,7 +20016,7 @@ void trace_ec__ec_blob_53(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Resize_246_out_0 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Resize_246_out_0 */
       .offset_start = 32768,
       .offset_limit = 41024,
       .frame_count = 0,
@@ -20038,7 +20037,7 @@ void trace_ec__ec_blob_53(void) {
     LL_Streng_TensorInit(9, &Add_250_dma_init_in_1_53, 1);
 
     /* Unit= 8 [STREAM_ENG_V2 8] */
-    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1009 input ports=0 range=1[67584,67824] */
+    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1009 input ports=0 range=8[67584,67824] */
 
     static const LL_Streng_TensorInitTypeDef Identity_inserted_id1009_dma_init_in_0_53 = {
       /* from memory with batch=1 */
@@ -20047,7 +20046,7 @@ void trace_ec__ec_blob_53(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Reshape_216_out_0_inserted_out1007_inserted_in1009 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Reshape_216_out_0_inserted_out1007_inserted_in1009 */
       .offset_start = 67584,
       .offset_end = 67587,
       .offset_limit = 67888,
@@ -20070,11 +20069,11 @@ void trace_ec__ec_blob_53(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 18672 */
+    /* npuRAM3 -> 18672 */
 
     /* Dma output units from cycle: */
     /* Unit= 5 [STREAM_ENG_V2 5] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_240_conv_identity output ports=0 range=1[65536,67584] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_240_conv_identity output ports=0 range=8[65536,67584] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_240_conv_identity_dma_init_out_0_53 = {
       /* to memory with batch=8 */
@@ -20083,7 +20082,7 @@ void trace_ec__ec_blob_53(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Add_229_out_0_cp_in_35 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Add_229_out_0_cp_in_35 */
       .offset_start = 65536,
       .offset_end = 66048,
       .offset_limit = 67648,
@@ -20105,7 +20104,7 @@ void trace_ec__ec_blob_53(void) {
     LL_Streng_TensorInit(5, &Conv2D_240_conv_identity_dma_init_out_0_53, 1);
 
     /* Unit= 2 [STREAM_ENG_V2 2] */
-    /* Emit conf for STREAM_ENG_V2 node=Add_250 output ports=0 range=1[114688,122880] */
+    /* Emit conf for STREAM_ENG_V2 node=Add_250 output ports=0 range=8[114688,122880] */
 
     static const LL_Streng_TensorInitTypeDef Add_250_dma_init_out_0_53 = {
       /* to memory canonical from batch=16 */
@@ -20113,7 +20112,7 @@ void trace_ec__ec_blob_53(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Add_250_out_0 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Add_250_out_0 */
       .offset_start = 114688,
       .offset_limit = 122944,
       .frame_count = 0,
@@ -20134,7 +20133,7 @@ void trace_ec__ec_blob_53(void) {
     LL_Streng_TensorInit(2, &Add_250_dma_init_out_0_53, 1);
 
     /* Unit= 7 [STREAM_ENG_V2 7] */
-    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1009 output ports=0 range=1[172032,172272] */
+    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1009 output ports=0 range=8[172032,172272] */
 
     static const LL_Streng_TensorInitTypeDef Identity_inserted_id1009_dma_init_out_0_53 = {
       /* to memory canonical from batch=1 */
@@ -20142,7 +20141,7 @@ void trace_ec__ec_blob_53(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Reshape_216_out_0_inserted_out1007_inserted_out1009 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Reshape_216_out_0_inserted_out1007_inserted_out1009 */
       .offset_start = 172032,
       .offset_limit = 172336,
       .frame_count = 0,
@@ -20164,7 +20163,7 @@ void trace_ec__ec_blob_53(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 10480 */
+    /* npuRAM3 <- 10480 */
 
     static const LL_Switch_InitTypeDef switch_init_in_53[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, STRENG, 5, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 6, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_240_conv_identity OUT: in unit=STREAM_ENG_V2 5 in port=0 out unit=STREAM_ENG_V2 6 out port=0 */
@@ -20532,7 +20531,7 @@ void trace_ec__ec_blob_55(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 4 [STREAM_ENG_V2 4] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_240 input ports=0 range=1[65536,67584] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_240 input ports=0 range=8[65536,67584] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_240_dma_init_in_0_55 = {
       /* 8x8x8(8 bits) */
@@ -20541,7 +20540,7 @@ void trace_ec__ec_blob_55(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Dequantize_231_out_0 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Dequantize_231_out_0 */
       .offset_start = 65536,
       .offset_end = 66048,
       .offset_limit = 67648,
@@ -20563,7 +20562,7 @@ void trace_ec__ec_blob_55(void) {
     LL_Streng_TensorInit(4, &Conv2D_240_dma_init_in_0_55, 1);
 
     /* Unit= 8 [STREAM_ENG_V2 8] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_240 input ports=1 range=8[757600,763360] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_240 input ports=1 range=5[757600,763360] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_240_dma_init_in_1_55 = {
       /* 20x3x3x32(8 bits) */
@@ -20597,7 +20596,7 @@ void trace_ec__ec_blob_55(void) {
     LL_Streng_TensorInit(8, &Conv2D_240_dma_init_in_1_55, 1);
 
     /* Unit= 1 [STREAM_ENG_V2 1] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_240 input ports=2 range=1[123520,124160] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_240 input ports=2 range=8[123520,124160] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_240_dma_init_in_2_55 = {
       /* partial accumulator 640 (16 bits) */
@@ -20608,7 +20607,7 @@ void trace_ec__ec_blob_55(void) {
       .sync_with_other = 1,
       .nbits_unsigned = 0,
       .sync_dma = 9,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* ATONN_ACCUMULATOR_PORT */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* ATONN_ACCUMULATOR_PORT */
       .offset_start = 123520,
       .offset_end = 124160,
       .offset_limit = 124224,
@@ -20630,7 +20629,7 @@ void trace_ec__ec_blob_55(void) {
     LL_Streng_TensorInit(1, &Conv2D_240_dma_init_in_2_55, 1);
 
     /* Unit= 3 [STREAM_ENG_V2 3] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_233 input ports=0 range=1[65536,67584] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_233 input ports=0 range=8[65536,67584] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_233_dma_init_in_0_55 = {
       /* 8x8x8(8 bits) */
@@ -20639,7 +20638,7 @@ void trace_ec__ec_blob_55(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Dequantize_231_out_0 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Dequantize_231_out_0 */
       .offset_start = 65536,
       .offset_end = 66048,
       .offset_limit = 67648,
@@ -20661,7 +20660,7 @@ void trace_ec__ec_blob_55(void) {
     LL_Streng_TensorInit(3, &Conv2D_233_dma_init_in_0_55, 1);
 
     /* Unit= 5 [STREAM_ENG_V2 5] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_233 input ports=1 range=8[786976,791296] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_233 input ports=1 range=5[786976,791296] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_233_dma_init_in_1_55 = {
       /* 15x3x3x32(8 bits) */
@@ -20695,7 +20694,7 @@ void trace_ec__ec_blob_55(void) {
     LL_Streng_TensorInit(5, &Conv2D_233_dma_init_in_1_55, 1);
 
     /* Unit= 7 [STREAM_ENG_V2 7] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_233 input ports=2 range=1[122880,123520] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_233 input ports=2 range=8[122880,123520] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_233_dma_init_in_2_55 = {
       /* partial accumulator 640 (16 bits) */
@@ -20706,7 +20705,7 @@ void trace_ec__ec_blob_55(void) {
       .sync_with_other = 1,
       .nbits_unsigned = 0,
       .sync_dma = 2,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* ATONN_ACCUMULATOR_PORT */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* ATONN_ACCUMULATOR_PORT */
       .offset_start = 122880,
       .offset_end = 123520,
       .offset_limit = 123584,
@@ -20729,12 +20728,12 @@ void trace_ec__ec_blob_55(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 22016 */
+    /* npuRAM3 -> 22016 */
     /* octoFlash -> 10080 */
 
     /* Dma output units from cycle: */
     /* Unit= 9 [STREAM_ENG_V2 9] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_240 output ports=0 range=1[123520,124160] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_240 output ports=0 range=8[123520,124160] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_240_dma_init_out_0_55 = {
       /* partial accumulator 640 (16 bits) */
@@ -20743,7 +20742,7 @@ void trace_ec__ec_blob_55(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_240_out_0 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_240_out_0 */
       .offset_start = 123520,
       .offset_end = 124160,
       .offset_limit = 124224,
@@ -20765,7 +20764,7 @@ void trace_ec__ec_blob_55(void) {
     LL_Streng_TensorInit(9, &Conv2D_240_dma_init_out_0_55, 1);
 
     /* Unit= 2 [STREAM_ENG_V2 2] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_233 output ports=0 range=1[122880,123520] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_233 output ports=0 range=8[122880,123520] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_233_dma_init_out_0_55 = {
       /* partial accumulator 640 (16 bits) */
@@ -20774,7 +20773,7 @@ void trace_ec__ec_blob_55(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_233_out_0 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_233_out_0 */
       .offset_start = 122880,
       .offset_end = 123520,
       .offset_limit = 123584,
@@ -20796,7 +20795,7 @@ void trace_ec__ec_blob_55(void) {
     LL_Streng_TensorInit(2, &Conv2D_233_dma_init_out_0_55, 1);
 
     /* Unit= 6 [STREAM_ENG_V2 6] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_240_off_bias_414 output ports=0 range=1[126720,128000] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_240_off_bias_414 output ports=0 range=8[126720,128000] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_240_off_bias_414_dma_init_out_0_55 = {
       /* to memory canonical from batch=5 */
@@ -20804,7 +20803,7 @@ void trace_ec__ec_blob_55(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_240_off_bias_out_415 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_240_off_bias_out_415 */
       .offset_start = 126720,
       .offset_limit = 128064,
       .frame_count = 0,
@@ -20825,7 +20824,7 @@ void trace_ec__ec_blob_55(void) {
     LL_Streng_TensorInit(6, &Conv2D_240_off_bias_414_dma_init_out_0_55, 1);
 
     /* Unit= 0 [STREAM_ENG_V2 0] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_233_off_bias_408 output ports=0 range=1[113664,114624] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_233_off_bias_408 output ports=0 range=8[113664,114624] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_233_off_bias_408_dma_init_out_0_55 = {
       /* to memory canonical from batch=5 */
@@ -20833,7 +20832,7 @@ void trace_ec__ec_blob_55(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_233_off_bias_out_409 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_233_off_bias_out_409 */
       .offset_start = 113664,
       .offset_limit = 114688,
       .frame_count = 0,
@@ -20855,7 +20854,7 @@ void trace_ec__ec_blob_55(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 22400 */
+    /* npuRAM3 <- 22400 */
 
     static const LL_Switch_InitTypeDef switch_init_in_55[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 0, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 4, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_240 IN: in unit=CONV_ACC_V2 0 in port=0 out unit=STREAM_ENG_V2 4 out port=0 */
@@ -21206,14 +21205,14 @@ void trace_ec__ec_blob_55(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 4 [STREAM_ENG_V2 4] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_261 input ports=0 range=1[114688,122880] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_261 input ports=0 range=8[114688,122880] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_261_dma_init_in_0_56 = {
       .dir = 0,
       .noblk = 0,
       .align_right = 1,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_261_zero_off_out_436 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_261_zero_off_out_436 */
       .offset_start = 114688,
       .offset_limit = 122944,
       .frame_count = 0,
@@ -21234,7 +21233,7 @@ void trace_ec__ec_blob_55(void) {
     LL_Streng_TensorInit(4, &Conv2D_261_dma_init_in_0_56, 1);
 
     /* Unit= 0 [STREAM_ENG_V2 0] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_261 input ports=1 range=8[740320,746080] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_261 input ports=1 range=5[740320,746080] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_261_dma_init_in_1_56 = {
       /* 20x3x3x32(8 bits) */
@@ -21268,14 +21267,14 @@ void trace_ec__ec_blob_55(void) {
     LL_Streng_TensorInit(0, &Conv2D_261_dma_init_in_1_56, 1);
 
     /* Unit= 5 [STREAM_ENG_V2 5] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_261_ca_pipe_1 input ports=0 range=1[114688,122880] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_261_ca_pipe_1 input ports=0 range=8[114688,122880] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_261_ca_pipe_1_dma_init_in_0_56 = {
       .dir = 0,
       .noblk = 0,
       .align_right = 1,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_261_zero_off_out_436_copy_in_8 ca pipe offset=1 */
+      .addr_base = {(unsigned char *)ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_261_zero_off_out_436_copy_in_8 ca pipe offset=1 */
       .offset_start = 114696,
       .offset_limit = 122944,
       .frame_count = 0,
@@ -21296,14 +21295,14 @@ void trace_ec__ec_blob_55(void) {
     LL_Streng_TensorInit(5, &Conv2D_261_ca_pipe_1_dma_init_in_0_56, 1);
 
     /* Unit= 3 [STREAM_ENG_V2 3] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_261_ca_pipe_2 input ports=0 range=1[114688,122880] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_261_ca_pipe_2 input ports=0 range=8[114688,122880] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_261_ca_pipe_2_dma_init_in_0_56 = {
       .dir = 0,
       .noblk = 0,
       .align_right = 1,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_261_zero_off_out_436_copy_in_9 ca pipe offset=2 */
+      .addr_base = {(unsigned char *)ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_261_zero_off_out_436_copy_in_9 ca pipe offset=2 */
       .offset_start = 114704,
       .offset_limit = 122944,
       .frame_count = 0,
@@ -21324,14 +21323,14 @@ void trace_ec__ec_blob_55(void) {
     LL_Streng_TensorInit(3, &Conv2D_261_ca_pipe_2_dma_init_in_0_56, 1);
 
     /* Unit= 8 [STREAM_ENG_V2 8] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_261_ca_pipe_3 input ports=0 range=1[114688,122880] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_261_ca_pipe_3 input ports=0 range=8[114688,122880] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_261_ca_pipe_3_dma_init_in_0_56 = {
       .dir = 0,
       .noblk = 0,
       .align_right = 1,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_261_zero_off_out_436_copy_in_10 ca pipe offset=3 */
+      .addr_base = {(unsigned char *)ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_261_zero_off_out_436_copy_in_10 ca pipe offset=3 */
       .offset_start = 114712,
       .offset_limit = 122944,
       .frame_count = 0,
@@ -21352,7 +21351,7 @@ void trace_ec__ec_blob_55(void) {
     LL_Streng_TensorInit(8, &Conv2D_261_ca_pipe_3_dma_init_in_0_56, 1);
 
     /* Unit= 7 [STREAM_ENG_V2 7] */
-    /* Emit conf for STREAM_ENG_V2 node=Add_271 input ports=0 range=1[0,32768] */
+    /* Emit conf for STREAM_ENG_V2 node=Add_271 input ports=0 range=8[0,32768] */
 
     static const LL_Streng_TensorInitTypeDef Add_271_dma_init_in_0_56 = {
       /* from memory with batch=16 */
@@ -21361,7 +21360,7 @@ void trace_ec__ec_blob_55(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Dequantize_270_out_0 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Dequantize_270_out_0 */
       .offset_start = 0,
       .offset_end = 16384,
       .offset_limit = 32832,
@@ -21383,7 +21382,7 @@ void trace_ec__ec_blob_55(void) {
     LL_Streng_TensorInit(7, &Add_271_dma_init_in_0_56, 1);
 
     /* Unit= 9 [STREAM_ENG_V2 9] */
-    /* Emit conf for STREAM_ENG_V2 node=Add_271 input ports=1 range=1[32768,65536] */
+    /* Emit conf for STREAM_ENG_V2 node=Add_271 input ports=1 range=8[32768,65536] */
 
     static const LL_Streng_TensorInitTypeDef Add_271_dma_init_in_1_56 = {
       /* memory canonical to batch=16 */
@@ -21391,7 +21390,7 @@ void trace_ec__ec_blob_55(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Resize_267_out_0 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Resize_267_out_0 */
       .offset_start = 32768,
       .offset_limit = 65600,
       .frame_count = 0,
@@ -21413,12 +21412,12 @@ void trace_ec__ec_blob_55(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 73728 */
+    /* npuRAM3 -> 73728 */
     /* octoFlash -> 5760 */
 
     /* Dma output units from cycle: */
     /* Unit= 2 [STREAM_ENG_V2 2] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_261_ca_pipe_3 output ports=0 range=1[98304,108544] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_261_ca_pipe_3 output ports=0 range=8[98304,108544] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_261_ca_pipe_3_dma_init_out_0_56 = {
       /* to memory with batch=4 */
@@ -21427,7 +21426,7 @@ void trace_ec__ec_blob_55(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_261_out_0_cp_in_8_cp_in_9_cp_in_10 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_261_out_0_cp_in_8_cp_in_9_cp_in_10 */
       .offset_start = 98304,
       .offset_end = 100352,
       .offset_limit = 108608,
@@ -21449,7 +21448,7 @@ void trace_ec__ec_blob_55(void) {
     LL_Streng_TensorInit(2, &Conv2D_261_ca_pipe_3_dma_init_out_0_56, 1);
 
     /* Unit= 1 [STREAM_ENG_V2 1] */
-    /* Emit conf for STREAM_ENG_V2 node=Add_271 output ports=0 range=1[65536,98304] */
+    /* Emit conf for STREAM_ENG_V2 node=Add_271 output ports=0 range=8[65536,98304] */
 
     static const LL_Streng_TensorInitTypeDef Add_271_dma_init_out_0_56 = {
       /* to memory canonical from batch=16 */
@@ -21457,7 +21456,7 @@ void trace_ec__ec_blob_55(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Add_271_out_0 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Add_271_out_0 */
       .offset_start = 65536,
       .offset_limit = 98368,
       .frame_count = 0,
@@ -21479,7 +21478,7 @@ void trace_ec__ec_blob_55(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 37888 */
+    /* npuRAM3 <- 37888 */
 
     static const LL_Switch_InitTypeDef switch_init_in_56[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 1, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 4, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_261 IN: in unit=CONV_ACC_V2 1 in port=0 out unit=STREAM_ENG_V2 4 out port=0 */
@@ -21979,14 +21978,14 @@ void trace_ec__ec_blob_55(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 2 [STREAM_ENG_V2 2] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_254 input ports=0 range=1[114688,122880] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_254 input ports=0 range=8[114688,122880] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_254_dma_init_in_0_57 = {
       .dir = 0,
       .noblk = 0,
       .align_right = 1,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_254_zero_off_out_427 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_254_zero_off_out_427 */
       .offset_start = 114688,
       .offset_limit = 122944,
       .frame_count = 0,
@@ -22007,7 +22006,7 @@ void trace_ec__ec_blob_55(void) {
     LL_Streng_TensorInit(2, &Conv2D_254_dma_init_in_0_57, 1);
 
     /* Unit= 9 [STREAM_ENG_V2 9] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_254 input ports=1 range=8[791296,795616] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_254 input ports=1 range=5[791296,795616] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_254_dma_init_in_1_57 = {
       /* 15x3x3x32(8 bits) */
@@ -22041,14 +22040,14 @@ void trace_ec__ec_blob_55(void) {
     LL_Streng_TensorInit(9, &Conv2D_254_dma_init_in_1_57, 1);
 
     /* Unit= 8 [STREAM_ENG_V2 8] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_254_ca_pipe_1 input ports=0 range=1[114688,122880] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_254_ca_pipe_1 input ports=0 range=8[114688,122880] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_254_ca_pipe_1_dma_init_in_0_57 = {
       .dir = 0,
       .noblk = 0,
       .align_right = 1,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_254_zero_off_out_427_copy_in_11 ca pipe offset=1 */
+      .addr_base = {(unsigned char *)ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_254_zero_off_out_427_copy_in_11 ca pipe offset=1 */
       .offset_start = 114696,
       .offset_limit = 122944,
       .frame_count = 0,
@@ -22069,14 +22068,14 @@ void trace_ec__ec_blob_55(void) {
     LL_Streng_TensorInit(8, &Conv2D_254_ca_pipe_1_dma_init_in_0_57, 1);
 
     /* Unit= 0 [STREAM_ENG_V2 0] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_254_ca_pipe_2 input ports=0 range=1[114688,122880] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_254_ca_pipe_2 input ports=0 range=8[114688,122880] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_254_ca_pipe_2_dma_init_in_0_57 = {
       .dir = 0,
       .noblk = 0,
       .align_right = 1,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_254_zero_off_out_427_copy_in_12 ca pipe offset=2 */
+      .addr_base = {(unsigned char *)ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_254_zero_off_out_427_copy_in_12 ca pipe offset=2 */
       .offset_start = 114704,
       .offset_limit = 122944,
       .frame_count = 0,
@@ -22097,14 +22096,14 @@ void trace_ec__ec_blob_55(void) {
     LL_Streng_TensorInit(0, &Conv2D_254_ca_pipe_2_dma_init_in_0_57, 1);
 
     /* Unit= 7 [STREAM_ENG_V2 7] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_254_ca_pipe_3 input ports=0 range=1[114688,122880] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_254_ca_pipe_3 input ports=0 range=8[114688,122880] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_254_ca_pipe_3_dma_init_in_0_57 = {
       .dir = 0,
       .noblk = 0,
       .align_right = 1,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_254_zero_off_out_427_copy_in_13 ca pipe offset=3 */
+      .addr_base = {(unsigned char *)ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_254_zero_off_out_427_copy_in_13 ca pipe offset=3 */
       .offset_start = 114712,
       .offset_limit = 122944,
       .frame_count = 0,
@@ -22125,7 +22124,7 @@ void trace_ec__ec_blob_55(void) {
     LL_Streng_TensorInit(7, &Conv2D_254_ca_pipe_3_dma_init_in_0_57, 1);
 
     /* Unit= 4 [STREAM_ENG_V2 4] */
-    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1018 input ports=0 range=1[126720,128000] */
+    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1018 input ports=0 range=8[126720,128000] */
 
     static const LL_Streng_TensorInitTypeDef Identity_inserted_id1018_dma_init_in_0_57 = {
       /* from memory with batch=1 */
@@ -22134,7 +22133,7 @@ void trace_ec__ec_blob_55(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Reshape_244_out_0_inserted_out1016_inserted_in1018 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Reshape_244_out_0_inserted_out1016_inserted_in1018 */
       .offset_start = 126720,
       .offset_end = 126724,
       .offset_limit = 128064,
@@ -22156,7 +22155,7 @@ void trace_ec__ec_blob_55(void) {
     LL_Streng_TensorInit(4, &Identity_inserted_id1018_dma_init_in_0_57, 1);
 
     /* Unit= 1 [STREAM_ENG_V2 1] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_261_mul_scale_438 input ports=0 range=1[98304,108544] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_261_mul_scale_438 input ports=0 range=8[98304,108544] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_261_mul_scale_438_dma_init_in_0_57 = {
       /* from memory with batch=4 */
@@ -22165,7 +22164,7 @@ void trace_ec__ec_blob_55(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_261_out_0 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_261_out_0 */
       .offset_start = 98304,
       .offset_end = 100352,
       .offset_limit = 108608,
@@ -22188,12 +22187,12 @@ void trace_ec__ec_blob_55(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 19712 */
+    /* npuRAM3 -> 19712 */
     /* octoFlash -> 4320 */
 
     /* Dma output units from cycle: */
     /* Unit= 3 [STREAM_ENG_V2 3] */
-    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1018 output ports=0 range=1[151872,153152] */
+    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1018 output ports=0 range=8[151872,153152] */
 
     static const LL_Streng_TensorInitTypeDef Identity_inserted_id1018_dma_init_out_0_57 = {
       /* to memory canonical from batch=1 */
@@ -22201,7 +22200,7 @@ void trace_ec__ec_blob_55(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Reshape_244_out_0_inserted_out1016_inserted_out1018 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Reshape_244_out_0_inserted_out1016_inserted_out1018 */
       .offset_start = 151872,
       .offset_limit = 153216,
       .frame_count = 0,
@@ -22222,7 +22221,7 @@ void trace_ec__ec_blob_55(void) {
     LL_Streng_TensorInit(3, &Identity_inserted_id1018_dma_init_out_0_57, 1);
 
     /* Unit= 6 [STREAM_ENG_V2 6] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_254_off_bias_432 output ports=0 range=1[122880,126720] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_254_off_bias_432 output ports=0 range=8[122880,126720] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_254_off_bias_432_dma_init_out_0_57 = {
       /* to memory canonical from batch=3 */
@@ -22230,7 +22229,7 @@ void trace_ec__ec_blob_55(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_254_off_bias_out_433 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_254_off_bias_out_433 */
       .offset_start = 122880,
       .offset_limit = 126784,
       .frame_count = 0,
@@ -22251,7 +22250,7 @@ void trace_ec__ec_blob_55(void) {
     LL_Streng_TensorInit(6, &Conv2D_254_off_bias_432_dma_init_out_0_57, 1);
 
     /* Unit= 5 [STREAM_ENG_V2 5] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_261_off_bias_441 output ports=0 range=1[108544,113664] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_261_off_bias_441 output ports=0 range=8[108544,113664] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_261_off_bias_441_dma_init_out_0_57 = {
       /* to memory canonical from batch=4 */
@@ -22259,7 +22258,7 @@ void trace_ec__ec_blob_55(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_261_off_bias_out_442 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_261_off_bias_out_442 */
       .offset_start = 108544,
       .offset_limit = 113728,
       .frame_count = 0,
@@ -22281,7 +22280,7 @@ void trace_ec__ec_blob_55(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 10240 */
+    /* npuRAM3 <- 10240 */
 
     static const LL_Switch_InitTypeDef switch_init_in_57[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 0, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 2, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_254 IN: in unit=CONV_ACC_V2 0 in port=0 out unit=STREAM_ENG_V2 2 out port=0 */
@@ -22701,14 +22700,14 @@ void trace_ec__ec_blob_55(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 4 [STREAM_ENG_V2 4] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_287 input ports=0 range=1[65536,98304] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_287 input ports=0 range=8[65536,98304] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_287_dma_init_in_0_58 = {
       .dir = 0,
       .noblk = 0,
       .align_right = 1,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_287_zero_off_out_463 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_287_zero_off_out_463 */
       .offset_start = 65536,
       .offset_limit = 98368,
       .frame_count = 0,
@@ -22729,7 +22728,7 @@ void trace_ec__ec_blob_55(void) {
     LL_Streng_TensorInit(4, &Conv2D_287_dma_init_in_0_58, 1);
 
     /* Unit= 6 [STREAM_ENG_V2 6] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_287 input ports=1 range=8[763360,769120] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_287 input ports=1 range=5[763360,769120] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_287_dma_init_in_1_58 = {
       /* 20x3x3x32(8 bits) */
@@ -22763,14 +22762,14 @@ void trace_ec__ec_blob_55(void) {
     LL_Streng_TensorInit(6, &Conv2D_287_dma_init_in_1_58, 1);
 
     /* Unit= 1 [STREAM_ENG_V2 1] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_287_ca_pipe_1 input ports=0 range=1[65536,98304] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_287_ca_pipe_1 input ports=0 range=8[65536,98304] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_287_ca_pipe_1_dma_init_in_0_58 = {
       .dir = 0,
       .noblk = 0,
       .align_right = 1,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_287_zero_off_out_463_copy_in_16 ca pipe offset=1 */
+      .addr_base = {(unsigned char *)ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_287_zero_off_out_463_copy_in_16 ca pipe offset=1 */
       .offset_start = 65544,
       .offset_limit = 98368,
       .frame_count = 0,
@@ -22791,14 +22790,14 @@ void trace_ec__ec_blob_55(void) {
     LL_Streng_TensorInit(1, &Conv2D_287_ca_pipe_1_dma_init_in_0_58, 1);
 
     /* Unit= 5 [STREAM_ENG_V2 5] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_287_ca_pipe_2 input ports=0 range=1[65536,98304] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_287_ca_pipe_2 input ports=0 range=8[65536,98304] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_287_ca_pipe_2_dma_init_in_0_58 = {
       .dir = 0,
       .noblk = 0,
       .align_right = 1,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_287_zero_off_out_463_copy_in_17 ca pipe offset=2 */
+      .addr_base = {(unsigned char *)ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_287_zero_off_out_463_copy_in_17 ca pipe offset=2 */
       .offset_start = 65552,
       .offset_limit = 98368,
       .frame_count = 0,
@@ -22819,14 +22818,14 @@ void trace_ec__ec_blob_55(void) {
     LL_Streng_TensorInit(5, &Conv2D_287_ca_pipe_2_dma_init_in_0_58, 1);
 
     /* Unit= 9 [STREAM_ENG_V2 9] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_287_ca_pipe_3 input ports=0 range=1[65536,98304] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_287_ca_pipe_3 input ports=0 range=8[65536,98304] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_287_ca_pipe_3_dma_init_in_0_58 = {
       .dir = 0,
       .noblk = 0,
       .align_right = 1,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_287_zero_off_out_463_copy_in_18 ca pipe offset=3 */
+      .addr_base = {(unsigned char *)ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_287_zero_off_out_463_copy_in_18 ca pipe offset=3 */
       .offset_start = 65560,
       .offset_limit = 98368,
       .frame_count = 0,
@@ -22847,7 +22846,7 @@ void trace_ec__ec_blob_55(void) {
     LL_Streng_TensorInit(9, &Conv2D_287_ca_pipe_3_dma_init_in_0_58, 1);
 
     /* Unit= 0 [STREAM_ENG_V2 0] */
-    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1021 input ports=0 range=1[113664,114624] */
+    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1021 input ports=0 range=8[113664,114624] */
 
     static const LL_Streng_TensorInitTypeDef Identity_inserted_id1021_dma_init_in_0_58 = {
       /* from memory with batch=1 */
@@ -22856,7 +22855,7 @@ void trace_ec__ec_blob_55(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Reshape_237_out_0_inserted_out1019_inserted_in1021 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Reshape_237_out_0_inserted_out1019_inserted_in1021 */
       .offset_start = 113664,
       .offset_end = 113667,
       .offset_limit = 114688,
@@ -22878,7 +22877,7 @@ void trace_ec__ec_blob_55(void) {
     LL_Streng_TensorInit(0, &Identity_inserted_id1021_dma_init_in_0_58, 1);
 
     /* Unit= 8 [STREAM_ENG_V2 8] */
-    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1024 input ports=0 range=1[108544,113664] */
+    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1024 input ports=0 range=8[108544,113664] */
 
     static const LL_Streng_TensorInitTypeDef Identity_inserted_id1024_dma_init_in_0_58 = {
       /* from memory with batch=1 */
@@ -22887,7 +22886,7 @@ void trace_ec__ec_blob_55(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Reshape_265_out_0_inserted_out1022_inserted_in1024 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Reshape_265_out_0_inserted_out1022_inserted_in1024 */
       .offset_start = 108544,
       .offset_end = 108548,
       .offset_limit = 113728,
@@ -22910,12 +22909,12 @@ void trace_ec__ec_blob_55(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 169920 */
+    /* npuRAM3 -> 169920 */
     /* octoFlash -> 5760 */
 
     /* Dma output units from cycle: */
     /* Unit= 3 [STREAM_ENG_V2 3] */
-    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1021 output ports=0 range=1[171072,172032] */
+    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1021 output ports=0 range=8[171072,172032] */
 
     static const LL_Streng_TensorInitTypeDef Identity_inserted_id1021_dma_init_out_0_58 = {
       /* to memory canonical from batch=1 */
@@ -22923,7 +22922,7 @@ void trace_ec__ec_blob_55(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Reshape_237_out_0_inserted_out1019_inserted_out1021 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Reshape_237_out_0_inserted_out1019_inserted_out1021 */
       .offset_start = 171072,
       .offset_limit = 172096,
       .frame_count = 0,
@@ -22944,7 +22943,7 @@ void trace_ec__ec_blob_55(void) {
     LL_Streng_TensorInit(3, &Identity_inserted_id1021_dma_init_out_0_58, 1);
 
     /* Unit= 2 [STREAM_ENG_V2 2] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_287_off_bias_468 output ports=0 range=1[0,20480] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_287_off_bias_468 output ports=0 range=8[0,20480] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_287_off_bias_468_dma_init_out_0_58 = {
       /* to memory canonical from batch=4 */
@@ -22952,7 +22951,7 @@ void trace_ec__ec_blob_55(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_287_off_bias_out_469 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_287_off_bias_out_469 */
       .offset_start = 0,
       .offset_limit = 20544,
       .frame_count = 0,
@@ -22973,7 +22972,7 @@ void trace_ec__ec_blob_55(void) {
     LL_Streng_TensorInit(2, &Conv2D_287_off_bias_468_dma_init_out_0_58, 1);
 
     /* Unit= 7 [STREAM_ENG_V2 7] */
-    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1024 output ports=0 range=1[98304,103424] */
+    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1024 output ports=0 range=8[98304,103424] */
 
     static const LL_Streng_TensorInitTypeDef Identity_inserted_id1024_dma_init_out_0_58 = {
       /* to memory canonical from batch=1 */
@@ -22981,7 +22980,7 @@ void trace_ec__ec_blob_55(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Reshape_265_out_0_inserted_out1022_inserted_out1024 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Reshape_265_out_0_inserted_out1022_inserted_out1024 */
       .offset_start = 98304,
       .offset_limit = 103488,
       .frame_count = 0,
@@ -23003,7 +23002,7 @@ void trace_ec__ec_blob_55(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 26560 */
+    /* npuRAM3 <- 26560 */
 
     static const LL_Switch_InitTypeDef switch_init_in_58[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 0, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 4, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_287 IN: in unit=CONV_ACC_V2 0 in port=0 out unit=STREAM_ENG_V2 4 out port=0 */
@@ -23415,14 +23414,14 @@ void trace_ec__ec_blob_55(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 2 [STREAM_ENG_V2 2] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_275 input ports=0 range=1[65536,98304] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_275 input ports=0 range=8[65536,98304] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_275_dma_init_in_0_59 = {
       .dir = 0,
       .noblk = 0,
       .align_right = 1,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_275_zero_off_out_454 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_275_zero_off_out_454 */
       .offset_start = 65536,
       .offset_limit = 98368,
       .frame_count = 0,
@@ -23443,7 +23442,7 @@ void trace_ec__ec_blob_55(void) {
     LL_Streng_TensorInit(2, &Conv2D_275_dma_init_in_0_59, 1);
 
     /* Unit= 1 [STREAM_ENG_V2 1] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_275 input ports=1 range=8[795616,799936] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_275 input ports=1 range=5[795616,799936] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_275_dma_init_in_1_59 = {
       /* 15x3x3x32(8 bits) */
@@ -23477,14 +23476,14 @@ void trace_ec__ec_blob_55(void) {
     LL_Streng_TensorInit(1, &Conv2D_275_dma_init_in_1_59, 1);
 
     /* Unit= 6 [STREAM_ENG_V2 6] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_275_ca_pipe_1 input ports=0 range=1[65536,98304] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_275_ca_pipe_1 input ports=0 range=8[65536,98304] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_275_ca_pipe_1_dma_init_in_0_59 = {
       .dir = 0,
       .noblk = 0,
       .align_right = 1,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_275_zero_off_out_454_copy_in_19 ca pipe offset=1 */
+      .addr_base = {(unsigned char *)ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_275_zero_off_out_454_copy_in_19 ca pipe offset=1 */
       .offset_start = 65544,
       .offset_limit = 98368,
       .frame_count = 0,
@@ -23505,14 +23504,14 @@ void trace_ec__ec_blob_55(void) {
     LL_Streng_TensorInit(6, &Conv2D_275_ca_pipe_1_dma_init_in_0_59, 1);
 
     /* Unit= 0 [STREAM_ENG_V2 0] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_275_ca_pipe_2 input ports=0 range=1[65536,98304] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_275_ca_pipe_2 input ports=0 range=8[65536,98304] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_275_ca_pipe_2_dma_init_in_0_59 = {
       .dir = 0,
       .noblk = 0,
       .align_right = 1,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_275_zero_off_out_454_copy_in_20 ca pipe offset=2 */
+      .addr_base = {(unsigned char *)ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_275_zero_off_out_454_copy_in_20 ca pipe offset=2 */
       .offset_start = 65552,
       .offset_limit = 98368,
       .frame_count = 0,
@@ -23533,14 +23532,14 @@ void trace_ec__ec_blob_55(void) {
     LL_Streng_TensorInit(0, &Conv2D_275_ca_pipe_2_dma_init_in_0_59, 1);
 
     /* Unit= 9 [STREAM_ENG_V2 9] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_275_ca_pipe_3 input ports=0 range=1[65536,98304] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_275_ca_pipe_3 input ports=0 range=8[65536,98304] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_275_ca_pipe_3_dma_init_in_0_59 = {
       .dir = 0,
       .noblk = 0,
       .align_right = 1,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_275_zero_off_out_454_copy_in_21 ca pipe offset=3 */
+      .addr_base = {(unsigned char *)ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_275_zero_off_out_454_copy_in_21 ca pipe offset=3 */
       .offset_start = 65560,
       .offset_limit = 98368,
       .frame_count = 0,
@@ -23561,7 +23560,7 @@ void trace_ec__ec_blob_55(void) {
     LL_Streng_TensorInit(9, &Conv2D_275_ca_pipe_3_dma_init_in_0_59, 1);
 
     /* Unit= 8 [STREAM_ENG_V2 8] */
-    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1027 input ports=0 range=1[122880,126720] */
+    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1027 input ports=0 range=8[122880,126720] */
 
     static const LL_Streng_TensorInitTypeDef Identity_inserted_id1027_dma_init_in_0_59 = {
       /* from memory with batch=1 */
@@ -23570,7 +23569,7 @@ void trace_ec__ec_blob_55(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Reshape_258_out_0_inserted_out1025_inserted_in1027 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Reshape_258_out_0_inserted_out1025_inserted_in1027 */
       .offset_start = 122880,
       .offset_end = 122883,
       .offset_limit = 126784,
@@ -23592,7 +23591,7 @@ void trace_ec__ec_blob_55(void) {
     LL_Streng_TensorInit(8, &Identity_inserted_id1027_dma_init_in_0_59, 1);
 
     /* Unit= 5 [STREAM_ENG_V2 5] */
-    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1030 input ports=0 range=1[0,20480] */
+    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1030 input ports=0 range=8[0,20480] */
 
     static const LL_Streng_TensorInitTypeDef Identity_inserted_id1030_dma_init_in_0_59 = {
       /* from memory with batch=1 */
@@ -23601,7 +23600,7 @@ void trace_ec__ec_blob_55(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Reshape_291_out_0_inserted_out1028_inserted_in1030 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Reshape_291_out_0_inserted_out1028_inserted_in1030 */
       .offset_start = 0,
       .offset_end = 4,
       .offset_limit = 20544,
@@ -23624,12 +23623,12 @@ void trace_ec__ec_blob_55(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 188160 */
+    /* npuRAM3 -> 188160 */
     /* octoFlash -> 4320 */
 
     /* Dma output units from cycle: */
     /* Unit= 4 [STREAM_ENG_V2 4] */
-    /* Emit conf for STREAM_ENG_V2 node=Conv2D_275_off_bias_459 output ports=0 range=1[136512,151872] */
+    /* Emit conf for STREAM_ENG_V2 node=Conv2D_275_off_bias_459 output ports=0 range=8[136512,151872] */
 
     static const LL_Streng_TensorInitTypeDef Conv2D_275_off_bias_459_dma_init_out_0_59 = {
       /* to memory canonical from batch=3 */
@@ -23637,7 +23636,7 @@ void trace_ec__ec_blob_55(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Conv2D_275_off_bias_out_460 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Conv2D_275_off_bias_out_460 */
       .offset_start = 136512,
       .offset_limit = 151936,
       .frame_count = 0,
@@ -23658,7 +23657,7 @@ void trace_ec__ec_blob_55(void) {
     LL_Streng_TensorInit(4, &Conv2D_275_off_bias_459_dma_init_out_0_59, 1);
 
     /* Unit= 7 [STREAM_ENG_V2 7] */
-    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1027 output ports=0 range=1[167232,171072] */
+    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1027 output ports=0 range=8[167232,171072] */
 
     static const LL_Streng_TensorInitTypeDef Identity_inserted_id1027_dma_init_out_0_59 = {
       /* to memory canonical from batch=1 */
@@ -23666,7 +23665,7 @@ void trace_ec__ec_blob_55(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Reshape_258_out_0_inserted_out1025_inserted_out1027 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Reshape_258_out_0_inserted_out1025_inserted_out1027 */
       .offset_start = 167232,
       .offset_limit = 171136,
       .frame_count = 0,
@@ -23687,7 +23686,7 @@ void trace_ec__ec_blob_55(void) {
     LL_Streng_TensorInit(7, &Identity_inserted_id1027_dma_init_out_0_59, 1);
 
     /* Unit= 3 [STREAM_ENG_V2 3] */
-    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1030 output ports=0 range=1[20480,40960] */
+    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1030 output ports=0 range=8[20480,40960] */
 
     static const LL_Streng_TensorInitTypeDef Identity_inserted_id1030_dma_init_out_0_59 = {
       /* to memory canonical from batch=1 */
@@ -23695,7 +23694,7 @@ void trace_ec__ec_blob_55(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Reshape_291_out_0_inserted_out1028_inserted_out1030 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Reshape_291_out_0_inserted_out1028_inserted_out1030 */
       .offset_start = 20480,
       .offset_limit = 41024,
       .frame_count = 0,
@@ -23717,7 +23716,7 @@ void trace_ec__ec_blob_55(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 39680 */
+    /* npuRAM3 <- 39680 */
 
     static const LL_Switch_InitTypeDef switch_init_in_59[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, CONVACC, 0, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 2, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Conv2D_275 IN: in unit=CONV_ACC_V2 0 in port=0 out unit=STREAM_ENG_V2 2 out port=0 */
@@ -23829,7 +23828,7 @@ void trace_ec__ec_blob_62(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 0 [STREAM_ENG_V2 0] */
-    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1033 input ports=0 range=1[136512,151872] */
+    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1033 input ports=0 range=8[136512,151872] */
 
     static const LL_Streng_TensorInitTypeDef Identity_inserted_id1033_dma_init_in_0_62 = {
       /* from memory with batch=1 */
@@ -23838,7 +23837,7 @@ void trace_ec__ec_blob_62(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Reshape_279_out_0_inserted_out1031_inserted_in1033 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Reshape_279_out_0_inserted_out1031_inserted_in1033 */
       .offset_start = 136512,
       .offset_end = 136515,
       .offset_limit = 151936,
@@ -23861,11 +23860,11 @@ void trace_ec__ec_blob_62(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 15360 */
+    /* npuRAM3 -> 15360 */
 
     /* Dma output units from cycle: */
     /* Unit= 8 [STREAM_ENG_V2 8] */
-    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1033 output ports=0 range=1[151872,167232] */
+    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1033 output ports=0 range=8[151872,167232] */
 
     static const LL_Streng_TensorInitTypeDef Identity_inserted_id1033_dma_init_out_0_62 = {
       /* to memory canonical from batch=1 */
@@ -23873,7 +23872,7 @@ void trace_ec__ec_blob_62(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Reshape_279_out_0_inserted_out1031_inserted_out1033 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Reshape_279_out_0_inserted_out1031_inserted_out1033 */
       .offset_start = 151872,
       .offset_limit = 167296,
       .frame_count = 0,
@@ -23895,7 +23894,7 @@ void trace_ec__ec_blob_62(void) {
 
 
     /* Dma output bandwidth to memory pools: */
-    /* npuRAM5 <- 15360 */
+    /* npuRAM3 <- 15360 */
 
     static const LL_Switch_InitTypeDef switch_init_in_62[] = {
       { LL_Switch_Init_Dest() = ATONN_DSTPORT(STRSWITCH, 0, STRENG, 8, 0), LL_Switch_Init_Source(0) = ATONN_SRCPORT(STRSWITCH, 0, STRENG, 0, 0), LL_Switch_Init_Context(0) = 1, LL_Switch_Init_Frames(0) = 0, }, /* Identity_inserted_id1033 OUT: in unit=STREAM_ENG_V2 8 in port=0 out unit=STREAM_ENG_V2 0 out port=0 */
@@ -23949,7 +23948,7 @@ void trace_ec__ec_blob_66(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 1 [STREAM_ENG_V2 1] */
-    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1036 input ports=0 range=1[0,109200] */
+    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1036 input ports=0 range=8[0,109200] */
 
     static const LL_Streng_TensorInitTypeDef Identity_inserted_id1036_dma_init_in_0_66 = {
       /* from memory with batch=1 */
@@ -23958,7 +23957,7 @@ void trace_ec__ec_blob_66(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Dequantize_295_out_0_inserted_out1034_inserted_in1036 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Dequantize_295_out_0_inserted_out1034_inserted_in1036 */
       .offset_start = 0,
       .offset_end = 27300,
       .offset_limit = 109264,
@@ -23981,11 +23980,11 @@ void trace_ec__ec_blob_66(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 109200 */
+    /* npuRAM3 -> 109200 */
 
     /* Dma output units from cycle: */
     /* Unit= 7 [STREAM_ENG_V2 7] */
-    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1036 output ports=0 range=14[0,109200] */
+    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1036 output ports=0 range=11[0,109200] */
 
     const LL_Streng_TensorInitTypeDef Identity_inserted_id1036_dma_init_out_0_66 = {
       /* to memory canonical from batch=1 */
@@ -24064,7 +24063,7 @@ void trace_ec__ec_blob_66(void) {
 
     /* Dma inputs units to cycle: */
     /* Unit= 7 [STREAM_ENG_V2 7] */
-    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1039 input ports=0 range=1[109200,191100] */
+    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1039 input ports=0 range=8[109200,191100] */
 
     static const LL_Streng_TensorInitTypeDef Identity_inserted_id1039_dma_init_in_0_67 = {
       /* from memory with batch=1 */
@@ -24073,7 +24072,7 @@ void trace_ec__ec_blob_66(void) {
       .noblk = 0,
       .align_right = 0,
       .nbits_unsigned = 0,
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */}, /* Dequantize_284_out_0_inserted_out1037_inserted_in1039 */
+      .addr_base = {(unsigned char *)(0x34200000UL) /* Equivalent hex address = 0x34200000UL */}, /* Dequantize_284_out_0_inserted_out1037_inserted_in1039 */
       .offset_start = 109200,
       .offset_end = 136500,
       .offset_limit = 191168,
@@ -24096,11 +24095,11 @@ void trace_ec__ec_blob_66(void) {
 
 
     /* Dma input bandwidth from memory pools: */
-    /* npuRAM5 -> 81900 */
+    /* npuRAM3 -> 81900 */
 
     /* Dma output units from cycle: */
     /* Unit= 3 [STREAM_ENG_V2 3] */
-    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1039 output ports=0 range=13[0,81900] */
+    /* Emit conf for STREAM_ENG_V2 node=Identity_inserted_id1039 output ports=0 range=10[0,81900] */
 
     const LL_Streng_TensorInitTypeDef Identity_inserted_id1039_dma_init_out_0_67 = {
       /* to memory canonical from batch=1 */

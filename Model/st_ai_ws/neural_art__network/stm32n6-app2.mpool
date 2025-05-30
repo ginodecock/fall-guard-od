@@ -119,93 +119,6 @@
     "busNode": 0
    },
    {
-    "fname": "AXISRAM2",
-    "name": "cpuRAM2",
-    "fformat": "FORMAT_RAW",
-    "prop": {
-     "rights": "ACC_WRITE",
-     "throughput": "MID",
-     "latency": "MID",
-     "byteWidth": 8,
-     "freqRatio": 2.5,
-     "burstMaxLength": 4294967295,
-     "burstPenalty": 0,
-     "pipelined": "PIPELINED_ON",
-     "cacheable": "CACHEABLE_OFF",
-     "readPower": 17.324,
-     "writePower": 15.321,
-     "constantsPreferred": false
-    },
-    "offset": {
-     "value": "833",
-     "magnitude": "MBYTES"
-    },
-    "size": {
-     "value": "1",
-     "magnitude": "MBYTES"
-    },
-    "mode": "USEMODE_ABSOLUTE",
-    "busNode": 0
-   },
-   {
-    "fname": "AXISRAM1",
-    "name": "cpuRAM1",
-    "fformat": "FORMAT_RAW",
-    "prop": {
-     "rights": "ACC_WRITE",
-     "throughput": "MID",
-     "latency": "MID",
-     "byteWidth": 8,
-     "freqRatio": 2.5,
-     "burstMaxLength": 4294967295,
-     "burstPenalty": 0,
-     "pipelined": "PIPELINED_ON",
-     "cacheable": "CACHEABLE_OFF",
-     "readPower": 16.616,
-     "writePower": 14.522,
-     "constantsPreferred": false
-    },
-    "offset": {
-     "value": "852480",
-     "magnitude": "KBYTES"
-    },
-    "size": {
-     "value": "0",
-     "magnitude": "BYTES"
-    },
-    "mode": "USEMODE_ABSOLUTE",
-    "busNode": 0
-   },
-   {
-    "fname": "AXIFLEXMEM",
-    "name": "flexMEM",
-    "fformat": "FORMAT_RAW",
-    "prop": {
-     "rights": "ACC_WRITE",
-     "throughput": "MID",
-     "latency": "MID",
-     "byteWidth": 8,
-     "freqRatio": 2.5,
-     "burstMaxLength": 4294967295,
-     "burstPenalty": 0,
-     "pipelined": "PIPELINED_ON",
-     "cacheable": "CACHEABLE_OFF",
-     "readPower": 9.381,
-     "writePower": 8.569,
-     "constantsPreferred": false
-    },
-    "offset": {
-     "value": "832",
-     "magnitude": "MBYTES"
-    },
-    "size": {
-     "value": "0",
-     "magnitude": "BYTES"
-    },
-    "mode": "USEMODE_ABSOLUTE",
-    "busNode": 0
-   },
-   {
     "fname": "xSPI1",
     "name": "hyperRAM",
     "fformat": "FORMAT_RAW",
@@ -257,7 +170,7 @@
      "magnitude": "KBYTES"
     },
     "size": {
-     "value": "61",
+     "value": "63",
      "magnitude": "MBYTES"
     },
     "mode": "USEMODE_ABSOLUTE",

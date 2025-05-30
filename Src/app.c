@@ -6,14 +6,14 @@
  ******************************************************************************
  * @attention
  *
- * Copyright (c) 2024 G-DC
+ * Copyright (c) 2025 G-DC
  * All rights reserved.
  *
- * This software comes is provided AS-IS.
+ * This software is provided AS-IS.
  *
  ******************************************************************************
  */
-#include "cmw_camera.h"
+
 #include "app.h"
 #include "nxd_dhcp_client.h"
 #include "nx_ip.h"
@@ -32,7 +32,7 @@
 #include "stm32n6xx_hal.h"
 #include "tx_api.h"
 #include "utils.h"
-#include "crop_img.h"
+
 #include <string.h> // For memcpy
 /* Includes ------------------------------------------------------------------*/
 //#include "app_netxduo.h"
@@ -49,7 +49,7 @@
 //#include "app_azure_rtos.h"
 #include "stm32n6xx.h"
 #include "app_threadx.h"
-BSP_LCD_LayerConfig_t LayerConfig = {0};
+
 /* Private variables ---------------------------------------------------------*/
 #define USE_STATIC_ALLOCATION                    1
 
@@ -80,7 +80,7 @@ __ALIGN_BEGIN static UCHAR nx_byte_pool_buffer[NX_APP_MEM_POOL_SIZE] __ALIGN_END
 static TX_BYTE_POOL nx_app_byte_pool;
 
 #endif
-static void Display_WelcomeScreen(void);
+
 TX_THREAD      NxAppThread;
 NX_PACKET_POOL NxAppPool;
 NX_IP          NetXDuoEthIpInstance;
@@ -105,7 +105,6 @@ static NX_DNS   DnsClient;
 uint8_t MACAddr[6];
 RTC_HandleTypeDef hrtc;
 uint8_t prev_nb_person;
-uint8_t prev_nb_detect;
 ULONG prev_timestamp;
 int prev_state_detect;
 // Shared resources between threads
@@ -145,7 +144,6 @@ static UCHAR topic_buffer[NXD_MQTT_MAX_TOPIC_NAME_LENGTH];
 UCHAR tls_packet_buffer[4000];
 ULONG current_time;
 /* USER CODE END PV */
-static void Display_NetworkOutput(od_pp_out_t *p_postprocess, uint32_t inference_ms);
 
 /* Private function prototypes -----------------------------------------------*/
 static VOID nx_app_thread_entry (ULONG thread_input);
@@ -178,17 +176,40 @@ static uint32_t GetRtcEpoch();
 
 #define ALIGN_VALUE(_v_,_a_) (((_v_) + (_a_) - 1) & ~((_a_) - 1))
 
-/*#define LCD_FG_WIDTH LCD_BG_WIDTH
-#define LCD_FG_HEIGHT LCD_BG_HEIGHT*/
-volatile int32_t cameraFrameReceived;
+#define LCD_FG_WIDTH LCD_BG_WIDTH
+#define LCD_FG_HEIGHT LCD_BG_HEIGHT
+
 #define NUMBER_COLORS 10
 #define BQUEUE_MAX_BUFFERS 3
 #define CPU_LOAD_HISTORY_DEPTH 8
 
 #define DISPLAY_BUFFER_NB (DISPLAY_DELAY + 2)
+#define NN_OUT_MAX_NB 4
+#define NN_OUT_MAX_NB 4
+#if NN_OUT_NB > NN_OUT_MAX_NB
+#error "max output buffer reached"
+#endif
+
+/* define default 0 value for NN_OUTx_SIZE for [1:NN_OUT_MAX_NB[ */
+#ifndef NN_OUT1_SIZE
+#define NN_OUT1_SIZE 0
+#endif
+#ifndef NN_OUT2_SIZE
+#define NN_OUT2_SIZE 0
+#endif
+#ifndef NN_OUT3_SIZE
+#define NN_OUT3_SIZE 0
+#endif
+#define NN_OUT0_SIZE_ALIGN ALIGN_VALUE(NN_OUT0_SIZE, 32)
+#define NN_OUT1_SIZE_ALIGN ALIGN_VALUE(NN_OUT1_SIZE, 32)
+#define NN_OUT2_SIZE_ALIGN ALIGN_VALUE(NN_OUT2_SIZE, 32)
+#define NN_OUT3_SIZE_ALIGN ALIGN_VALUE(NN_OUT3_SIZE, 32)
+#define NN_OUT_BUFFER_SIZE (NN_OUT0_SIZE_ALIGN + NN_OUT1_SIZE_ALIGN + NN_OUT2_SIZE_ALIGN + NN_OUT3_SIZE_ALIGN)
 
 /* Align so we are sure nn_output_buffers[0] and nn_output_buffers[1] are aligned on 32 bytes */
 #define NN_BUFFER_OUT_SIZE_ALIGN ALIGN_VALUE(NN_BUFFER_OUT_SIZE, 32)
+
+
 typedef struct NXD_MQTT_MESSAGE_STRUCT {
     UCHAR *topic;       /* Pointer to message topic */
     ULONG topic_length; /* Topic length in bytes */
@@ -206,21 +227,57 @@ typedef struct
   uint32_t YSize;
 } Rectangle_TypeDef;
 
+typedef struct {
+  TX_SEMAPHORE free;
+  TX_SEMAPHORE ready;
+  int buffer_nb;
+  uint8_t *buffers[BQUEUE_MAX_BUFFERS];
+  int free_idx;
+  int ready_idx;
+} bqueue_t;
+
+typedef struct {
+  uint64_t current_total;
+  uint64_t current_thread_total;
+  uint64_t prev_total;
+  uint64_t prev_thread_total;
+  struct {
+    uint64_t total;
+    uint64_t thread;
+    uint32_t tick;
+  } history[CPU_LOAD_HISTORY_DEPTH];
+} cpuload_info_t;
+
+typedef struct {
+  int32_t nb_detect;
+  od_pp_outBuffer_t detects[AI_OBJDETECT_YOLOV2_PP_MAX_BOXES_LIMIT];
+  uint32_t nn_period_ms;
+  uint32_t inf_ms;
+  uint32_t pp_ms;
+  uint32_t disp_ms;
+} display_info_t;
+
+typedef struct {
+  TX_SEMAPHORE update;
+  TX_MUTEX lock;
+  display_info_t info;
+} display_t;
+
 /* Globals */
 DECLARE_CLASSES_TABLE;
 /* Lcd Background area */
 static Rectangle_TypeDef lcd_bg_area = {
-  .X0 = 80,
-  .Y0 = 0,
-  .XSize = 0,
-  .YSize = 0,
+  .X0 = (LCD_DEFAULT_WIDTH - LCD_BG_WIDTH) / 2,
+  .Y0 = (LCD_DEFAULT_HEIGHT - LCD_BG_HEIGHT) / 2,
+  .XSize = LCD_BG_WIDTH,
+  .YSize = LCD_BG_HEIGHT,
 };
 /* Lcd Foreground area */
 static Rectangle_TypeDef lcd_fg_area = {
-  .X0 = 0,
-  .Y0 = 0,
-  .XSize = 800,
-  .YSize = 480,
+  .X0 = (LCD_DEFAULT_WIDTH - LCD_FG_WIDTH) / 2,
+  .Y0 = (LCD_DEFAULT_HEIGHT - LCD_FG_HEIGHT) / 2,
+  .XSize = LCD_FG_WIDTH,
+  .YSize = LCD_FG_HEIGHT,
 };
 static const uint32_t colors[NUMBER_COLORS] = {
     UTIL_LCD_COLOR_CYAN,
@@ -234,71 +291,310 @@ static const uint32_t colors[NUMBER_COLORS] = {
     UTIL_LCD_COLOR_BLUE,
     UTIL_LCD_COLOR_ORANGE
 };
-
-#define ALIGN_TO_16(value) (((value) + 15) & ~15)
-
-/* for models not multiple of 16; needs a working buffer */
-#if (NN_WIDTH * NN_BPP) != ALIGN_TO_16(NN_WIDTH * NN_BPP)
-#define DCMIPP_OUT_NN_LEN (ALIGN_TO_16(NN_WIDTH * NN_BPP) * NN_HEIGHT)
-#define DCMIPP_OUT_NN_BUFF_LEN (DCMIPP_OUT_NN_LEN + 32 - DCMIPP_OUT_NN_LEN%32)
-
-__attribute__ ((aligned (32)))
-uint8_t dcmipp_out_nn[DCMIPP_OUT_NN_BUFF_LEN];
-#else
-uint8_t *dcmipp_out_nn;
-#endif
 /* Lcd Background Buffer */
-__attribute__ ((section (".psram_bss")))
-__attribute__ ((aligned (32)))
-uint8_t lcd_bg_buffer[800 * 480 * 2];
+static uint8_t lcd_bg_buffer[DISPLAY_BUFFER_NB][LCD_BG_WIDTH * LCD_BG_HEIGHT * 2] ALIGN_32 IN_PSRAM;
+static int lcd_bg_buffer_disp_idx = 1;
+static int lcd_bg_buffer_capt_idx = 0;
 /* Lcd Foreground Buffer */
-__attribute__ ((section (".psram_bss")))
-__attribute__ ((aligned (32)))
-uint8_t lcd_fg_buffer[2][LCD_FG_WIDTH * LCD_FG_HEIGHT * 2];
+static uint8_t lcd_fg_buffer[2][LCD_FG_WIDTH * LCD_FG_HEIGHT* 2] ALIGN_32 IN_PSRAM;
 static int lcd_fg_buffer_rd_idx;
+static display_t disp;
+static cpuload_info_t cpu_load;
+
+/* model */
 LL_ATON_DECLARE_NAMED_NN_INSTANCE_AND_INTERFACE(Default);
-volatile int32_t cameraFrameReceived;
+/* nn input buffers */
+static uint8_t nn_input_buffers[2][NN_WIDTH * NN_HEIGHT * NN_BPP] ALIGN_32 IN_PSRAM;
+static bqueue_t nn_input_queue;
+/* nn output buffers */
+static const uint32_t nn_out_len_user[NN_OUT_MAX_NB] = {
+ NN_OUT0_SIZE, NN_OUT1_SIZE, NN_OUT2_SIZE, NN_OUT3_SIZE
+};
+static uint8_t nn_output_buffers[2][NN_OUT_BUFFER_SIZE] ALIGN_32;
+static bqueue_t nn_output_queue;
+
+ /* threads */
+  /* nn thread */
 static TX_THREAD nn_thread;
 static uint8_t nn_tread_stack[4096];
+  /* pp + display thread */
+static TX_THREAD pp_thread;
+static uint8_t pp_tread_stack[4096];
+  /* display thread */
+static TX_THREAD dp_thread;
+static uint8_t dp_tread_stack[4096];
+  /* isp thread */
+static TX_THREAD isp_thread;
+static uint8_t isp_tread_stack[4096];
+static TX_SEMAPHORE isp_sem;
 
-static void Display_NetworkOutput(od_pp_out_t *p_postprocess, uint32_t inference_ms)
+static int is_cache_enable()
 {
-  sensor_data_t data;
-  od_pp_outBuffer_t *rois = p_postprocess->pOutBuff;
-  uint32_t nb_rois = p_postprocess->nb_detect;
+#if defined(USE_DCACHE)
+  return 1;
+#else
+  return 0;
+#endif
+}
+
+static void cpuload_init(cpuload_info_t *cpu_load)
+{
+  memset(cpu_load, 0, sizeof(cpuload_info_t));
+}
+
+static void cpuload_update(cpuload_info_t *cpu_load)
+{
+  EXECUTION_TIME thread_total;
+  EXECUTION_TIME isr;
+  EXECUTION_TIME idle;
+  int i;
+
+  cpu_load->history[1] = cpu_load->history[0];
+
+  _tx_execution_thread_total_time_get(&thread_total);
+  _tx_execution_isr_time_get(&isr);
+  _tx_execution_idle_time_get(&idle);
+
+  cpu_load->history[0].total = thread_total + isr + idle;
+  cpu_load->history[0].thread = thread_total;
+  cpu_load->history[0].tick = HAL_GetTick();
+
+  if (cpu_load->history[1].tick - cpu_load->history[2].tick < 1000)
+    return ;
+
+  for (i = 0; i < CPU_LOAD_HISTORY_DEPTH - 2; i++)
+    cpu_load->history[CPU_LOAD_HISTORY_DEPTH - 1 - i] = cpu_load->history[CPU_LOAD_HISTORY_DEPTH - 1 - i - 1];
+}
+
+static void cpuload_get_info(cpuload_info_t *cpu_load, float *cpu_load_last, float *cpu_load_last_second,
+                             float *cpu_load_last_five_seconds)
+{
+  if (cpu_load_last)
+    *cpu_load_last = 100.0 * (cpu_load->history[0].thread - cpu_load->history[1].thread) /
+                     (cpu_load->history[0].total - cpu_load->history[1].total);
+  if (cpu_load_last_second)
+    *cpu_load_last_second = 100.0 * (cpu_load->history[2].thread - cpu_load->history[3].thread) /
+                     (cpu_load->history[2].total - cpu_load->history[3].total);
+  if (cpu_load_last_five_seconds)
+    *cpu_load_last_five_seconds = 100.0 * (cpu_load->history[2].thread - cpu_load->history[7].thread) /
+                     (cpu_load->history[2].total - cpu_load->history[7].total);
+}
+
+static int bqueue_init(bqueue_t *bq, int buffer_nb, uint8_t **buffers)
+{
+  int ret;
+  int i;
+
+  if (buffer_nb > BQUEUE_MAX_BUFFERS)
+    return -1;
+
+  ret = tx_semaphore_create(&bq->free, NULL, buffer_nb);
+  if (ret)
+    goto free_sem_error;
+  ret = tx_semaphore_create(&bq->ready, NULL, 0);
+  if (ret)
+    goto ready_sem_error;
+
+  bq->buffer_nb = buffer_nb;
+  for (i = 0; i < buffer_nb; i++) {
+    assert(buffers[i]);
+    bq->buffers[i] = buffers[i];
+  }
+  bq->free_idx = 0;
+  bq->ready_idx = 0;
+
+  return 0;
+
+ready_sem_error:
+  tx_semaphore_delete(&bq->free);
+free_sem_error:
+  return -1;
+}
+
+static uint8_t *bqueue_get_free(bqueue_t *bq, int is_blocking)
+{
+  uint8_t *res;
   int ret;
 
-  ret = HAL_LTDC_SetAddress_NoReload(&hlcd_ltdc, (uint32_t) lcd_fg_buffer[lcd_fg_buffer_rd_idx], LTDC_LAYER_2);
+  ret = tx_semaphore_get(&bq->free, is_blocking ? TX_WAIT_FOREVER : TX_NO_WAIT);
+  if (ret == TX_NO_INSTANCE)
+    return NULL;
+  assert(ret == 0);
+
+  res = bq->buffers[bq->free_idx];
+  bq->free_idx = (bq->free_idx + 1) % bq->buffer_nb;
+
+  return res;
+}
+
+static void bqueue_put_free(bqueue_t *bq)
+{
+  int ret;
+
+  ret = tx_semaphore_put(&bq->free);
+  assert(ret == 0);
+}
+
+static uint8_t *bqueue_get_ready(bqueue_t *bq)
+{
+  uint8_t *res;
+  int ret;
+
+  ret = tx_semaphore_get(&bq->ready, TX_WAIT_FOREVER);
+  assert(ret == 0);
+
+  res = bq->buffers[bq->ready_idx];
+  bq->ready_idx = (bq->ready_idx + 1) % bq->buffer_nb;
+
+  return res;
+}
+
+static void bqueue_put_ready(bqueue_t *bq)
+{
+  int ret;
+
+  ret = tx_semaphore_put(&bq->ready);
+  assert(ret == 0);
+}
+
+static void app_main_pipe_frame_event()
+{
+  int next_disp_idx = (lcd_bg_buffer_disp_idx + 1) % DISPLAY_BUFFER_NB;
+  int next_capt_idx = (lcd_bg_buffer_capt_idx + 1) % DISPLAY_BUFFER_NB;
+  int ret;
+
+  ret = HAL_DCMIPP_PIPE_SetMemoryAddress(CMW_CAMERA_GetDCMIPPHandle(), DCMIPP_PIPE1,
+                                         DCMIPP_MEMORY_ADDRESS_0, (uint32_t) lcd_bg_buffer[next_capt_idx]);
   assert(ret == HAL_OK);
 
-  /* Draw bounding boxes */
-  UTIL_LCD_FillRect(lcd_fg_area.X0, lcd_fg_area.Y0, lcd_fg_area.XSize, lcd_fg_area.YSize, 0x00000000); /* Clear previous boxes */
-  for (int32_t i = 0; i < nb_rois; i++)
-  {
-    uint32_t x0 = (uint32_t) ((rois[i].x_center - rois[i].width / 2) * ((float32_t) lcd_bg_area.XSize)) + lcd_bg_area.X0;
-    uint32_t y0 = (uint32_t) ((rois[i].y_center - rois[i].height / 2) * ((float32_t) lcd_bg_area.YSize));
-    uint32_t width = (uint32_t) (rois[i].width * ((float32_t) lcd_bg_area.XSize));
-    uint32_t height = (uint32_t) (rois[i].height * ((float32_t) lcd_bg_area.YSize));
-    /* Draw boxes without going outside of the image to avoid clearing the text area to clear the boxes */
-    x0 = x0 < lcd_bg_area.X0 + lcd_bg_area.XSize ? x0 : lcd_bg_area.X0 + lcd_bg_area.XSize - 1;
-    y0 = y0 < lcd_bg_area.Y0 + lcd_bg_area.YSize ? y0 : lcd_bg_area.Y0 + lcd_bg_area.YSize  - 1;
-    width = ((x0 + width) < lcd_bg_area.X0 + lcd_bg_area.XSize) ? width : (lcd_bg_area.X0 + lcd_bg_area.XSize - x0 - 1);
-    height = ((y0 + height) < lcd_bg_area.Y0 + lcd_bg_area.YSize) ? height : (lcd_bg_area.Y0 + lcd_bg_area.YSize - y0 - 1);
-    UTIL_LCD_DrawRect(x0, y0, width, height, colors[rois[i].class_index % NUMBER_COLORS]);
-    UTIL_LCDEx_PrintfAt(x0, y0, LEFT_MODE, classes_table[rois[i].class_index]);
-    UTIL_LCDEx_PrintfAt(-x0-width, y0, RIGHT_MODE, "%.0f%%", rois[i].conf*100.0f);
-    //printf("color = %lu",rois[i].class_index);
-    if (rois[i].class_index == 2 ){
-    	data.nb_detect = nb_rois;
-    	data.timestamp = GetRtcEpoch();
-    	data.state_detect = 13; //Fall detected!
-    	/* Send to MQTT thread */
-    	if (prev_state_detect != 13){
-    	   	 tx_queue_send(&measurement_queue, &data, TX_NO_WAIT);
-    	   	 prev_state_detect = 13;
-    	}
-    }
+  ret = HAL_LTDC_SetAddress_NoReload(&hlcd_ltdc, (uint32_t) lcd_bg_buffer[next_disp_idx], LTDC_LAYER_1);
+  assert(ret == HAL_OK);
+  ret = HAL_LTDC_ReloadLayer(&hlcd_ltdc, LTDC_RELOAD_VERTICAL_BLANKING, LTDC_LAYER_1);
+  assert(ret == HAL_OK);
+  lcd_bg_buffer_disp_idx = next_disp_idx;
+  lcd_bg_buffer_capt_idx = next_capt_idx;
+}
+
+static void app_ancillary_pipe_frame_event()
+{
+  uint8_t *next_buffer;
+  int ret;
+
+  next_buffer = bqueue_get_free(&nn_input_queue, 0);
+  if (next_buffer) {
+    ret = HAL_DCMIPP_PIPE_SetMemoryAddress(CMW_CAMERA_GetDCMIPPHandle(), DCMIPP_PIPE2,
+                                           DCMIPP_MEMORY_ADDRESS_0, (uint32_t) next_buffer);
+    assert(ret == HAL_OK);
+    bqueue_put_ready(&nn_input_queue);
   }
+}
+
+static void app_main_pipe_vsync_event()
+{
+  int ret;
+
+  ret = tx_semaphore_put(&isp_sem);
+  assert(ret == 0);
+}
+
+static void LCD_init()
+{
+  printf("Display init \n\r");
+
+  BSP_LCD_LayerConfig_t LayerConfig = {0};
+
+  BSP_LCD_Init(0, LCD_ORIENTATION_LANDSCAPE);
+
+  /* Preview layer Init */
+  LayerConfig.X0          = lcd_bg_area.X0;
+  LayerConfig.Y0          = lcd_bg_area.Y0;
+  LayerConfig.X1          = lcd_bg_area.X0 + lcd_bg_area.XSize;
+  LayerConfig.Y1          = lcd_bg_area.Y0 + lcd_bg_area.YSize;
+  LayerConfig.PixelFormat = LCD_PIXEL_FORMAT_RGB565;
+  LayerConfig.Address     = (uint32_t) lcd_bg_buffer[lcd_bg_buffer_disp_idx];
+
+  BSP_LCD_ConfigLayer(0, LTDC_LAYER_1, &LayerConfig);
+
+  LayerConfig.X0 = lcd_fg_area.X0;
+  LayerConfig.Y0 = lcd_fg_area.Y0;
+  LayerConfig.X1 = lcd_fg_area.X0 + lcd_fg_area.XSize;
+  LayerConfig.Y1 = lcd_fg_area.Y0 + lcd_fg_area.YSize;
+  LayerConfig.PixelFormat = LCD_PIXEL_FORMAT_ARGB4444;
+  LayerConfig.Address = (uint32_t) lcd_fg_buffer[1]; /* External XSPI1 PSRAM */
+
+  BSP_LCD_ConfigLayer(0, LTDC_LAYER_2, &LayerConfig);
+  UTIL_LCD_SetFuncDriver(&LCD_Driver);
+  UTIL_LCD_SetLayer(LTDC_LAYER_2);
+  UTIL_LCD_Clear(0x00000000);
+  UTIL_LCD_SetFont(&Font20);
+  UTIL_LCD_SetTextColor(UTIL_LCD_COLOR_WHITE);
+}
+
+static int clamp_point(int *x, int *y)
+{
+  int xi = *x;
+  int yi = *y;
+
+  if (*x < 0)
+    *x = 0;
+  if (*y < 0)
+    *y = 0;
+  if (*x >= lcd_bg_area.XSize)
+    *x = lcd_bg_area.XSize - 1;
+  if (*y >= lcd_bg_area.YSize)
+    *y = lcd_bg_area.YSize - 1;
+
+  return (xi != *x) || (yi != *y);
+}
+
+static void convert_length(float32_t wi, float32_t hi, int *wo, int *ho)
+{
+  *wo = (int) (lcd_bg_area.XSize * wi);
+  *ho = (int) (lcd_bg_area.YSize * hi);
+}
+
+static void convert_point(float32_t xi, float32_t yi, int *xo, int *yo)
+{
+  *xo = (int) (lcd_bg_area.XSize * xi);
+  *yo = (int) (lcd_bg_area.YSize * yi);
+}
+
+static void Display_Detection(od_pp_outBuffer_t *detect)
+{
+  int xc, yc;
+  int x0, y0;
+  int x1, y1;
+  int w, h;
+
+  convert_point(detect->x_center, detect->y_center, &xc, &yc);
+  convert_length(detect->width, detect->height, &w, &h);
+  x0 = xc - (w + 1) / 2;
+  y0 = yc - (h + 1) / 2;
+  x1 = xc + (w + 1) / 2;
+  y1 = yc + (h + 1) / 2;
+  clamp_point(&x0, &y0);
+  clamp_point(&x1, &y1);
+
+  UTIL_LCD_DrawRect(x0, y0, x1 - x0, y1 - y0, colors[detect->class_index % NUMBER_COLORS]);
+  UTIL_LCDEx_PrintfAt(x0, y0, LEFT_MODE, classes_table[detect->class_index]);
+}
+
+static void Display_NetworkOutput(display_info_t *info)
+{
+  od_pp_outBuffer_t *rois = info->detects;
+  uint32_t nb_rois = info->nb_detect;
+  float cpu_load_one_second;
+  int line_nb = 0;
+  float nn_fps;
+  int i;
+  sensor_data_t data;
+  /* clear previous ui */
+  UTIL_LCD_FillRect(lcd_fg_area.X0, lcd_fg_area.Y0, lcd_fg_area.XSize, lcd_fg_area.YSize, 0x00000000); /* Clear previous boxes */
+
+  /* cpu load */
+  cpuload_update(&cpu_load);
+  cpuload_get_info(&cpu_load, NULL, &cpu_load_one_second, NULL);
+
   if ((GetRtcEpoch() - prev_timestamp) > 3)
     {
   	  prev_timestamp = GetRtcEpoch();
@@ -313,55 +609,172 @@ static void Display_NetworkOutput(od_pp_out_t *p_postprocess, uint32_t inference
 
   	     /* Send to MQTT thread */
   	     tx_queue_send(&measurement_queue, &data, TX_NO_WAIT);
-   	  }
+  	  //tx_thread_sleep(1000);  // Adjust sampling rate as needed
+  	  }
     }
+  nn_fps = 1000.0 / info->nn_period_ms;
+#if 1
+  UTIL_LCDEx_PrintfAt(0, LINE(line_nb),  RIGHT_MODE, "Cpu"
+		  "");
+  line_nb += 1;
+  UTIL_LCDEx_PrintfAt(0, LINE(line_nb),  RIGHT_MODE, "   %.1f%%", cpu_load_one_second);
+  line_nb += 2;
+  UTIL_LCDEx_PrintfAt(0, LINE(line_nb), RIGHT_MODE, "Inference");
+  line_nb += 1;
+  UTIL_LCDEx_PrintfAt(0, LINE(line_nb), RIGHT_MODE, "   %ums", info->inf_ms);
+  line_nb += 2;
+  UTIL_LCDEx_PrintfAt(0, LINE(line_nb), RIGHT_MODE, "   FPS");
+  line_nb += 1;
+  UTIL_LCDEx_PrintfAt(0, LINE(line_nb), RIGHT_MODE, "  %.2f", nn_fps);
+  line_nb += 2;
+  UTIL_LCDEx_PrintfAt(0, LINE(line_nb), RIGHT_MODE, " Objects %u", nb_rois);
+  line_nb += 1;
+#else
+  (void) nn_fps;
+  UTIL_LCDEx_PrintfAt(0, LINE(line_nb),  RIGHT_MODE, "Cpu");
+  line_nb += 1;
+  UTIL_LCDEx_PrintfAt(0, LINE(line_nb),  RIGHT_MODE, "   %.1f%%", cpu_load_one_second);
+  line_nb += 1;
+  UTIL_LCDEx_PrintfAt(0, LINE(line_nb), RIGHT_MODE, "nn period");
+  line_nb += 1;
+  UTIL_LCDEx_PrintfAt(0, LINE(line_nb), RIGHT_MODE, "   %ums", info->nn_period_ms);
+  line_nb += 1;
+  UTIL_LCDEx_PrintfAt(0, LINE(line_nb), RIGHT_MODE, "Inference");
+  line_nb += 1;
+  UTIL_LCDEx_PrintfAt(0, LINE(line_nb), RIGHT_MODE, "   %ums", info->inf_ms);
+  line_nb += 1;
+  UTIL_LCDEx_PrintfAt(0, LINE(line_nb), RIGHT_MODE, "Post process");
+  line_nb += 1;
+  UTIL_LCDEx_PrintfAt(0, LINE(line_nb), RIGHT_MODE, "   %ums", info->pp_ms);
+  line_nb += 1;
+  UTIL_LCDEx_PrintfAt(0, LINE(line_nb), RIGHT_MODE, "Display");
+  line_nb += 1;
+  UTIL_LCDEx_PrintfAt(0, LINE(line_nb), RIGHT_MODE, "   %ums", info->disp_ms);
+  line_nb += 1;
+  UTIL_LCDEx_PrintfAt(0, LINE(line_nb), RIGHT_MODE, " Objects %u", nb_rois);
+  line_nb += 1;
+#endif
 
-  UTIL_LCD_SetBackColor(0x40000000);
-  UTIL_LCDEx_PrintfAt(0, LINE(2), CENTER_MODE, "Objects %u", nb_rois);
-  UTIL_LCDEx_PrintfAt(0, LINE(20), CENTER_MODE, "Inference: %ums", inference_ms);
-  UTIL_LCD_SetBackColor(0);
-
-  Display_WelcomeScreen();
-
-  SCB_CleanDCache_by_Addr(lcd_fg_buffer[lcd_fg_buffer_rd_idx], LCD_FG_FRAMEBUFFER_SIZE);
-  ret = HAL_LTDC_ReloadLayer(&hlcd_ltdc, LTDC_RELOAD_VERTICAL_BLANKING, LTDC_LAYER_2);
-  assert(ret == HAL_OK);
-  lcd_fg_buffer_rd_idx = 1 - lcd_fg_buffer_rd_idx;
+  /* Draw bounding boxes */
+  for (i = 0; i < nb_rois; i++)
+    Display_Detection(&rois[i]);
+    if (rois[i].class_index == 2 ){
+      	data.nb_detect = nb_rois;
+      	data.timestamp = GetRtcEpoch();
+      	data.state_detect = 13; //Fall detected!
+      	/* Send to MQTT thread */
+      	if (prev_state_detect != 13){
+      	   	 tx_queue_send(&measurement_queue, &data, TX_NO_WAIT);
+      	   	 prev_state_detect = 13;
+      	}
+    }
 }
-
-static void LCD_init()
+static int model_get_output_nb(const LL_Buffer_InfoTypeDef *nn_out_info)
 {
-  printf("Display init \n\r");
+  int nb = 0;
 
-  BSP_LCD_Init(0, LCD_ORIENTATION_LANDSCAPE);
+  while (nn_out_info->name) {
+    nb++;
+    nn_out_info++;
+  }
 
-  /* Preview layer Init */
-  LayerConfig.X0          = lcd_bg_area.X0;
-  LayerConfig.Y0          = lcd_bg_area.Y0;
-  LayerConfig.X1          = lcd_bg_area.X0 + lcd_bg_area.XSize;
-  LayerConfig.Y1          = lcd_bg_area.Y0 + lcd_bg_area.YSize;
-  LayerConfig.PixelFormat = LCD_PIXEL_FORMAT_RGB565;
-  LayerConfig.Address     = (uint32_t) lcd_bg_buffer;
-
-  BSP_LCD_ConfigLayer(0, LTDC_LAYER_1, &LayerConfig);
-
-  LayerConfig.X0 = lcd_fg_area.X0;
-  LayerConfig.Y0 = lcd_fg_area.Y0;
-  LayerConfig.X1 = lcd_fg_area.X0 + lcd_fg_area.XSize;
-  LayerConfig.Y1 = lcd_fg_area.Y0 + lcd_fg_area.YSize;
-  LayerConfig.PixelFormat = LCD_PIXEL_FORMAT_ARGB4444;
-  LayerConfig.Address = (uint32_t) lcd_fg_buffer; /* External XSPI1 PSRAM */
-
-  BSP_LCD_ConfigLayer(0, LTDC_LAYER_2, &LayerConfig);
-  UTIL_LCD_SetFuncDriver(&LCD_Driver);
-  UTIL_LCD_SetLayer(LTDC_LAYER_2);
-  UTIL_LCD_Clear(0x00000000);
-  UTIL_LCD_SetFont(&Font20);
-  UTIL_LCD_SetTextColor(UTIL_LCD_COLOR_WHITE);
+  return nb;
 }
 
 static void nn_thread_fct(ULONG arg)
 {
+  const LL_Buffer_InfoTypeDef *nn_out_info = LL_ATON_Output_Buffers_Info_Default();
+  const LL_Buffer_InfoTypeDef *nn_in_info = LL_ATON_Input_Buffers_Info_Default();
+  uint32_t nn_period_ms;
+  uint32_t nn_period[2];
+  uint8_t *nn_pipe_dst;
+  uint32_t nn_out_len;
+  uint32_t nn_in_len;
+  uint32_t inf_ms;
+  uint32_t ts;
+  int ret;
+  int i;
+  /* setup buffers size */
+  //nn_in = (uint8_t *) LL_Buffer_addr_start(&nn_in_info[0]);
+
+  /*nn_in_len = LL_Buffer_len(&nn_in_info[0]);
+  nn_out_len = LL_Buffer_len(&nn_out_info[0]);
+  printf("nn_out_len = %d\r\n", nn_out_len);
+  assert(nn_out_len == NN_BUFFER_OUT_SIZE);*/
+  nn_in_len = LL_Buffer_len(&nn_in_info[0]);
+
+  assert(NN_OUT_NB == model_get_output_nb(nn_out_info));
+  for (i = 0; i < NN_OUT_NB; i++)
+    assert(LL_Buffer_len(&nn_out_info[i]) == nn_out_len_user[i]);
+
+  /*** App Loop ***************************************************************/
+  nn_period[1] = HAL_GetTick();
+
+  nn_pipe_dst = bqueue_get_free(&nn_input_queue, 0);
+    assert(nn_pipe_dst);
+  CAM_NNPipe_Start(nn_pipe_dst, CMW_MODE_CONTINUOUS);
+  while (1)
+  {
+   /* uint8_t *capture_buffer;
+    uint8_t *output_buffer;
+
+    nn_period[0] = nn_period[1];
+    nn_period[1] = HAL_GetTick();
+    nn_period_ms = nn_period[1] - nn_period[0];
+
+    capture_buffer = bqueue_get_ready(&nn_input_queue);
+    assert(capture_buffer);
+    output_buffer = bqueue_get_free(&nn_output_queue, 1);
+    assert(output_buffer);*/
+	    uint8_t *capture_buffer;
+	    uint8_t *out[NN_OUT_NB];
+	    uint8_t *output_buffer;
+	    int i;
+
+	    nn_period[0] = nn_period[1];
+	    nn_period[1] = HAL_GetTick();
+	    nn_period_ms = nn_period[1] - nn_period[0];
+
+	    capture_buffer = bqueue_get_ready(&nn_input_queue);
+	    assert(capture_buffer);
+	    output_buffer = bqueue_get_free(&nn_output_queue, 1);
+	    assert(output_buffer);
+	    out[0] = output_buffer;
+	    for (i = 1; i < NN_OUT_NB; i++)
+	      out[i] = out[i - 1] + ALIGN_VALUE(nn_out_len_user[i - 1], 32);
+
+    /* run ATON inference */
+    ts = HAL_GetTick();
+     /* Note that we don't need to clean/invalidate those input buffers since they are only access in hardware */
+    ret = LL_ATON_Set_User_Input_Buffer_Default(0, capture_buffer, nn_in_len);
+    assert(ret == LL_ATON_User_IO_NOERROR);
+     /* Invalidate output buffer before Hw access it */
+    /*CACHE_OP(SCB_InvalidateDCache_by_Addr(output_buffer, nn_out_len));
+    ret = LL_ATON_Set_User_Output_Buffer_Default(0, output_buffer, nn_out_len);
+    assert(ret == LL_ATON_User_IO_NOERROR);*/
+    CACHE_OP(SCB_InvalidateDCache_by_Addr(output_buffer, sizeof(nn_output_buffers[0])));
+        for (i = 0; i < NN_OUT_NB; i++) {
+          ret = LL_ATON_Set_User_Output_Buffer_Default(i, out[i], nn_out_len_user[i]);
+          assert(ret == LL_ATON_User_IO_NOERROR);
+        }
+    LL_ATON_RT_Main(&NN_Instance_Default);
+    inf_ms = HAL_GetTick() - ts;
+
+    /* release buffers */
+    bqueue_put_free(&nn_input_queue);
+    bqueue_put_ready(&nn_output_queue);
+
+    /* update display stats */
+    tx_mutex_get(&disp.lock, TX_WAIT_FOREVER);
+    disp.info.inf_ms = inf_ms;
+    disp.info.nn_period_ms = nn_period_ms;
+    tx_mutex_put(&disp.lock);
+  }
+}
+
+static void pp_thread_fct(ULONG arg)
+{
+//#define POSTPROCESS_TYPE                          POSTPROCESS_OD_ST_SSD_UF//POSTPROCESS_OD_YOLO_V2_UF
 #if POSTPROCESS_TYPE == POSTPROCESS_OD_YOLO_V2_UF
   yolov2_pp_static_param_t pp_params;
 #elif POSTPROCESS_TYPE == POSTPROCESS_OD_YOLO_V5_UU
@@ -377,97 +790,174 @@ static void nn_thread_fct(ULONG arg)
 #else
     #error "PostProcessing type not supported"
 #endif
+  /*od_pp_out_t pp_output;
+  uint32_t nn_pp[2];
+  void *pp_input;
+  int ret;
+  int i;*/
+  uint8_t *pp_input[NN_OUT_NB];
   od_pp_out_t pp_output;
-  const LL_Buffer_InfoTypeDef *nn_out_info = LL_ATON_Output_Buffers_Info_Default();
-  const LL_Buffer_InfoTypeDef *nn_in_info = LL_ATON_Input_Buffers_Info_Default();
-  uint8_t *nn_in;
-  nn_in = (uint8_t *) LL_Buffer_addr_start(&nn_in_info[0]);
-  float32_t *nn_out[5];
-  int32_t nn_out_len[5];
-  int number_output = 3;//0;
+  int tracking_enabled;
+  uint32_t nn_pp[2];
+  int ret;
+  int i;
 
-  /* Count number of outputs */
-  while (nn_out_info[number_output].name != NULL)
-  {
-    number_output++;
-  }
-  assert(number_output <= 5);
+  (void)tracking_enabled;
 
-  for (int i = 0; i < number_output; i++)
-  {
-    nn_out[i] = (float32_t *) LL_Buffer_addr_start(&nn_out_info[i]);
-    nn_out_len[i] = LL_Buffer_len(&nn_out_info[i]);
-  }
-
-  uint32_t nn_in_len = LL_Buffer_len(&nn_in_info[0]);
-  uint32_t pitch_nn = 0;
-
-  UNUSED(nn_in_len);
   app_postprocess_init(&pp_params);
-
-  /*** App Loop ***************************************************************/
-  CAM_Init(&lcd_bg_area.XSize, &lcd_bg_area.YSize, &pitch_nn);
-  LCD_init();
-
-  /* Start LCD Display camera pipe stream */
-  printf("start pipe\n\r");
-  CAM_DisplayPipe_Start(lcd_bg_buffer, CMW_MODE_CONTINUOUS);
-  printf("pipe started\n\r");
   while (1)
   {
-	    CAM_IspUpdate();
-	    if (pitch_nn != (NN_WIDTH * NN_BPP))
-	    {
-	      /* Start NN camera single capture Snapshot */
-	      CAM_NNPipe_Start(dcmipp_out_nn, CMW_MODE_SNAPSHOT);
-	    }
-	    else
-	    {
-	      /* Start NN camera single capture Snapshot */
-	      CAM_NNPipe_Start(nn_in, CMW_MODE_SNAPSHOT);
-	   }
+    /*uint8_t *output_buffer;
 
-	    while (cameraFrameReceived == 0) {};
-	    cameraFrameReceived = 0;
+    output_buffer = bqueue_get_ready(&nn_output_queue);
+    assert(output_buffer);
+    pp_input = (void *) output_buffer;
+    pp_output.pOutBuff = NULL;
 
-	    uint32_t ts[2] = { 0 };
+    nn_pp[0] = HAL_GetTick();
 
-	    if (pitch_nn != (NN_WIDTH * NN_BPP))
-	    {
-	      SCB_InvalidateDCache_by_Addr(dcmipp_out_nn, sizeof(dcmipp_out_nn));
-	      img_crop(dcmipp_out_nn, nn_in, pitch_nn, NN_WIDTH, NN_HEIGHT, NN_BPP);
-	      SCB_CleanInvalidateDCache_by_Addr(nn_in, nn_in_len);
-	    }
+    ret = app_postprocess_run((void * []){pp_input}, 3, &pp_output, &pp_params);
+    assert(ret == 0);
+    nn_pp[1] = HAL_GetTick();*/
+	    uint8_t *output_buffer;
 
-	    ts[0] = HAL_GetTick();
-	    /* run ATON inference */
-	    LL_ATON_RT_Main(&NN_Instance_Default);
-	    ts[1] = HAL_GetTick();
+	    output_buffer = bqueue_get_ready(&nn_output_queue);
+	    assert(output_buffer);
+	    pp_input[0] = output_buffer;
+	    for (i = 1; i < NN_OUT_NB; i++)
+	      pp_input[i] = pp_input[i - 1] + ALIGN_VALUE(nn_out_len_user[i - 1], 32);
+	    pp_output.pOutBuff = NULL;
 
-	    int32_t ret = app_postprocess_run((void **) nn_out, number_output, &pp_output, &pp_params);
+	    nn_pp[0] = HAL_GetTick();
+	    ret = app_postprocess_run((void **)pp_input, NN_OUT_NB, &pp_output, &pp_params);
 	    assert(ret == 0);
+	   // tracking_enabled = app_tracking(&pp_output);
 
-	    Display_NetworkOutput(&pp_output, ts[1] - ts[0]);
-	    /* Discard nn_out region (used by pp_input and pp_outputs variables) to avoid Dcache evictions during nn inference */
-	    for (int i = 0; i < number_output; i++)
-	    {
-	      float32_t *tmp = nn_out[i];
-	      SCB_InvalidateDCache_by_Addr(tmp, nn_out_len[i]);
-	    }
+	    nn_pp[1] = HAL_GetTick();
 
+    tx_mutex_get(&disp.lock, TX_WAIT_FOREVER);
+    disp.info.nb_detect = pp_output.nb_detect;
+    for (i = 0; i < pp_output.nb_detect; i++)
+      disp.info.detects[i] = pp_output.pOutBuff[i];
+    disp.info.pp_ms = nn_pp[1] - nn_pp[0];
+    tx_mutex_put(&disp.lock);
+
+    bqueue_put_free(&nn_output_queue);
+    tx_semaphore_ceiling_put(&disp.update, 1);
 
   }
 }
+
+static void dp_update_drawing_area()
+{
+  int ret;
+
+  __disable_irq();
+  ret = HAL_LTDC_SetAddress_NoReload(&hlcd_ltdc, (uint32_t) lcd_fg_buffer[lcd_fg_buffer_rd_idx], LTDC_LAYER_2);
+  assert(ret == HAL_OK);
+  __enable_irq();
+}
+
+static void dp_commit_drawing_area()
+{
+  int ret;
+
+  __disable_irq();
+  ret = HAL_LTDC_ReloadLayer(&hlcd_ltdc, LTDC_RELOAD_VERTICAL_BLANKING, LTDC_LAYER_2);
+  assert(ret == HAL_OK);
+  __enable_irq();
+  lcd_fg_buffer_rd_idx = 1 - lcd_fg_buffer_rd_idx;
+}
+
+static void dp_thread_fct(ULONG arg)
+{
+  uint32_t disp_ms = 0;
+  display_info_t info;
+  uint32_t ts;
+  int ret;
+
+  while (1)
+  {
+    ret = tx_semaphore_get(&disp.update, TX_WAIT_FOREVER);
+    assert(ret == 0);
+
+    tx_mutex_get(&disp.lock, TX_WAIT_FOREVER);
+    info = disp.info;
+    tx_mutex_put(&disp.lock);
+    info.disp_ms = disp_ms;
+
+    ts = HAL_GetTick();
+    dp_update_drawing_area();
+    Display_NetworkOutput(&info);
+    SCB_CleanDCache_by_Addr(lcd_fg_buffer[lcd_fg_buffer_rd_idx], LCD_FG_WIDTH * LCD_FG_HEIGHT* 2);
+    dp_commit_drawing_area();
+    disp_ms = HAL_GetTick() - ts;
+  }
+}
+
+static void isp_thread_fct(ULONG arg)
+{
+  int ret;
+
+  while (1) {
+    ret = tx_semaphore_get(&isp_sem, TX_WAIT_FOREVER);
+    assert(ret == 0);
+
+    CAM_IspUpdate();
+  }
+}
+
 void app_run()
 {
+  const UINT isp_priority = TX_MAX_PRIORITIES / 2 - 2;
+  const UINT pp_priority = TX_MAX_PRIORITIES / 2 + 2;
+  const UINT dp_priority = TX_MAX_PRIORITIES / 2 + 2;
   const UINT nn_priority = TX_MAX_PRIORITIES / 2 - 1;
   const ULONG time_slice = 10;
   int ret;
 
-  printf("\n\rInit application\n\r");
+  printf("Init application\n\r");
+  /* Enable DWT so DWT_CYCCNT works when debugger not attached */
+  CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
+
+  memset(lcd_bg_buffer, 0, sizeof(lcd_bg_buffer));
+  CACHE_OP(SCB_CleanInvalidateDCache_by_Addr(lcd_bg_buffer, sizeof(lcd_bg_buffer)));
+  memset(lcd_fg_buffer, 0, sizeof(lcd_fg_buffer));
+  CACHE_OP(SCB_CleanInvalidateDCache_by_Addr(lcd_fg_buffer, sizeof(lcd_fg_buffer)));
+  LCD_init();
+
+  ret = bqueue_init(&nn_input_queue, 2, (uint8_t *[2]){nn_input_buffers[0], nn_input_buffers[1]});
+  assert(ret == 0);
+  ret = bqueue_init(&nn_output_queue, 2, (uint8_t *[2]){nn_output_buffers[0], nn_output_buffers[1]});
+  assert(ret == 0);
+
+  cpuload_init(&cpu_load);
+
+  CAM_Init();
+
+  ret = tx_semaphore_create(&isp_sem, NULL, 0);
+  assert(ret == 0);
+  ret = tx_semaphore_create(&disp.update, NULL, 0);
+  assert(ret == 0);
+  ret= tx_mutex_create(&disp.lock, NULL, TX_INHERIT);
+  assert(ret == 0);
+
+  CAM_DisplayPipe_Start(lcd_bg_buffer[0], CMW_MODE_CONTINUOUS);
+
   ret = tx_thread_create(&nn_thread, "nn", nn_thread_fct, 0, nn_tread_stack,
                          sizeof(nn_tread_stack), nn_priority, nn_priority, time_slice, TX_AUTO_START);
   assert(ret == TX_SUCCESS);
+  ret = tx_thread_create(&pp_thread, "pp", pp_thread_fct, 0, pp_tread_stack,
+                         sizeof(pp_tread_stack), pp_priority, pp_priority, time_slice, TX_AUTO_START);
+  assert(ret == TX_SUCCESS);
+  ret = tx_thread_create(&dp_thread, "dp", dp_thread_fct, 0, dp_tread_stack,
+                         sizeof(dp_tread_stack), dp_priority, dp_priority, time_slice, TX_AUTO_START);
+  assert(ret == TX_SUCCESS);
+  ret = tx_thread_create(&isp_thread, "isp", isp_thread_fct, 0, isp_tread_stack,
+                         sizeof(isp_tread_stack), isp_priority, isp_priority, time_slice, TX_AUTO_START);
+  assert(ret == TX_SUCCESS);
+
+
   UINT status = TX_SUCCESS;
   VOID *memory_ptr;
 
@@ -500,6 +990,29 @@ void app_run()
   }
 }
 
+int CMW_CAMERA_PIPE_FrameEventCallback(uint32_t pipe)
+{
+  if (pipe == DCMIPP_PIPE1)
+    app_main_pipe_frame_event();
+  else if (pipe == DCMIPP_PIPE2)
+    app_ancillary_pipe_frame_event();
+
+  return HAL_OK;
+}
+
+int CMW_CAMERA_PIPE_VsyncEventCallback(uint32_t pipe)
+{
+  if (pipe == DCMIPP_PIPE1)
+    app_main_pipe_vsync_event();
+
+  return HAL_OK;
+}
+
+
+
+
+
+
 UINT string_to_ip(const char *ip_string, ULONG *ip_address)
 {
     UINT byte1, byte2, byte3, byte4;
@@ -524,6 +1037,15 @@ UINT MX_NetXDuo_Init(VOID *memory_ptr)
   UINT ret = NX_SUCCESS;
   TX_BYTE_POOL *byte_pool = (TX_BYTE_POOL*)memory_ptr;
   CHAR *pointer;
+
+  /* USER CODE BEGIN MX_NetXDuo_MEM_POOL */
+  /* USER CODE END MX_NetXDuo_MEM_POOL */
+
+  /* USER CODE BEGIN 0 */
+
+  /* USER CODE END 0 */
+
+  /* Initialize the NetXDuo system. */
   nx_system_initialize();
 
     /* Allocate the memory for packet_pool.  */
@@ -532,6 +1054,9 @@ UINT MX_NetXDuo_Init(VOID *memory_ptr)
     return TX_POOL_ERROR;
   }
 
+  /* Create the Packet pool to be used for packet allocation,
+   * If extra NX_PACKET are to be used the NX_APP_PACKET_POOL_SIZE should be increased
+   */
   ret = nx_packet_pool_create(&NxAppPool, "NetXDuo App Pool", DEFAULT_PAYLOAD_SIZE, pointer, NX_APP_PACKET_POOL_SIZE);
 
   if (ret != NX_SUCCESS)
@@ -539,11 +1064,13 @@ UINT MX_NetXDuo_Init(VOID *memory_ptr)
     return NX_POOL_ERROR;
   }
 
+    /* Allocate the memory for Ip_Instance */
   if (tx_byte_allocate(byte_pool, (VOID **) &pointer, Nx_IP_INSTANCE_THREAD_SIZE, TX_NO_WAIT) != TX_SUCCESS)
   {
     return TX_POOL_ERROR;
   }
 
+   /* Create the main NX_IP instance */
   ret = nx_ip_create(&NetXDuoEthIpInstance, "NetX Ip instance", NX_APP_DEFAULT_IP_ADDRESS, NX_APP_DEFAULT_NET_MASK, &NxAppPool, nx_stm32_eth_driver,
                      pointer, Nx_IP_INSTANCE_THREAD_SIZE, NX_APP_INSTANCE_PRIORITY);
 
@@ -551,22 +1078,45 @@ UINT MX_NetXDuo_Init(VOID *memory_ptr)
   {
     return NX_NOT_SUCCESSFUL;
   }
+
+    /* Allocate the memory for ARP */
   if (tx_byte_allocate(byte_pool, (VOID **) &pointer, DEFAULT_ARP_CACHE_SIZE, TX_NO_WAIT) != TX_SUCCESS)
   {
     return TX_POOL_ERROR;
   }
+
+  /* Enable the ARP protocol and provide the ARP cache size for the IP instance */
+
+  /* USER CODE BEGIN ARP_Protocol_Initialization */
+
+  /* USER CODE END ARP_Protocol_Initialization */
+
   ret = nx_arp_enable(&NetXDuoEthIpInstance, (VOID *)pointer, DEFAULT_ARP_CACHE_SIZE);
 
   if (ret != NX_SUCCESS)
   {
     return NX_NOT_SUCCESSFUL;
   }
+
+  /* Enable the ICMP */
+
+  /* USER CODE BEGIN ICMP_Protocol_Initialization */
+
+  /* USER CODE END ICMP_Protocol_Initialization */
+
   ret = nx_icmp_enable(&NetXDuoEthIpInstance);
 
   if (ret != NX_SUCCESS)
   {
     return NX_NOT_SUCCESSFUL;
   }
+
+  /* Enable TCP Protocol */
+
+  /* USER CODE BEGIN TCP_Protocol_Initialization */
+
+  /* USER CODE END TCP_Protocol_Initialization */
+
   ret = nx_tcp_enable(&NetXDuoEthIpInstance);
 
   if (ret != NX_SUCCESS)
@@ -574,23 +1124,41 @@ UINT MX_NetXDuo_Init(VOID *memory_ptr)
     return NX_NOT_SUCCESSFUL;
   }
 
+  /* Enable the UDP protocol required for  DHCP communication */
+
+  /* USER CODE BEGIN UDP_Protocol_Initialization */
+
+  /* USER CODE END UDP_Protocol_Initialization */
+
   ret = nx_udp_enable(&NetXDuoEthIpInstance);
 
   if (ret != NX_SUCCESS)
   {
     return NX_NOT_SUCCESSFUL;
   }
-  ret = nx_dhcp_create(&DHCPClient, &NetXDuoEthIpInstance, "DHCP Client");
+  /* Create the DHCP client */
 
-  if (ret != NX_SUCCESS)
-  {
-    return NX_DHCP_ERROR;
-  }
-  tx_semaphore_create(&DHCPSemaphore, "DHCP Semaphore", 0);
+    /* USER CODE BEGIN DHCP_Protocol_Initialization */
+
+    /* USER CODE END DHCP_Protocol_Initialization */
+
+    ret = nx_dhcp_create(&DHCPClient, &NetXDuoEthIpInstance, "DHCP Client");
+
+    if (ret != NX_SUCCESS)
+    {
+      return NX_DHCP_ERROR;
+    }
+
+    /* set DHCP notification callback  */
+    tx_semaphore_create(&DHCPSemaphore, "DHCP Semaphore", 0);
+
+   /* Allocate the memory for main thread   */
   if (tx_byte_allocate(byte_pool, (VOID **) &pointer, NX_APP_THREAD_STACK_SIZE, TX_NO_WAIT) != TX_SUCCESS)
   {
     return TX_POOL_ERROR;
   }
+
+  /* Create the main thread */
   ret = tx_thread_create(&NxAppThread, "NetXDuo App thread", nx_app_thread_entry , 0, pointer, NX_APP_THREAD_STACK_SIZE,
                          NX_APP_THREAD_PRIORITY, NX_APP_THREAD_PRIORITY, TX_NO_TIME_SLICE, TX_AUTO_START);
 
@@ -598,36 +1166,56 @@ UINT MX_NetXDuo_Init(VOID *memory_ptr)
   {
     return TX_THREAD_ERROR;
   }
+
+  /* USER CODE BEGIN MX_NetXDuo_Init */
   printf("Nx_MQTT_Client application started..\n\r");
+
+  /* Allocate the memory for SNTP client thread   */
   if (tx_byte_allocate(byte_pool, (VOID **) &pointer, SNTP_CLIENT_THREAD_MEMORY, TX_NO_WAIT) != TX_SUCCESS)
   {
     return TX_POOL_ERROR;
   }
+
+  /* create the SNTP client thread */
   ret = tx_thread_create(&AppSNTPThread, "App SNTP Thread", App_SNTP_Thread_Entry, 0, pointer, SNTP_CLIENT_THREAD_MEMORY,
                          SNTP_PRIORITY, SNTP_PRIORITY, TX_NO_TIME_SLICE, TX_DONT_START);
+
   if (ret != TX_SUCCESS)
   {
     return NX_NOT_ENABLED;
   }
+
+  /* Create the event flags. */
   ret = tx_event_flags_create(&SntpFlags, "SNTP event flags");
+
+  /* Check for errors */
   if (ret != TX_SUCCESS)
   {
     return NX_NOT_ENABLED;
   }
+
+  /* Allocate the memory for MQTT client thread   */
   if (tx_byte_allocate(byte_pool, (VOID **) &pointer, THREAD_MEMORY_SIZE, TX_NO_WAIT) != TX_SUCCESS)
   {
     return TX_POOL_ERROR;
   }
+
+  /* create the MQTT client thread */
   ret = tx_thread_create(&AppMQTTClientThread, "App MQTT Thread", App_MQTT_Client_Thread_Entry, 0, pointer, THREAD_MEMORY_SIZE,
                          MQTT_PRIORITY, MQTT_PRIORITY, TX_NO_TIME_SLICE, TX_DONT_START);
+
   if (ret != TX_SUCCESS)
   {
     return NX_NOT_ENABLED;
   }
+
+  /* Allocate the memory for Link thread   */
   if (tx_byte_allocate(byte_pool, (VOID **) &pointer,2 *  DEFAULT_MEMORY_SIZE, TX_NO_WAIT) != TX_SUCCESS)
   {
     return TX_POOL_ERROR;
   }
+
+  /* create the Link thread */
   ret = tx_thread_create(&AppLinkThread, "App Link Thread", App_Link_Thread_Entry, 0, pointer, 2 * DEFAULT_MEMORY_SIZE,
                          LINK_PRIORITY, LINK_PRIORITY, TX_NO_TIME_SLICE, TX_AUTO_START);
 
@@ -635,16 +1223,22 @@ UINT MX_NetXDuo_Init(VOID *memory_ptr)
   {
     return NX_NOT_ENABLED;
   }
+
+
   /* Allocate the MsgQueueOne.  */
   if (tx_byte_allocate(byte_pool, (VOID **) &pointer, APP_QUEUE_SIZE*sizeof(ULONG), TX_NO_WAIT) != TX_SUCCESS)
   {
     ret = TX_POOL_ERROR;
   }
+
   /* Create the MsgQueueOne shared by MsgSenderThreadOne and MsgReceiverThread */
   if (tx_queue_create(&MsgQueueOne, "Message Queue One",TX_1_ULONG, pointer, APP_QUEUE_SIZE*sizeof(ULONG)) != TX_SUCCESS)
   {
     ret = TX_QUEUE_ERROR;
   }
+
+  /* USER CODE END MX_NetXDuo_Init */
+
   return ret;
 }
 
@@ -656,14 +1250,20 @@ UINT MX_NetXDuo_Init(VOID *memory_ptr)
 */
 static VOID ip_address_change_notify_callback(NX_IP *ip_instance, VOID *ptr)
 {
+  /* USER CODE BEGIN ip_address_change_notify_callback */
+  /* release the semaphore as soon as an IP address is available */
   if (nx_ip_address_get(&NetXDuoEthIpInstance, &IpAddress, &NetMask) != NX_SUCCESS)
   {
+    /* USER CODE BEGIN IP address change callback error */
     Error_Handler();
+    /* USER CODE END IP address change callback error */
   }
   if(IpAddress != NULL_ADDRESS)
   {
     tx_semaphore_put(&DHCPSemaphore);
   }
+  /* USER CODE END ip_address_change_notify_callback */
+
 }
 
 /**
@@ -673,21 +1273,39 @@ static VOID ip_address_change_notify_callback(NX_IP *ip_instance, VOID *ptr)
 */
 static VOID nx_app_thread_entry (ULONG thread_input)
 {
+  /* USER CODE BEGIN Nx_App_Thread_Entry 0 */
+
+  /* USER CODE END Nx_App_Thread_Entry 0 */
+
   UINT ret = NX_SUCCESS;
+
+  /* USER CODE BEGIN Nx_App_Thread_Entry 1 */
+  /* Create a DNS client */
   ret = dns_create(&DnsClient);
+
   if (ret != NX_SUCCESS)
   {
     Error_Handler();
   }
+  /* USER CODE END Nx_App_Thread_Entry 1 */
+
+  /* register the IP address change callback */
   ret = nx_ip_address_change_notify(&NetXDuoEthIpInstance, ip_address_change_notify_callback, NULL);
   if (ret != NX_SUCCESS)
   {
+    /* USER CODE BEGIN IP address change callback error */
     Error_Handler();
+    /* USER CODE END IP address change callback error */
   }
+
+  /* set DHCP notification callback  */
+   /*start the DHCP client */
   ret = nx_dhcp_start(&DHCPClient);
   if (ret != NX_SUCCESS)
   {
+
     Error_Handler();
+
   }
 
   printf("Looking for DHCP server ..\n\r");
@@ -696,10 +1314,20 @@ static VOID nx_app_thread_entry (ULONG thread_input)
 	  printf("Looking for DHCP server ..error\n\r");
     Error_Handler();
   }
+
+  /* USER CODE BEGIN Nx_App_Thread_Entry 2 */
   PRINT_IP_ADDRESS(IpAddress);
+
+  /* start the SNTP client thread */
   tx_thread_resume(&AppSNTPThread);
+
+  /* this thread is not needed any more, we relinquish it */
   tx_thread_relinquish();
+  /* USER CODE END Nx_App_Thread_Entry 2 */
+
 }
+/* USER CODE BEGIN 1 */
+
 /**
 * @brief  DNS Create Function.
 * @param dns_ptr
@@ -921,129 +1549,135 @@ UINT mqtt_client_is_connected(NXD_MQTT_CLIENT *client)
 */
 static VOID App_MQTT_Client_Thread_Entry(ULONG thread_input)
 {
-  UINT ret = NX_SUCCESS;
-  NXD_ADDRESS mqtt_server_ip;
-  ULONG events;
-  int len;
-  UINT topic_length, message_length;
-  UINT message_count = 0;
-  sensor_data_t sensor_data;
+	  UINT ret = NX_SUCCESS;
+	  NXD_ADDRESS mqtt_server_ip;
+	  ULONG events;
+	  int len;
+	  UINT topic_length, message_length;
+	  UINT message_count = 0;
+	  sensor_data_t sensor_data;
 
-  /* Initialize message queue */
-  ret = tx_queue_create(&measurement_queue, "Measurement Queue",
-                           MEASUREMENT_QUEUE_MSG_SIZE,
-                           measurement_queue_buffer,  // Ensure you have a buffer
-                           MEASUREMENT_QUEUE_DEPTH * MEASUREMENT_QUEUE_MSG_SIZE);
-  if (ret != TX_SUCCESS) Error_Handler();
-  mqtt_server_ip.nxd_ip_version = 4;
+	  /* Initialize message queue */
+	  ret = tx_queue_create(&measurement_queue, "Measurement Queue",
+	                           MEASUREMENT_QUEUE_MSG_SIZE,
+	                           measurement_queue_buffer,  // Ensure you have a buffer
+	                           MEASUREMENT_QUEUE_DEPTH * MEASUREMENT_QUEUE_MSG_SIZE);
+	  if (ret != TX_SUCCESS) Error_Handler();
+	  mqtt_server_ip.nxd_ip_version = 4;
 
-  /* Look up MQTT Server address. */
-  ret = nx_dns_host_by_name_get(&DnsClient, (UCHAR *)MQTT_BROKER_NAME,
-                                &mqtt_server_ip.nxd_ip_address.v4, DEFAULT_TIMEOUT);
+	  /* Look up MQTT Server address. */
+	  ret = nx_dns_host_by_name_get(&DnsClient, (UCHAR *)MQTT_BROKER_NAME,
+	                                &mqtt_server_ip.nxd_ip_address.v4, DEFAULT_TIMEOUT);
 
-  /* Check status.  */
-  if (ret != NX_SUCCESS)
-  {
-    Error_Handler();
-  }
+	  /* Check status.  */
+	  if (ret != NX_SUCCESS)
+	  {
+	    Error_Handler();
+	  }
 
-  /* Create MQTT client instance. */
-  ret = nxd_mqtt_client_create(&MqttClient, "my_client", CLIENT_ID_STRING, STRLEN(CLIENT_ID_STRING),
-                               &NetXDuoEthIpInstance, &NxAppPool, (VOID*)mqtt_client_stack, MQTT_CLIENT_STACK_SIZE,
-                               MQTT_THREAD_PRIORTY, NX_NULL, 0);
+	  /* Create MQTT client instance. */
+	  ret = nxd_mqtt_client_create(&MqttClient, "my_client", CLIENT_ID_STRING, STRLEN(CLIENT_ID_STRING),
+	                               &NetXDuoEthIpInstance, &NxAppPool, (VOID*)mqtt_client_stack, MQTT_CLIENT_STACK_SIZE,
+	                               MQTT_THREAD_PRIORTY, NX_NULL, 0);
 
-  if (ret != NX_SUCCESS)
-  {
-    Error_Handler();
-  }
+	  if (ret != NX_SUCCESS)
+	  {
+	    Error_Handler();
+	  }
 
-  /* Register the disconnect notification function. */
-  nxd_mqtt_client_disconnect_notify_set(&MqttClient, my_disconnect_func);
+	  /* Register the disconnect notification function. */
+	  nxd_mqtt_client_disconnect_notify_set(&MqttClient, my_disconnect_func);
 
-  /* Set the receive notify function. */
-  nxd_mqtt_client_receive_notify_set(&MqttClient, my_notify_func);
+	  /* Set the receive notify function. */
+	  nxd_mqtt_client_receive_notify_set(&MqttClient, my_notify_func);
 
-  /* Create an MQTT flag */
-  ret = tx_event_flags_create(&mqtt_app_flag, "my app event");
-  if (ret != TX_SUCCESS)
-  {
-    Error_Handler();
-  }
+	  /* Create an MQTT flag */
+	  ret = tx_event_flags_create(&mqtt_app_flag, "my app event");
+	  if (ret != TX_SUCCESS)
+	  {
+	    Error_Handler();
+	  }
 
-  //ret = nxd_mqtt_client_secure_connect(&MqttClient, &DefaultNXDAddress, MQTT_PORT, tls_setup_callback,MQTT_KEEP_ALIVE_TIMER, CLEAN_SESSION, NX_WAIT_FOREVER);
-  ret = nxd_mqtt_client_connect(&MqttClient, &mqtt_server_ip, 1883,MQTT_KEEP_ALIVE_TIMER, CLEAN_SESSION, NX_WAIT_FOREVER);
-  if (ret != NX_SUCCESS)
-  {
-    printf("\nMQTT client failed to connect to broker < %s >at PORT %d.\n\r",MQTT_BROKER_NAME, MQTT_PORT);
-    Error_Handler();
-  }
-  else
-  {
-    printf("\nMQTT client connected to broker < %s > at PORT %d :\n\r",MQTT_BROKER_NAME, MQTT_PORT);
-  }
+	  //ret = nxd_mqtt_client_secure_connect(&MqttClient, &DefaultNXDAddress, MQTT_PORT, tls_setup_callback,MQTT_KEEP_ALIVE_TIMER, CLEAN_SESSION, NX_WAIT_FOREVER);
+	  ret = nxd_mqtt_client_connect(&MqttClient, &mqtt_server_ip, 1883,MQTT_KEEP_ALIVE_TIMER, CLEAN_SESSION, NX_WAIT_FOREVER);
+	  if (ret != NX_SUCCESS)
+	  {
+	    printf("\nMQTT client failed to connect to broker < %s >at PORT %d.\n\r",MQTT_BROKER_NAME, MQTT_PORT);
+	    Error_Handler();
+	  }
+	  else
+	  {
+	    printf("\nMQTT client connected to broker < %s > at PORT %d :\n\r",MQTT_BROKER_NAME, MQTT_PORT);
+	  }
 
-  /* Subscribe to the topic with QoS level 1. */
-  ret = nxd_mqtt_client_subscribe(&MqttClient, TOPIC_NAME, STRLEN(TOPIC_NAME), QOS1);
-  if (ret != NX_SUCCESS)
-  {
-    Error_Handler();
-  }
-  snprintf(message, sizeof(message),"{\"ts\":%lu,""\"mac\":\"%02X%02X%02X%02X%02X%02X\",""\"status\":\"start\"}",GetRtcEpoch(), MACAddr[0], MACAddr[1], MACAddr[2],MACAddr[3],MACAddr[4],MACAddr[5]);
-  len = 0;
-  while (message[len] != '\0') {
-      len++;
-  }
-  printf("strlen %i\n\r",len);
+	  /* Subscribe to the topic with QoS level 1. */
+	  ret = nxd_mqtt_client_subscribe(&MqttClient, TOPIC_NAME, STRLEN(TOPIC_NAME), QOS1);
+	  if (ret != NX_SUCCESS)
+	  {
+	    Error_Handler();
+	  }
+	  snprintf(message, sizeof(message),"{\"ts\":%lu,""\"mac\":\"%02X%02X%02X%02X%02X%02X\",""\"status\":\"start\"}",GetRtcEpoch(), MACAddr[0], MACAddr[1], MACAddr[2],MACAddr[3],MACAddr[4],MACAddr[5]);
+	  len = 0;
+	  while (message[len] != '\0') {
+	      len++;
+	  }
+	  printf("strlen %i\n\r",len);
 
-  ret = nxd_mqtt_client_publish(&MqttClient, TOPIC_NAME, STRLEN(TOPIC_NAME),(CHAR*)message, len, NX_TRUE, QOS1, NX_WAIT_FOREVER);
-      if (ret != NX_SUCCESS)
-      {
-        Error_Handler();
-      }
-  tx_event_flags_get(&mqtt_app_flag, DEMO_ALL_EVENTS, TX_OR_CLEAR, &events, TX_WAIT_FOREVER);
+	  ret = nxd_mqtt_client_publish(&MqttClient, TOPIC_NAME, STRLEN(TOPIC_NAME),(CHAR*)message, len, NX_TRUE, QOS1, NX_WAIT_FOREVER);
+	      if (ret != NX_SUCCESS)
+	      {
+	        Error_Handler();
+	      }
+	  tx_event_flags_get(&mqtt_app_flag, DEMO_ALL_EVENTS, TX_OR_CLEAR, &events, TX_WAIT_FOREVER);
 
-  while(1){
-	/* Wait for measurement data from other thread */
-	ret = tx_queue_receive(&measurement_queue, &sensor_data, TX_WAIT_FOREVER);
-	if (ret != TX_SUCCESS) {
-	       printf("Failed to receive data from queue: %u\n", ret);
-	       continue;
-	}
-	/* Format JSON message */
-	snprintf(message, sizeof(message),"{\"ts\":%lu,\"mac\":\"%02X%02X%02X%02X%02X%02X\",\"nb_detect\":%.0f,\"state_detect\":%i}",sensor_data.timestamp,MACAddr[0], MACAddr[1], MACAddr[2],MACAddr[3], MACAddr[4], MACAddr[5],sensor_data.nb_detect,sensor_data.state_detect);
-    /* Publish data */
-	len = 0;
-	while (message[len] != '\0') {
-	    len++;
-	}
-    /* Publish a message with QoS Level 1. */
-    ret = nxd_mqtt_client_publish(&MqttClient, TOPIC_NAME, STRLEN(TOPIC_NAME),(CHAR*)message, len, NX_TRUE, QOS1, NX_WAIT_FOREVER);
-    if (ret != NX_SUCCESS)
-    {
-      Error_Handler();
-    }
+	  while(1){
+		/* Wait for measurement data from other thread */
+		ret = tx_queue_receive(&measurement_queue, &sensor_data, TX_WAIT_FOREVER);
+		if (ret != TX_SUCCESS) {
+		       printf("Failed to receive data from queue: %u\n", ret);
+		       continue;
+		}
+		/* Format JSON message */
+		snprintf(message, sizeof(message),"{\"ts\":%lu,\"mac\":\"%02X%02X%02X%02X%02X%02X\",\"nb_detect\":%.0f,\"state_detect\":%i}",sensor_data.timestamp,MACAddr[0], MACAddr[1], MACAddr[2],MACAddr[3], MACAddr[4], MACAddr[5],sensor_data.nb_detect,sensor_data.state_detect);
+	    /* Publish data */
+		len = 0;
+		while (message[len] != '\0') {
+		    len++;
+		}
+	    /* Publish a message with QoS Level 1. */
+	    ret = nxd_mqtt_client_publish(&MqttClient, TOPIC_NAME, STRLEN(TOPIC_NAME),(CHAR*)message, len, NX_TRUE, QOS1, NX_WAIT_FOREVER);
+	    if (ret != NX_SUCCESS)
+	    {
+	      Error_Handler();
+	    }
 
-    /* wait for the broker to publish the message. */
-    tx_event_flags_get(&mqtt_app_flag, DEMO_ALL_EVENTS, TX_OR_CLEAR, &events, TX_WAIT_FOREVER);
+	    /* wait for the broker to publish the message. */
+	    tx_event_flags_get(&mqtt_app_flag, DEMO_ALL_EVENTS, TX_OR_CLEAR, &events, TX_WAIT_FOREVER);
 
-    /* check event received */
-    if(events & DEMO_MESSAGE_EVENT)
-    {
-      /* get message from the broker */
-      ret = nxd_mqtt_client_message_get(&MqttClient, topic_buffer, sizeof(topic_buffer), &topic_length,message_buffer, sizeof(message_buffer), &message_length);
-      if(ret == NXD_MQTT_SUCCESS)
-      {
-        printf("Message %d received: TOPIC = %s, MESSAGE = %s\n", message_count + 1, topic_buffer, message_buffer);
-      }
-      else
-      {
-        Error_Handler();
-      }
-    }
+	    /* check event received */
+	    if(events & DEMO_MESSAGE_EVENT)
+	    {
+	      /* get message from the broker */
+	      ret = nxd_mqtt_client_message_get(&MqttClient, topic_buffer, sizeof(topic_buffer), &topic_length,message_buffer, sizeof(message_buffer), &message_length);
+	      if(ret == NXD_MQTT_SUCCESS)
+	      {
+	        printf("Message %d received: TOPIC = %s, MESSAGE = %s\n", message_count + 1, topic_buffer, message_buffer);
+	      }
+	      else
+	      {
+	        Error_Handler();
+	      }
+	    }
 
-	tx_thread_sleep(100);
-    }
+		tx_thread_sleep(100);
+	    }
 }
+/**
+* @brief  MQTT Client thread log objects.
+* @param thread_input: ULONG user argument used by the thread entry
+* @retval none
+*/
+
 /**
 * @brief  Link thread entry
 * @param thread_input: ULONG thread parameter
@@ -1160,26 +1794,5 @@ static uint32_t GetRtcEpoch() {
     return (uint32_t)mktime(&tm_time);
 }
 
-/**
- * @brief Displays a Welcome screen
- */
-static void Display_WelcomeScreen(void)
-{
-  static uint32_t t0 = 0;
-  if (t0 == 0)
-    t0 = HAL_GetTick();
 
-  if (HAL_GetTick() - t0 < 4000)
-  {
-    /* Draw logo */
-   // UTIL_LCD_FillRGBRect(300, 100, (uint8_t *) stlogo, 200, 107);
-
-    /* Display welcome message */
-    UTIL_LCD_SetBackColor(0x40000000);
-    UTIL_LCDEx_PrintfAt(0, LINE(16), 1, "Object detection");
-    UTIL_LCDEx_PrintfAt(0, LINE(17), 1, WELCOME_MSG_1);
-    UTIL_LCDEx_PrintfAt(0, LINE(18), 1, WELCOME_MSG_2);
-    UTIL_LCD_SetBackColor(0);
-  }
-}
 

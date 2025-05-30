@@ -1,6 +1,6 @@
  /**
  ******************************************************************************
- * @file    CAM.c
+ * @file    app_cam.c
  * @author  GPM Application Team
  *
  ******************************************************************************
@@ -15,147 +15,96 @@
  *
  ******************************************************************************
  */
-
 #include <assert.h>
+#include "app.h"
 #include "cmw_camera.h"
 #include "app_cam.h"
 #include "app_config.h"
-#include "crop_img.h"
 #include "utils.h"
 
-#if defined(USE_IMX335_SENSOR)
-  #define GAMMA_CONVERSION 0
-#elif defined(USE_VD66GY_SENSOR)
-  #define GAMMA_CONVERSION 0
-#elif defined(USE_VD55G1_SENSOR)
-  #define GAMMA_CONVERSION 0
-#endif
 #define DISPLAY_FORMAT DCMIPP_PIXEL_PACKER_FORMAT_RGB565_1
 #define DISPLAY_BPP 2
-extern int32_t cameraFrameReceived;
-static void DCMIPP_PipeInitDisplay(CMW_CameraInit_t *camConf, uint32_t *bg_width, uint32_t *bg_height)
+
+/* Keep display output aspect ratio using crop area */
+static void CAM_InitCropConfig(CMW_Manual_roi_area_t *roi, int sensor_width, int sensor_height)
 {
-  CMW_Aspect_Ratio_Mode_t aspect_ratio;
-  CMW_DCMIPP_Conf_t dcmipp_conf;
-  int ret;
+  const float ratiox = (float)sensor_width / LCD_BG_WIDTH;
+  const float ratioy = (float)sensor_height / LCD_BG_HEIGHT;
+  const float ratio = MIN(ratiox, ratioy);
 
-  if (ASPECT_RATIO_MODE == ASPECT_RATIO_CROP)
-  {
-    aspect_ratio = CMW_Aspect_ratio_crop;
-  }
-  else if (ASPECT_RATIO_MODE == ASPECT_RATIO_FIT)
-  {
-    aspect_ratio = CMW_Aspect_ratio_fit;
-  }
-  else if (ASPECT_RATIO_MODE == ASPECT_RATIO_FULLSCREEN)
-  {
-    aspect_ratio = CMW_Aspect_ratio_fullscreen;
-  }
+  assert(ratio >= 1);
+  assert(ratio < 64);
 
-  int lcd_bg_width;
-  int lcd_bg_height;
-
-  if (camConf->height <= 480)
-  {
-    lcd_bg_height = camConf->height;
-  }
-  else
-  {
-    lcd_bg_height = 480;
-  }
-
-#if ASPECT_RATIO_MODE == ASPECT_RATIO_FULLSCREEN
-  lcd_bg_width = (((camConf->width*lcd_bg_height)/camConf->height) - ((camConf->width*lcd_bg_height)/camConf->height) % 16);
-#else
-  if (camConf->height <= 480)
-  {
-    lcd_bg_width = camConf->height;
-  }
-  else
-  {
-    lcd_bg_width = 480;
-  }
-#endif
-  *bg_width = lcd_bg_width;
-  *bg_height = lcd_bg_height;
-
-  dcmipp_conf.output_width = lcd_bg_width;
-  dcmipp_conf.output_height = lcd_bg_height;
-  dcmipp_conf.output_format = CAPTURE_FORMAT;
-  dcmipp_conf.output_bpp = CAPTURE_BPP;
-  dcmipp_conf.mode = aspect_ratio;
-  dcmipp_conf.enable_swap = 0;
-  dcmipp_conf.enable_gamma_conversion = GAMMA_CONVERSION;
-  uint32_t pitch;
-  ret = CMW_CAMERA_SetPipeConfig(DCMIPP_PIPE1, &dcmipp_conf, &pitch);
-  assert(ret == HAL_OK);
-  if (dcmipp_conf.output_width*dcmipp_conf.output_bpp != pitch)
-  {
-    assert(1);
-  }
-
+  roi->width = (uint32_t) MIN(LCD_BG_WIDTH * ratio, sensor_width);
+  roi->height = (uint32_t) MIN(LCD_BG_HEIGHT * ratio, sensor_height);
+  roi->offset_x = (sensor_width - roi->width + 1) / 2;
+  roi->offset_y = (sensor_height - roi->height + 1) / 2;
 }
 
-static void DCMIPP_PipeInitNn(uint32_t *pitch)
+static void DCMIPP_PipeInitDisplay(int sensor_width, int sensor_height)
 {
-  CMW_Aspect_Ratio_Mode_t aspect_ratio;
   CMW_DCMIPP_Conf_t dcmipp_conf;
+  uint32_t hw_pitch;
   int ret;
 
-  if (ASPECT_RATIO_MODE == ASPECT_RATIO_CROP)
-  {
-    aspect_ratio = CMW_Aspect_ratio_crop;
-  }
-  else if (ASPECT_RATIO_MODE == ASPECT_RATIO_FIT)
-  {
-    aspect_ratio = CMW_Aspect_ratio_fit;
-  }
-  else if (ASPECT_RATIO_MODE == ASPECT_RATIO_FULLSCREEN)
-  {
-    aspect_ratio = CMW_Aspect_ratio_fit;
-  }
+  assert(LCD_BG_WIDTH >= LCD_BG_HEIGHT);
+
+  dcmipp_conf.output_width = LCD_BG_WIDTH;
+  dcmipp_conf.output_height = LCD_BG_HEIGHT;
+  dcmipp_conf.output_format = DISPLAY_FORMAT;
+  dcmipp_conf.output_bpp = DISPLAY_BPP;
+  dcmipp_conf.mode = CMW_Aspect_ratio_manual_roi;
+  dcmipp_conf.enable_swap = 0;
+  dcmipp_conf.enable_gamma_conversion = 0;
+  CAM_InitCropConfig(&dcmipp_conf.manual_conf, sensor_width, sensor_height);
+  ret = CMW_CAMERA_SetPipeConfig(DCMIPP_PIPE1, &dcmipp_conf, &hw_pitch);
+  assert(ret == HAL_OK);
+  assert(hw_pitch == dcmipp_conf.output_width * dcmipp_conf.output_bpp);
+}
+
+static void DCMIPP_PipeInitNn(int sensor_width, int sensor_height)
+{
+  CMW_DCMIPP_Conf_t dcmipp_conf;
+  uint32_t hw_pitch;
+  int ret;
 
   dcmipp_conf.output_width = NN_WIDTH;
   dcmipp_conf.output_height = NN_HEIGHT;
-  dcmipp_conf.output_format = DCMIPP_PIXEL_PACKER_FORMAT_RGB888_YUV444_1;
+  dcmipp_conf.output_format = NN_FORMAT;
   dcmipp_conf.output_bpp = NN_BPP;
-  dcmipp_conf.mode = aspect_ratio;
-  dcmipp_conf.enable_swap = COLOR_MODE;
-  dcmipp_conf.enable_gamma_conversion = GAMMA_CONVERSION;
-  ret = CMW_CAMERA_SetPipeConfig(DCMIPP_PIPE2, &dcmipp_conf, pitch);
+  dcmipp_conf.mode = CMW_Aspect_ratio_manual_roi;
+  dcmipp_conf.enable_swap = 1;
+  dcmipp_conf.enable_gamma_conversion = 0;
+  CAM_InitCropConfig(&dcmipp_conf.manual_conf, sensor_width, sensor_height);
+  ret = CMW_CAMERA_SetPipeConfig(DCMIPP_PIPE2, &dcmipp_conf, &hw_pitch);
   assert(ret == HAL_OK);
+  assert(hw_pitch == dcmipp_conf.output_width * dcmipp_conf.output_bpp);
 }
 
-void CAM_Init(uint32_t *lcd_bg_width, uint32_t *lcd_bg_height, uint32_t *pitch_nn)
+void CAM_Init(void)
 {
-  int ret;
   CMW_CameraInit_t cam_conf;
+  int ret;
 
-  cam_conf.width = CAMERA_WIDTH;
-  cam_conf.height = CAMERA_HEIGHT;
+  /* Let sensor driver choose which width/height to use */
+  cam_conf.width = 0;
+  cam_conf.height = 0;
   cam_conf.fps = CAMERA_FPS;
   cam_conf.pixel_format = 0; /* Default; Not implemented yet */
   cam_conf.anti_flicker = 0;
   cam_conf.mirror_flip = CAMERA_FLIP;
-
   ret = CMW_CAMERA_Init(&cam_conf);
   assert(ret == CMW_ERROR_NONE);
-  DCMIPP_PipeInitDisplay(&cam_conf, lcd_bg_width, lcd_bg_height);
-  DCMIPP_PipeInitNn(pitch_nn);
 
-
-}
-
-void CAM_DeInit(void)
-{
-  int ret;
-  ret = CMW_CAMERA_DeInit();
-  assert(ret == CMW_ERROR_NONE);
+  /* cam_conf.width / cam_conf.height now contains choose resolution */
+  DCMIPP_PipeInitDisplay(cam_conf.width, cam_conf.height);
+  DCMIPP_PipeInitNn(cam_conf.width, cam_conf.height);
 }
 
 void CAM_DisplayPipe_Start(uint8_t *display_pipe_dst, uint32_t cam_mode)
 {
   int ret;
+
   ret = CMW_CAMERA_Start(DCMIPP_PIPE1, display_pipe_dst, cam_mode);
   assert(ret == CMW_ERROR_NONE);
 }
@@ -168,32 +117,10 @@ void CAM_NNPipe_Start(uint8_t *nn_pipe_dst, uint32_t cam_mode)
   assert(ret == CMW_ERROR_NONE);
 }
 
-void CAM_DisplayPipe_Stop()
-{
-  int ret;
-  ret = CMW_CAMERA_Suspend(DCMIPP_PIPE1);
-  assert(ret == CMW_ERROR_NONE);
-}
-
 void CAM_IspUpdate(void)
 {
-  int ret = CMW_ERROR_NONE;
+  int ret;
+
   ret = CMW_CAMERA_Run();
   assert(ret == CMW_ERROR_NONE);
-}
-
-/**
-  * @brief  Frame event callback
-  * @param  hdcmipp pointer to the DCMIPP handle
-  * @retval None
-  */
-int CMW_CAMERA_PIPE_FrameEventCallback(uint32_t pipe)
-{
-  switch (pipe)
-  {
-    case DCMIPP_PIPE2 :
-      cameraFrameReceived++;
-      break;
-  }
-  return 0;
 }
