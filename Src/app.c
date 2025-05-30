@@ -92,6 +92,12 @@ RTC_HandleTypeDef hrtc;
 uint8_t prev_nb_person;
 ULONG prev_timestamp;
 int prev_state_detect;
+
+//Fall detection tracking
+static uint32_t fall_start_time = 0;
+static int fall_detected = 0;
+static int message_sent = 0;
+
 // Shared resources between threads
 #define MEASUREMENT_QUEUE_DEPTH  20
 #define MEASUREMENT_QUEUE_MSG_SIZE sizeof(sensor_data_t)
@@ -624,18 +630,46 @@ static void Display_NetworkOutput(display_info_t *info)
 #endif
 
   /* Draw bounding boxes */
-  for (i = 0; i < nb_rois; i++){
-    Display_Detection(&rois[i]);
-    if (rois[i].class_index == 2 ){
-      	data.nb_detect = nb_rois;
-      	data.timestamp = GetRtcEpoch();
-      	data.state_detect = 13; //Fall detected!
-      	/* Send to MQTT thread */
-      	if (prev_state_detect != 13){
-      	   	 tx_queue_send(&measurement_queue, &data, TX_NO_WAIT);
-      	   	 prev_state_detect = 13;
-      	}
-    }
+  int current_fall_detected = 0;
+  for (i = 0; i < nb_rois; i++) {
+      Display_Detection(&rois[i]);
+      if (rois[i].class_index == 2) {
+          current_fall_detected = 1; // Mark fall detected in current frame
+      }
+  }
+
+  if (current_fall_detected) {
+      if (!fall_detected) {
+          // Fall detected for the first time
+          fall_start_time = GetRtcEpoch();
+          fall_detected = 1;
+          message_sent = 0;
+      } else {
+          // Check if 15 seconds have passed since initial detection
+          if (!message_sent && (GetRtcEpoch() - fall_start_time) >= 15) {
+              data.nb_detect = nb_rois;
+              data.timestamp = GetRtcEpoch();
+              data.state_detect = 13; // Fall confirmed
+              tx_queue_send(&measurement_queue, &data, TX_NO_WAIT);
+              prev_state_detect = 13;
+              message_sent = 1; // Prevent duplicate alerts
+          }
+      }
+  } else {
+      // Reset state if no fall detected
+      if (fall_detected) {
+          fall_detected = 0;
+          fall_start_time = 0;
+          message_sent = 0;
+          // Optional: Send recovery message
+          if (prev_state_detect == 13) {
+              data.nb_detect = nb_rois;
+              data.timestamp = GetRtcEpoch();
+              data.state_detect = 1; // Normal state
+              tx_queue_send(&measurement_queue, &data, TX_NO_WAIT);
+              prev_state_detect = 1;
+          }
+      }
   }
 }
 static int model_get_output_nb(const LL_Buffer_InfoTypeDef *nn_out_info)
