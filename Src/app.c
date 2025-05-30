@@ -32,7 +32,6 @@
 #include "stm32n6xx_hal.h"
 #include "tx_api.h"
 #include "utils.h"
-
 #include <string.h> // For memcpy
 /* Includes ------------------------------------------------------------------*/
 //#include "app_netxduo.h"
@@ -49,38 +48,26 @@
 //#include "app_azure_rtos.h"
 #include "stm32n6xx.h"
 #include "app_threadx.h"
-
-/* Private variables ---------------------------------------------------------*/
 #define USE_STATIC_ALLOCATION                    1
-
 #define TX_APP_MEM_POOL_SIZE                     1024
-
 #define NX_APP_MEM_POOL_SIZE                     50*1024
-
 #if (USE_STATIC_ALLOCATION == 1)
-/* USER CODE BEGIN TX_Pool_Buffer */
-/* USER CODE END TX_Pool_Buffer */
 #if defined ( __ICCARM__ )
 #pragma data_alignment=4
 #endif
 __ALIGN_BEGIN static UCHAR tx_byte_pool_buffer[TX_APP_MEM_POOL_SIZE] __ALIGN_END;
 static TX_BYTE_POOL tx_app_byte_pool;
-
-/* USER CODE BEGIN NX_Pool_Buffer */
 #if defined ( __ICCARM__ ) /* IAR Compiler */
 #pragma location = ".NetXPoolSection"
 #else /* GNU and AC6 compilers */
 __attribute__((section(".NetXPoolSection")))
 #endif
-/* USER CODE END NX_Pool_Buffer */
 #if defined ( __ICCARM__ )
 #pragma data_alignment=4
 #endif
 __ALIGN_BEGIN static UCHAR nx_byte_pool_buffer[NX_APP_MEM_POOL_SIZE] __ALIGN_END;
 static TX_BYTE_POOL nx_app_byte_pool;
-
 #endif
-
 TX_THREAD      NxAppThread;
 NX_PACKET_POOL NxAppPool;
 NX_IP          NetXDuoEthIpInstance;
@@ -89,8 +76,6 @@ NX_DHCP        DHCPClient;
 
 ULONG          IpAddress;
 ULONG          NetMask;
-/* USER CODE BEGIN PV */
-//extern RNG_HandleTypeDef hrng;
 
 TX_THREAD AppMQTTClientThread;
 TX_THREAD AppMQTTClientThreadLog;
@@ -121,17 +106,11 @@ typedef struct {
 /* Create a message queue */
 TX_QUEUE measurement_queue;
 UCHAR measurement_queue_buffer[MEASUREMENT_QUEUE_DEPTH * MEASUREMENT_QUEUE_MSG_SIZE];
-
-
 #define QUEUE_DEPTH 10
 #define QUEUE_MSG_SIZE 256
-
 TX_EVENT_FLAGS_GROUP     SntpFlags;
-
 ULONG mqtt_client_stack[MQTT_CLIENT_STACK_SIZE];
-
 TX_EVENT_FLAGS_GROUP mqtt_app_flag;
-
 /* Declare buffers to hold message and topic. */
 static char message[NXD_MQTT_MAX_MESSAGE_LENGTH];
 static UCHAR message_buffer[NXD_MQTT_MAX_MESSAGE_LENGTH];
@@ -143,7 +122,6 @@ static UCHAR topic_buffer[NXD_MQTT_MAX_TOPIC_NAME_LENGTH];
 /* Define the TLS packet reassembly buffer. */
 UCHAR tls_packet_buffer[4000];
 ULONG current_time;
-/* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 static VOID nx_app_thread_entry (ULONG thread_input);
@@ -166,30 +144,23 @@ static UINT dns_create(NX_DNS *dns_ptr);
 
 static void SetRtcFromEpoch(uint32_t epoch);
 static uint32_t GetRtcEpoch();
-
-
 #define CACHE_OP(__op__) do { \
   if (is_cache_enable()) { \
     __op__; \
   } \
 } while (0)
-
 #define ALIGN_VALUE(_v_,_a_) (((_v_) + (_a_) - 1) & ~((_a_) - 1))
-
 #define LCD_FG_WIDTH LCD_BG_WIDTH
 #define LCD_FG_HEIGHT LCD_BG_HEIGHT
-
 #define NUMBER_COLORS 10
 #define BQUEUE_MAX_BUFFERS 3
 #define CPU_LOAD_HISTORY_DEPTH 8
-
 #define DISPLAY_BUFFER_NB (DISPLAY_DELAY + 2)
 #define NN_OUT_MAX_NB 4
 #define NN_OUT_MAX_NB 4
 #if NN_OUT_NB > NN_OUT_MAX_NB
 #error "max output buffer reached"
 #endif
-
 /* define default 0 value for NN_OUTx_SIZE for [1:NN_OUT_MAX_NB[ */
 #ifndef NN_OUT1_SIZE
 #define NN_OUT1_SIZE 0
@@ -208,8 +179,6 @@ static uint32_t GetRtcEpoch();
 
 /* Align so we are sure nn_output_buffers[0] and nn_output_buffers[1] are aligned on 32 bytes */
 #define NN_BUFFER_OUT_SIZE_ALIGN ALIGN_VALUE(NN_BUFFER_OUT_SIZE, 32)
-
-
 typedef struct NXD_MQTT_MESSAGE_STRUCT {
     UCHAR *topic;       /* Pointer to message topic */
     ULONG topic_length; /* Topic length in bytes */
@@ -609,7 +578,6 @@ static void Display_NetworkOutput(display_info_t *info)
 
   	     /* Send to MQTT thread */
   	     tx_queue_send(&measurement_queue, &data, TX_NO_WAIT);
-  	  //tx_thread_sleep(1000);  // Adjust sampling rate as needed
   	  }
     }
   nn_fps = 1000.0 / info->nn_period_ms;
@@ -656,7 +624,7 @@ static void Display_NetworkOutput(display_info_t *info)
 #endif
 
   /* Draw bounding boxes */
-  for (i = 0; i < nb_rois; i++)
+  for (i = 0; i < nb_rois; i++){
     Display_Detection(&rois[i]);
     if (rois[i].class_index == 2 ){
       	data.nb_detect = nb_rois;
@@ -668,6 +636,7 @@ static void Display_NetworkOutput(display_info_t *info)
       	   	 prev_state_detect = 13;
       	}
     }
+  }
 }
 static int model_get_output_nb(const LL_Buffer_InfoTypeDef *nn_out_info)
 {
@@ -688,75 +657,49 @@ static void nn_thread_fct(ULONG arg)
   uint32_t nn_period_ms;
   uint32_t nn_period[2];
   uint8_t *nn_pipe_dst;
-  uint32_t nn_out_len;
   uint32_t nn_in_len;
   uint32_t inf_ms;
   uint32_t ts;
   int ret;
   int i;
-  /* setup buffers size */
-  //nn_in = (uint8_t *) LL_Buffer_addr_start(&nn_in_info[0]);
-
-  /*nn_in_len = LL_Buffer_len(&nn_in_info[0]);
-  nn_out_len = LL_Buffer_len(&nn_out_info[0]);
-  printf("nn_out_len = %d\r\n", nn_out_len);
-  assert(nn_out_len == NN_BUFFER_OUT_SIZE);*/
   nn_in_len = LL_Buffer_len(&nn_in_info[0]);
-
   assert(NN_OUT_NB == model_get_output_nb(nn_out_info));
   for (i = 0; i < NN_OUT_NB; i++)
-    assert(LL_Buffer_len(&nn_out_info[i]) == nn_out_len_user[i]);
+  assert(LL_Buffer_len(&nn_out_info[i]) == nn_out_len_user[i]);
 
   /*** App Loop ***************************************************************/
   nn_period[1] = HAL_GetTick();
-
   nn_pipe_dst = bqueue_get_free(&nn_input_queue, 0);
     assert(nn_pipe_dst);
   CAM_NNPipe_Start(nn_pipe_dst, CMW_MODE_CONTINUOUS);
   while (1)
   {
-   /* uint8_t *capture_buffer;
-    uint8_t *output_buffer;
+     uint8_t *capture_buffer;
+	 uint8_t *out[NN_OUT_NB];
+	 uint8_t *output_buffer;
+	 int i;
+     nn_period[0] = nn_period[1];
+	 nn_period[1] = HAL_GetTick();
+	 nn_period_ms = nn_period[1] - nn_period[0];
 
-    nn_period[0] = nn_period[1];
-    nn_period[1] = HAL_GetTick();
-    nn_period_ms = nn_period[1] - nn_period[0];
-
-    capture_buffer = bqueue_get_ready(&nn_input_queue);
-    assert(capture_buffer);
-    output_buffer = bqueue_get_free(&nn_output_queue, 1);
-    assert(output_buffer);*/
-	    uint8_t *capture_buffer;
-	    uint8_t *out[NN_OUT_NB];
-	    uint8_t *output_buffer;
-	    int i;
-
-	    nn_period[0] = nn_period[1];
-	    nn_period[1] = HAL_GetTick();
-	    nn_period_ms = nn_period[1] - nn_period[0];
-
-	    capture_buffer = bqueue_get_ready(&nn_input_queue);
-	    assert(capture_buffer);
-	    output_buffer = bqueue_get_free(&nn_output_queue, 1);
-	    assert(output_buffer);
-	    out[0] = output_buffer;
-	    for (i = 1; i < NN_OUT_NB; i++)
-	      out[i] = out[i - 1] + ALIGN_VALUE(nn_out_len_user[i - 1], 32);
+	 capture_buffer = bqueue_get_ready(&nn_input_queue);
+	 assert(capture_buffer);
+	 output_buffer = bqueue_get_free(&nn_output_queue, 1);
+	 assert(output_buffer);
+	 out[0] = output_buffer;
+	 for (i = 1; i < NN_OUT_NB; i++)
+	     out[i] = out[i - 1] + ALIGN_VALUE(nn_out_len_user[i - 1], 32);
 
     /* run ATON inference */
     ts = HAL_GetTick();
      /* Note that we don't need to clean/invalidate those input buffers since they are only access in hardware */
     ret = LL_ATON_Set_User_Input_Buffer_Default(0, capture_buffer, nn_in_len);
     assert(ret == LL_ATON_User_IO_NOERROR);
-     /* Invalidate output buffer before Hw access it */
-    /*CACHE_OP(SCB_InvalidateDCache_by_Addr(output_buffer, nn_out_len));
-    ret = LL_ATON_Set_User_Output_Buffer_Default(0, output_buffer, nn_out_len);
-    assert(ret == LL_ATON_User_IO_NOERROR);*/
     CACHE_OP(SCB_InvalidateDCache_by_Addr(output_buffer, sizeof(nn_output_buffers[0])));
-        for (i = 0; i < NN_OUT_NB; i++) {
-          ret = LL_ATON_Set_User_Output_Buffer_Default(i, out[i], nn_out_len_user[i]);
-          assert(ret == LL_ATON_User_IO_NOERROR);
-        }
+    for (i = 0; i < NN_OUT_NB; i++) {
+        ret = LL_ATON_Set_User_Output_Buffer_Default(i, out[i], nn_out_len_user[i]);
+        assert(ret == LL_ATON_User_IO_NOERROR);
+    }
     LL_ATON_RT_Main(&NN_Instance_Default);
     inf_ms = HAL_GetTick() - ts;
 
@@ -790,11 +733,6 @@ static void pp_thread_fct(ULONG arg)
 #else
     #error "PostProcessing type not supported"
 #endif
-  /*od_pp_out_t pp_output;
-  uint32_t nn_pp[2];
-  void *pp_input;
-  int ret;
-  int i;*/
   uint8_t *pp_input[NN_OUT_NB];
   od_pp_out_t pp_output;
   int tracking_enabled;
@@ -807,33 +745,18 @@ static void pp_thread_fct(ULONG arg)
   app_postprocess_init(&pp_params);
   while (1)
   {
-    /*uint8_t *output_buffer;
-
+    uint8_t *output_buffer;
     output_buffer = bqueue_get_ready(&nn_output_queue);
-    assert(output_buffer);
-    pp_input = (void *) output_buffer;
-    pp_output.pOutBuff = NULL;
+	assert(output_buffer);
+	pp_input[0] = output_buffer;
+	for (i = 1; i < NN_OUT_NB; i++)
+	pp_input[i] = pp_input[i - 1] + ALIGN_VALUE(nn_out_len_user[i - 1], 32);
+	pp_output.pOutBuff = NULL;
 
-    nn_pp[0] = HAL_GetTick();
-
-    ret = app_postprocess_run((void * []){pp_input}, 3, &pp_output, &pp_params);
-    assert(ret == 0);
-    nn_pp[1] = HAL_GetTick();*/
-	    uint8_t *output_buffer;
-
-	    output_buffer = bqueue_get_ready(&nn_output_queue);
-	    assert(output_buffer);
-	    pp_input[0] = output_buffer;
-	    for (i = 1; i < NN_OUT_NB; i++)
-	      pp_input[i] = pp_input[i - 1] + ALIGN_VALUE(nn_out_len_user[i - 1], 32);
-	    pp_output.pOutBuff = NULL;
-
-	    nn_pp[0] = HAL_GetTick();
-	    ret = app_postprocess_run((void **)pp_input, NN_OUT_NB, &pp_output, &pp_params);
-	    assert(ret == 0);
-	   // tracking_enabled = app_tracking(&pp_output);
-
-	    nn_pp[1] = HAL_GetTick();
+	nn_pp[0] = HAL_GetTick();
+	ret = app_postprocess_run((void **)pp_input, NN_OUT_NB, &pp_output, &pp_params);
+	assert(ret == 0);
+	nn_pp[1] = HAL_GetTick();
 
     tx_mutex_get(&disp.lock, TX_WAIT_FOREVER);
     disp.info.nb_detect = pp_output.nb_detect;
@@ -844,7 +767,6 @@ static void pp_thread_fct(ULONG arg)
 
     bqueue_put_free(&nn_output_queue);
     tx_semaphore_ceiling_put(&disp.update, 1);
-
   }
 }
 
@@ -956,8 +878,6 @@ void app_run()
   ret = tx_thread_create(&isp_thread, "isp", isp_thread_fct, 0, isp_tread_stack,
                          sizeof(isp_tread_stack), isp_priority, isp_priority, time_slice, TX_AUTO_START);
   assert(ret == TX_SUCCESS);
-
-
   UINT status = TX_SUCCESS;
   VOID *memory_ptr;
 
@@ -1007,12 +927,6 @@ int CMW_CAMERA_PIPE_VsyncEventCallback(uint32_t pipe)
 
   return HAL_OK;
 }
-
-
-
-
-
-
 UINT string_to_ip(const char *ip_string, ULONG *ip_address)
 {
     UINT byte1, byte2, byte3, byte4;
@@ -1025,8 +939,6 @@ UINT string_to_ip(const char *ip_string, ULONG *ip_address)
     }
     return NX_NOT_SUCCESSFUL;
 }
-
-
 /**
   * @brief  Application NetXDuo Initialization.
   * @param memory_ptr: memory pointer
@@ -1037,211 +949,128 @@ UINT MX_NetXDuo_Init(VOID *memory_ptr)
   UINT ret = NX_SUCCESS;
   TX_BYTE_POOL *byte_pool = (TX_BYTE_POOL*)memory_ptr;
   CHAR *pointer;
-
-  /* USER CODE BEGIN MX_NetXDuo_MEM_POOL */
-  /* USER CODE END MX_NetXDuo_MEM_POOL */
-
-  /* USER CODE BEGIN 0 */
-
-  /* USER CODE END 0 */
-
   /* Initialize the NetXDuo system. */
   nx_system_initialize();
-
     /* Allocate the memory for packet_pool.  */
   if (tx_byte_allocate(byte_pool, (VOID **) &pointer, NX_APP_PACKET_POOL_SIZE, TX_NO_WAIT) != TX_SUCCESS)
   {
     return TX_POOL_ERROR;
   }
-
-  /* Create the Packet pool to be used for packet allocation,
-   * If extra NX_PACKET are to be used the NX_APP_PACKET_POOL_SIZE should be increased
-   */
   ret = nx_packet_pool_create(&NxAppPool, "NetXDuo App Pool", DEFAULT_PAYLOAD_SIZE, pointer, NX_APP_PACKET_POOL_SIZE);
 
   if (ret != NX_SUCCESS)
   {
     return NX_POOL_ERROR;
   }
-
-    /* Allocate the memory for Ip_Instance */
   if (tx_byte_allocate(byte_pool, (VOID **) &pointer, Nx_IP_INSTANCE_THREAD_SIZE, TX_NO_WAIT) != TX_SUCCESS)
   {
     return TX_POOL_ERROR;
   }
-
-   /* Create the main NX_IP instance */
   ret = nx_ip_create(&NetXDuoEthIpInstance, "NetX Ip instance", NX_APP_DEFAULT_IP_ADDRESS, NX_APP_DEFAULT_NET_MASK, &NxAppPool, nx_stm32_eth_driver,
                      pointer, Nx_IP_INSTANCE_THREAD_SIZE, NX_APP_INSTANCE_PRIORITY);
-
   if (ret != NX_SUCCESS)
   {
     return NX_NOT_SUCCESSFUL;
   }
-
-    /* Allocate the memory for ARP */
   if (tx_byte_allocate(byte_pool, (VOID **) &pointer, DEFAULT_ARP_CACHE_SIZE, TX_NO_WAIT) != TX_SUCCESS)
   {
     return TX_POOL_ERROR;
   }
-
-  /* Enable the ARP protocol and provide the ARP cache size for the IP instance */
-
-  /* USER CODE BEGIN ARP_Protocol_Initialization */
-
-  /* USER CODE END ARP_Protocol_Initialization */
-
   ret = nx_arp_enable(&NetXDuoEthIpInstance, (VOID *)pointer, DEFAULT_ARP_CACHE_SIZE);
 
   if (ret != NX_SUCCESS)
   {
     return NX_NOT_SUCCESSFUL;
   }
-
-  /* Enable the ICMP */
-
-  /* USER CODE BEGIN ICMP_Protocol_Initialization */
-
-  /* USER CODE END ICMP_Protocol_Initialization */
-
   ret = nx_icmp_enable(&NetXDuoEthIpInstance);
 
   if (ret != NX_SUCCESS)
   {
     return NX_NOT_SUCCESSFUL;
   }
-
-  /* Enable TCP Protocol */
-
-  /* USER CODE BEGIN TCP_Protocol_Initialization */
-
-  /* USER CODE END TCP_Protocol_Initialization */
-
   ret = nx_tcp_enable(&NetXDuoEthIpInstance);
 
   if (ret != NX_SUCCESS)
   {
     return NX_NOT_SUCCESSFUL;
   }
-
-  /* Enable the UDP protocol required for  DHCP communication */
-
-  /* USER CODE BEGIN UDP_Protocol_Initialization */
-
-  /* USER CODE END UDP_Protocol_Initialization */
-
   ret = nx_udp_enable(&NetXDuoEthIpInstance);
-
   if (ret != NX_SUCCESS)
   {
     return NX_NOT_SUCCESSFUL;
   }
-  /* Create the DHCP client */
-
-    /* USER CODE BEGIN DHCP_Protocol_Initialization */
-
-    /* USER CODE END DHCP_Protocol_Initialization */
-
-    ret = nx_dhcp_create(&DHCPClient, &NetXDuoEthIpInstance, "DHCP Client");
-
-    if (ret != NX_SUCCESS)
-    {
-      return NX_DHCP_ERROR;
-    }
-
-    /* set DHCP notification callback  */
-    tx_semaphore_create(&DHCPSemaphore, "DHCP Semaphore", 0);
-
-   /* Allocate the memory for main thread   */
+  ret = nx_dhcp_create(&DHCPClient, &NetXDuoEthIpInstance, "DHCP Client");
+  if (ret != NX_SUCCESS)
+  {
+    return NX_DHCP_ERROR;
+  }
+  tx_semaphore_create(&DHCPSemaphore, "DHCP Semaphore", 0);
   if (tx_byte_allocate(byte_pool, (VOID **) &pointer, NX_APP_THREAD_STACK_SIZE, TX_NO_WAIT) != TX_SUCCESS)
   {
     return TX_POOL_ERROR;
   }
-
-  /* Create the main thread */
   ret = tx_thread_create(&NxAppThread, "NetXDuo App thread", nx_app_thread_entry , 0, pointer, NX_APP_THREAD_STACK_SIZE,
                          NX_APP_THREAD_PRIORITY, NX_APP_THREAD_PRIORITY, TX_NO_TIME_SLICE, TX_AUTO_START);
-
   if (ret != TX_SUCCESS)
   {
     return TX_THREAD_ERROR;
   }
-
-  /* USER CODE BEGIN MX_NetXDuo_Init */
   printf("Nx_MQTT_Client application started..\n\r");
-
   /* Allocate the memory for SNTP client thread   */
   if (tx_byte_allocate(byte_pool, (VOID **) &pointer, SNTP_CLIENT_THREAD_MEMORY, TX_NO_WAIT) != TX_SUCCESS)
   {
     return TX_POOL_ERROR;
   }
-
   /* create the SNTP client thread */
   ret = tx_thread_create(&AppSNTPThread, "App SNTP Thread", App_SNTP_Thread_Entry, 0, pointer, SNTP_CLIENT_THREAD_MEMORY,
                          SNTP_PRIORITY, SNTP_PRIORITY, TX_NO_TIME_SLICE, TX_DONT_START);
-
   if (ret != TX_SUCCESS)
   {
     return NX_NOT_ENABLED;
   }
-
   /* Create the event flags. */
   ret = tx_event_flags_create(&SntpFlags, "SNTP event flags");
-
   /* Check for errors */
   if (ret != TX_SUCCESS)
   {
     return NX_NOT_ENABLED;
   }
-
   /* Allocate the memory for MQTT client thread   */
   if (tx_byte_allocate(byte_pool, (VOID **) &pointer, THREAD_MEMORY_SIZE, TX_NO_WAIT) != TX_SUCCESS)
   {
     return TX_POOL_ERROR;
   }
-
   /* create the MQTT client thread */
   ret = tx_thread_create(&AppMQTTClientThread, "App MQTT Thread", App_MQTT_Client_Thread_Entry, 0, pointer, THREAD_MEMORY_SIZE,
                          MQTT_PRIORITY, MQTT_PRIORITY, TX_NO_TIME_SLICE, TX_DONT_START);
-
   if (ret != TX_SUCCESS)
   {
     return NX_NOT_ENABLED;
   }
-
   /* Allocate the memory for Link thread   */
   if (tx_byte_allocate(byte_pool, (VOID **) &pointer,2 *  DEFAULT_MEMORY_SIZE, TX_NO_WAIT) != TX_SUCCESS)
   {
     return TX_POOL_ERROR;
   }
-
   /* create the Link thread */
   ret = tx_thread_create(&AppLinkThread, "App Link Thread", App_Link_Thread_Entry, 0, pointer, 2 * DEFAULT_MEMORY_SIZE,
                          LINK_PRIORITY, LINK_PRIORITY, TX_NO_TIME_SLICE, TX_AUTO_START);
-
   if (ret != TX_SUCCESS)
   {
     return NX_NOT_ENABLED;
   }
-
-
   /* Allocate the MsgQueueOne.  */
   if (tx_byte_allocate(byte_pool, (VOID **) &pointer, APP_QUEUE_SIZE*sizeof(ULONG), TX_NO_WAIT) != TX_SUCCESS)
   {
     ret = TX_POOL_ERROR;
   }
-
   /* Create the MsgQueueOne shared by MsgSenderThreadOne and MsgReceiverThread */
   if (tx_queue_create(&MsgQueueOne, "Message Queue One",TX_1_ULONG, pointer, APP_QUEUE_SIZE*sizeof(ULONG)) != TX_SUCCESS)
   {
     ret = TX_QUEUE_ERROR;
   }
-
-  /* USER CODE END MX_NetXDuo_Init */
-
   return ret;
 }
-
 /**
 * @brief  ip address change callback.
 * @param ip_instance: NX_IP instance
@@ -1250,22 +1079,15 @@ UINT MX_NetXDuo_Init(VOID *memory_ptr)
 */
 static VOID ip_address_change_notify_callback(NX_IP *ip_instance, VOID *ptr)
 {
-  /* USER CODE BEGIN ip_address_change_notify_callback */
-  /* release the semaphore as soon as an IP address is available */
   if (nx_ip_address_get(&NetXDuoEthIpInstance, &IpAddress, &NetMask) != NX_SUCCESS)
   {
-    /* USER CODE BEGIN IP address change callback error */
     Error_Handler();
-    /* USER CODE END IP address change callback error */
   }
   if(IpAddress != NULL_ADDRESS)
   {
     tx_semaphore_put(&DHCPSemaphore);
   }
-  /* USER CODE END ip_address_change_notify_callback */
-
 }
-
 /**
 * @brief  Main thread entry.
 * @param thread_input: ULONG user argument used by the thread entry
@@ -1273,61 +1095,31 @@ static VOID ip_address_change_notify_callback(NX_IP *ip_instance, VOID *ptr)
 */
 static VOID nx_app_thread_entry (ULONG thread_input)
 {
-  /* USER CODE BEGIN Nx_App_Thread_Entry 0 */
-
-  /* USER CODE END Nx_App_Thread_Entry 0 */
-
   UINT ret = NX_SUCCESS;
-
-  /* USER CODE BEGIN Nx_App_Thread_Entry 1 */
-  /* Create a DNS client */
   ret = dns_create(&DnsClient);
-
   if (ret != NX_SUCCESS)
   {
     Error_Handler();
   }
-  /* USER CODE END Nx_App_Thread_Entry 1 */
-
-  /* register the IP address change callback */
   ret = nx_ip_address_change_notify(&NetXDuoEthIpInstance, ip_address_change_notify_callback, NULL);
   if (ret != NX_SUCCESS)
   {
-    /* USER CODE BEGIN IP address change callback error */
     Error_Handler();
-    /* USER CODE END IP address change callback error */
   }
-
-  /* set DHCP notification callback  */
-   /*start the DHCP client */
   ret = nx_dhcp_start(&DHCPClient);
   if (ret != NX_SUCCESS)
   {
-
     Error_Handler();
-
   }
-
   printf("Looking for DHCP server ..\n\r");
   if(tx_semaphore_get(&DHCPSemaphore, TX_WAIT_FOREVER) != TX_SUCCESS)
   {
-	  printf("Looking for DHCP server ..error\n\r");
     Error_Handler();
   }
-
-  /* USER CODE BEGIN Nx_App_Thread_Entry 2 */
   PRINT_IP_ADDRESS(IpAddress);
-
-  /* start the SNTP client thread */
   tx_thread_resume(&AppSNTPThread);
-
-  /* this thread is not needed any more, we relinquish it */
   tx_thread_relinquish();
-  /* USER CODE END Nx_App_Thread_Entry 2 */
-
 }
-/* USER CODE BEGIN 1 */
-
 /**
 * @brief  DNS Create Function.
 * @param dns_ptr
@@ -1673,12 +1465,6 @@ static VOID App_MQTT_Client_Thread_Entry(ULONG thread_input)
 	    }
 }
 /**
-* @brief  MQTT Client thread log objects.
-* @param thread_input: ULONG user argument used by the thread entry
-* @retval none
-*/
-
-/**
 * @brief  Link thread entry
 * @param thread_input: ULONG thread parameter
 * @retval none
@@ -1793,6 +1579,3 @@ static uint32_t GetRtcEpoch() {
 
     return (uint32_t)mktime(&tm_time);
 }
-
-
-

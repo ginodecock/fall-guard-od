@@ -1,17 +1,15 @@
  /**
  ******************************************************************************
  * @file    app.h
- * @author  GPM Application Team
+ * @author  G-DC
  *
  ******************************************************************************
  * @attention
  *
- * Copyright (c) 2024 STMicroelectronics.
+ * Copyright (c) 2025 G-DC
  * All rights reserved.
  *
- * This software is licensed under terms that can be found in the LICENSE file
- * in the root directory of this software component.
- * If no LICENSE file comes with this software, it is provided AS-IS.
+ * This software is provided AS-IS.
  *
  ******************************************************************************
  */
@@ -27,14 +25,7 @@
 #include "nxd_mqtt_client.h"
 #include "nxd_sntp_client.h"
 #include "nxd_dns.h"
-/* USER CODE END Includes */
-
-/* Exported types ------------------------------------------------------------*/
-/* USER CODE BEGIN ET */
-/* USER CODE END ET */
-
-/* Exported constants --------------------------------------------------------*/
-/* USER CODE BEGIN EC */
+#include "broker.h"
 #define MOSQUITTO_CERT_FILE         "mosquitto.cert.h"
 
   /* Threads configuration */
@@ -44,8 +35,6 @@
 #define LINK_PRIORITY               11
 #define THREAD_MEMORY_SIZE          2 * DEFAULT_MEMORY_SIZE
 #define APP_QUEUE_SIZE              10
-
-
 /* MQTT Client configuration */
 #define MQTT_CLIENT_STACK_SIZE      1024 * 4
 #define CLIENT_ID_STRING            "MQTT_client_ID"
@@ -57,16 +46,12 @@
 #define TOPIC_NAME                  "Fallguard"
 #define NB_MESSAGE                  10                    /*  if NB_MESSAGE = 0, client will publish messages infinitely */
 
-#define MQTT_BROKER_NAME            "g-dc.be" /* MQTT Server */
-
-#define MQTT_PORT                   8883 /*NXD_MQTT_TLS_PORT*/
-
+//#define MQTT_BROKER_NAME            "broker hostname" /* MQTT Server ==> see broker.h*/
+#define MQTT_PORT                   1883 /*NXD_MQTT_TLS_PORT*/
 #define QOS0                        0
 #define QOS1                        1
-
 #define DEMO_MESSAGE_EVENT          1
 #define DEMO_ALL_EVENTS             3
-
 /* SNTP Client configuration */
 #define SNTP_CLIENT_THREAD_MEMORY    6 * DEFAULT_MEMORY_SIZE
 #define SNTP_SERVER_NAME             "time1.google.com"
@@ -78,10 +63,8 @@
 #define CHECK_SNTP_UPDATES_TIMEOUT   (180 * NX_IP_PERIODIC_RATE)
 #define EPOCH_TIME_DIFF              2208988800     /* is equivalent to 70 years in sec
                                                        calculated with www.epochconverter.com/date-difference */
-
 #define NULL_ADDRESS                0
 #define USER_DNS_ADDRESS            IP_ADDRESS(1, 1, 1, 1)   /* User should configure it with his DNS address */
-
 #define DEFAULT_TIMEOUT             5 * NX_IP_PERIODIC_RATE
 
 #define NX_APP_CABLE_CONNECTION_CHECK_PERIOD      (1 * NX_IP_PERIODIC_RATE)
@@ -96,7 +79,6 @@
 #endif
 
 /* Exported macro ------------------------------------------------------------*/
-/* USER CODE BEGIN EM */
 #define PRINT_IP_ADDRESS(addr)           do { \
                                               printf("STM32 %s: %lu.%lu.%lu.%lu \n\r", #addr, \
                                                 (addr >> 24) & 0xff,                        \
@@ -108,45 +90,22 @@
                                         printf("SNTP client connected to NTP server : < %s > \n\r", SNTP_SERVER_NAME);\
                                      } while(0)
 
-/* USER CODE END EM */
-
-/* Exported functions prototypes ---------------------------------------------*/
 UINT MX_NetXDuo_Init(VOID *memory_ptr);
 extern uint8_t MACAddr[6];
 extern RTC_HandleTypeDef hrtc;
-/* USER CODE BEGIN EFP */
-
-/* USER CODE END EFP */
-
-/* Private defines -----------------------------------------------------------*/
-/* USER CODE BEGIN PD */
-
-/* USER CODE END PD */
-
 #define NX_APP_DEFAULT_TIMEOUT               (10 * NX_IP_PERIODIC_RATE)
-
 #define NX_APP_PACKET_POOL_SIZE              ((DEFAULT_PAYLOAD_SIZE + sizeof(NX_PACKET)) * 20)
-
 #define NX_APP_THREAD_STACK_SIZE             2 * 1024
-
 #define Nx_IP_INSTANCE_THREAD_SIZE           2 * 1024
-
 #define NX_APP_THREAD_PRIORITY               10
-
 #ifndef NX_APP_INSTANCE_PRIORITY
 #define NX_APP_INSTANCE_PRIORITY             NX_APP_THREAD_PRIORITY
 #endif
-
 #define NX_APP_DEFAULT_IP_ADDRESS            0//IP_ADDRESS(192,168,168,100)
 
 #define NX_APP_DEFAULT_NET_MASK              0//IP_ADDRESS(255,255,255,0)
 #define NX_APP_GATEWAY_IP_ADDRESS			 0//IP_ADDRESS(192.168.168.138)
 #define NX_APP_DNS_IP_ADDRESS     			 0//IP_ADDRESS(8.8.8.8)
-
-/* USER CODE BEGIN 1 */
-
-/* USER CODE END 1 */
-
 #ifndef APP_H
 #define APP_H
 

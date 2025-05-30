@@ -1,0 +1,9 @@
+/Gcc/
+/Lib/
+/Model/
+/STM32Cube_FW_N6/
+/sources.mk
+/Src/
+/makefile
+/objects.list
+/objects.mk

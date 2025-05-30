@@ -23,15 +23,15 @@
  * GIT_DESCRIPTION "atonn-v1.1.0-31-g27f5d5bcb"
  *
  * Command Line options:
- * --onnx-input = "Y:/VM/stm-workspace/fall-guard-v2.0.0/Model/st_ai_output/fall_guard_st_ssd_mobilenet_v1_256v2_OE_3_2_0.onnx"
- * --out-dir-prefix = "Y:/VM/stm-workspace/fall-guard-v2.0.0/Model/st_ai_ws/neural_art__network/"
+ * --onnx-input = "Y:/VM/stm-workspace/fall-guard-od/Model/st_ai_output/fall_guard_st_ssd_mobilenet_v1_256v2_OE_3_2_0.onnx"
+ * --out-dir-prefix = "Y:/VM/stm-workspace/fall-guard-od/Model/st_ai_ws/neural_art__network/"
  * --all-buffers-info = true
  * --load-mdesc-file = "C:/ST/STEdgeAI/2.1/Utilities/configs/stm32n6"
- * --load-mpool-file = "Y:/VM/stm-workspace/fall-guard-v2.0.0/Model/my_mpools/stm32n6-app2"
+ * --load-mpool-file = "Y:/VM/stm-workspace/fall-guard-od/Model/my_mpools/stm32n6-app2"
  * --cache-maintenance = true
  * --enable-virtual-mem-pools = true
  * --native-float = true
- * --json-quant-file = "Y:/VM/stm-workspace/fall-guard-v2.0.0/Model/st_ai_output/fall_guard_st_ssd_mobilenet_v1_256v2_OE_3_2_0_Q.json"
+ * --json-quant-file = "Y:/VM/stm-workspace/fall-guard-od/Model/st_ai_output/fall_guard_st_ssd_mobilenet_v1_256v2_OE_3_2_0_Q.json"
  * --optimization = 3
  * --Os = true
  * --Omax-ca-pipe = 4

@@ -9,7 +9,7 @@
                 }
             ],
             "name": "network",
-            "generated_time": "2025-05-26T17:55:15+0200"
+            "generated_time": "2025-05-30T14:26:55+0200"
         },
         "tools": [
             {
@@ -32,7 +32,7 @@
             }
         ],
         "test_name": "",
-        "network_signature": "0xf8256f63238bce1f"
+        "network_signature": "0x6fd97d9446d039c4"
     },
     "model_info": {
         "original_inputs": [
