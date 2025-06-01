@@ -101,7 +101,9 @@ static int message_sent = 0;
 // Shared resources between threads
 #define MEASUREMENT_QUEUE_DEPTH  20
 #define MEASUREMENT_QUEUE_MSG_SIZE sizeof(sensor_data_t)
-
+#define TSL2561_ADDR          0x39
+extern I2C_HandleTypeDef hi2c1;  // Ensure I2C is initialized elsewhere
+static float lux;
 /* Define a structure for your sensor data */
 typedef struct {
     float nb_detect;
@@ -301,6 +303,10 @@ static uint8_t dp_tread_stack[4096];
   /* isp thread */
 static TX_THREAD isp_thread;
 static uint8_t isp_tread_stack[4096];
+  /*TSL2561 thread*/
+static TX_THREAD AppTSL2561Thread;
+static uint8_t tsl2561_thread_stack[4096];
+
 static TX_SEMAPHORE isp_sem;
 
 static int is_cache_enable()
@@ -588,8 +594,8 @@ static void Display_NetworkOutput(display_info_t *info)
     }
   nn_fps = 1000.0 / info->nn_period_ms;
 #if 1
-  UTIL_LCDEx_PrintfAt(0, LINE(line_nb),  RIGHT_MODE, "Cpu"
-		  "");
+  UTIL_LCDEx_PrintfAt(0, LINE(line_nb),  RIGHT_MODE, "Cpu"  "");
+  UTIL_LCDEx_PrintfAt(0, LINE(line_nb), LEFT_MODE, "lux: %.2f", lux);
   line_nb += 1;
   UTIL_LCDEx_PrintfAt(0, LINE(line_nb),  RIGHT_MODE, "   %.1f%%", cpu_load_one_second);
   line_nb += 2;
@@ -603,6 +609,7 @@ static void Display_NetworkOutput(display_info_t *info)
   line_nb += 2;
   UTIL_LCDEx_PrintfAt(0, LINE(line_nb), RIGHT_MODE, " Objects %u", nb_rois);
   line_nb += 1;
+
 #else
   (void) nn_fps;
   UTIL_LCDEx_PrintfAt(0, LINE(line_nb),  RIGHT_MODE, "Cpu");
@@ -862,7 +869,82 @@ static void isp_thread_fct(ULONG arg)
     CAM_IspUpdate();
   }
 }
+/* TSL2561 Helper Functions */
+HAL_StatusTypeDef TSL2561_Init(I2C_HandleTypeDef *hi2c) {
+    uint8_t cmd[2];
 
+    // Power on
+    cmd[0] = 0x80 | 0x00;  // Command + Control reg
+    cmd[1] = 0x03;          // Power ON
+    if (HAL_I2C_Master_Transmit(hi2c, TSL2561_ADDR << 1, cmd, 2, 100) != HAL_OK) {
+        return HAL_ERROR;
+    }
+
+    // Set timing: 402ms integration, low gain
+    cmd[0] = 0x80 | 0x01;  // Command + Timing reg
+    cmd[1] = 0x02;         // 402ms, low gain
+    return HAL_I2C_Master_Transmit(hi2c, TSL2561_ADDR << 1, cmd, 2, 100);
+}
+
+HAL_StatusTypeDef TSL2561_ReadData(I2C_HandleTypeDef *hi2c, uint16_t *ch0, uint16_t *ch1) {
+    uint8_t data[4];
+    uint8_t cmd;
+
+    // Read Channel 0 (0x8C and 0x8D)
+    cmd = 0x80 | 0x8C;  // Command + Data0 low
+    if (HAL_I2C_Master_Transmit(hi2c, TSL2561_ADDR << 1, &cmd, 1, 100) != HAL_OK ||
+        HAL_I2C_Master_Receive(hi2c, TSL2561_ADDR << 1, data, 2, 100) != HAL_OK) {
+        return HAL_ERROR;
+    }
+    *ch0 = (data[1] << 8) | data[0];
+
+    // Read Channel 1 (0x8E and 0x8F)
+    cmd = 0x80 | 0x8E;  // Command + Data1 low
+    if (HAL_I2C_Master_Transmit(hi2c, TSL2561_ADDR << 1, &cmd, 1, 100) != HAL_OK ||
+        HAL_I2C_Master_Receive(hi2c, TSL2561_ADDR << 1, data+2, 2, 100) != HAL_OK) {
+        return HAL_ERROR;
+    }
+    *ch1 = (data[3] << 8) | data[2];
+
+    return HAL_OK;
+}
+
+float TSL2561_CalculateLux(uint16_t ch0, uint16_t ch1) {
+    if (ch0 == 0) return 0;
+
+    float ratio = (float)ch1 / ch0;
+    if (ratio <= 0.5) {
+        return (0.0304 * ch0) - (0.062 * ch0 * powf(ratio, 1.4));
+    } else if (ratio <= 0.61) {
+        return (0.0224 * ch0) - (0.031 * ch1);
+    } else if (ratio <= 0.80) {
+        return (0.0128 * ch0) - (0.0153 * ch1);
+    } else if (ratio <= 1.30) {
+        return (0.00146 * ch0) - (0.00112 * ch1);
+    }
+    return 0;
+}
+/* Thread Entry Function */
+static VOID App_TSL2561_Thread_Entry(ULONG thread_input) {
+    if (TSL2561_Init(&hi2c1) != HAL_OK) {
+        printf("TSL2561 Init Failed!\n");
+        return;
+    }
+
+    while(1) {
+        uint16_t ch0, ch1;
+
+
+        if (TSL2561_ReadData(&hi2c1, &ch0, &ch1) == HAL_OK) {
+            lux = TSL2561_CalculateLux(ch0, ch1);
+           // printf("[TSL2561] Ch0: %5u, Ch1: %5u, Lux: %.2f\n\r", ch0, ch1, lux);
+        } else {
+            printf("TSL2561 Read Error!\n\r");
+        }
+
+        tx_thread_sleep(1000);  // 1 second interval
+    }
+}
 void app_run()
 {
   const UINT isp_priority = TX_MAX_PRIORITIES / 2 - 2;
@@ -912,6 +994,10 @@ void app_run()
   ret = tx_thread_create(&isp_thread, "isp", isp_thread_fct, 0, isp_tread_stack,
                          sizeof(isp_tread_stack), isp_priority, isp_priority, time_slice, TX_AUTO_START);
   assert(ret == TX_SUCCESS);
+  ret = tx_thread_create(&AppTSL2561Thread, "TSL2561", App_TSL2561_Thread_Entry, 0,tsl2561_thread_stack, sizeof(tsl2561_thread_stack), 15, 15, TX_NO_TIME_SLICE, TX_AUTO_START);
+  assert(ret == TX_SUCCESS);
+
+
   UINT status = TX_SUCCESS;
   VOID *memory_ptr;
 
@@ -1613,3 +1699,4 @@ static uint32_t GetRtcEpoch() {
 
     return (uint32_t)mktime(&tm_time);
 }
+

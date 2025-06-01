@@ -99,12 +99,15 @@ ETH_DMADescTypeDef DMATxDscrTab[ETH_DMA_TX_CH_CNT][ETH_TX_DESC_CNT] __attribute_
 #endif
 ETH_HandleTypeDef heth;
 RNG_HandleTypeDef hrng;
+I2C_HandleTypeDef hi2c1;
+//I2C_HandleTypeDef hi2c2;
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_ETH_Init(void);
 static void MX_RNG_Init(void);
 static void MX_RTC_Init(void);
 static void RISAF_Config(void);
+static void MX_I2C1_Init2(void);
 void MPU_Config(void);
 void Success_Handler(void)
 {
@@ -114,6 +117,19 @@ void Success_Handler(void)
      HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
      HAL_Delay(1000);
    }
+}
+/* I2C Scanner Function */
+void I2C_ScanBus(void) {
+    printf("\r\nScanning I2C bus...\r\n");
+
+    for(uint8_t address = 1; address < 128; address++) {
+        HAL_StatusTypeDef status = HAL_I2C_IsDeviceReady(&hi2c1, (uint16_t)(address << 1), 3, 10);
+
+        if(status == HAL_OK) {
+            printf("Device found at 0x%02X\r\n", address);
+        }
+    }
+    printf("Scan complete\r\n\r\n");
 }
 int main(void)
 {
@@ -128,12 +144,15 @@ int main(void)
   HAL_PWREx_EnableVddIO2();
   HAL_Init();
   SystemClock_Config();
+  //MX_I2C1_Init(&hi2c1, 0x10707DBC);
   RISAF_Config();
-   MX_GPIO_Init();
-   MX_ETH_Init();
-   MX_RNG_Init();
-   MX_RTC_Init();
-   MX_ThreadX_Init();
+  MX_GPIO_Init();
+  MX_ETH_Init();
+  MX_RNG_Init();
+  MX_RTC_Init();
+  MX_I2C1_Init2();
+
+  MX_ThreadX_Init();
   SCB_EnableICache();
 #if defined(USE_DCACHE)
   /* Power on DCACHE */
@@ -306,6 +325,9 @@ static void SystemClock_Config(void)
   /* XSPI2 kernel clock (ck_ker_xspi1) = HCLK =  200MHz */
   RCC_PeriphCLKInitStruct.PeriphClockSelection |= RCC_PERIPHCLK_XSPI2;
   RCC_PeriphCLKInitStruct.Xspi2ClockSelection = RCC_XSPI2CLKSOURCE_HCLK;
+  /* I2C1 clock source */
+  RCC_PeriphCLKInitStruct.PeriphClockSelection = RCC_PERIPHCLK_I2C1;
+  RCC_PeriphCLKInitStruct.I2c1ClockSelection = RCC_I2C1CLKSOURCE_PCLK1;
 
   if (HAL_RCCEx_PeriphCLKConfig(&RCC_PeriphCLKInitStruct) != HAL_OK)
   {
@@ -440,6 +462,15 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
   HAL_GPIO_Init(LED_RED_GPIO_Port, &GPIO_InitStruct);
+  /* I2C1 GPIO Configuration */
+  /* In GPIO initialization */
+  GPIO_InitStruct.Pin = GPIO_PIN_9 | GPIO_PIN_1;
+  GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+  GPIO_InitStruct.Alternate = GPIO_AF4_I2C1; // PH9/PC1 use AF4
+  HAL_GPIO_Init(GPIOH, &GPIO_InitStruct); // PH9 (SCL)
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct); // PC1 (SDA)
 }
 
 static int main_threadx()
@@ -647,4 +678,46 @@ void assert_failed(uint8_t* file, uint32_t line)
 __attribute__ ((section (".keep_me"))) void app_clean_invalidate_dbg()
 {
   SCB_CleanInvalidateDCache();
+}
+static void MX_I2C1_Init2(void)
+{
+
+  /* USER CODE BEGIN I2C1_Init 0 */
+
+  /* USER CODE END I2C1_Init 0 */
+
+  /* USER CODE BEGIN I2C1_Init 1 */
+
+  /* USER CODE END I2C1_Init 1 */
+  hi2c1.Instance = I2C1;
+  hi2c1.Init.Timing = 0x30C0EDFF;
+  hi2c1.Init.OwnAddress1 = 0;
+  hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  hi2c1.Init.OwnAddress2 = 0;
+  hi2c1.Init.OwnAddress2Masks = I2C_OA2_NOMASK;
+  hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  if (HAL_I2C_Init(&hi2c1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Analogue filter
+  */
+  if (HAL_I2CEx_ConfigAnalogFilter(&hi2c1, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Digital filter
+  */
+  if (HAL_I2CEx_ConfigDigitalFilter(&hi2c1, 0) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN I2C1_Init 2 */
+
+  /* USER CODE END I2C1_Init 2 */
+
 }
