@@ -21,6 +21,13 @@
 #include "cmw_camera.h"
 extern ETH_HandleTypeDef heth;
 extern TIM_HandleTypeDef htim6;
+extern UART_HandleTypeDef huart2;
+extern DMA_HandleTypeDef hdma_usart2_rx;
+
+
+// Single-byte temp buffer for interrupt
+uint8_t uart2_rx_byte;
+
 /**
   * @brief   This function handles NMI exception.
   * @param  None
@@ -121,4 +128,11 @@ void ETH1_IRQHandler(void)
 {
   HAL_ETH_IRQHandler(&heth);
 }
-
+/*void USART2_IRQHandler(void)
+{
+    HAL_UART_IRQHandler(&huart2);
+}
+void GPDMA1_Channel14_IRQHandler(void)
+{
+    HAL_DMA_IRQHandler(&hdma_usart2_rx);
+}*/

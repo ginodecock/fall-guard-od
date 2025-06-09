@@ -33,7 +33,7 @@
 #define MQTT_PRIORITY               3
 #define SNTP_PRIORITY               5
 #define LINK_PRIORITY               11
-#define THREAD_MEMORY_SIZE          2 * DEFAULT_MEMORY_SIZE
+#define THREAD_MEMORY_SIZE          4 * DEFAULT_MEMORY_SIZE
 #define APP_QUEUE_SIZE              10
 /* MQTT Client configuration */
 #define MQTT_CLIENT_STACK_SIZE      1024 * 4
@@ -108,6 +108,8 @@ extern RTC_HandleTypeDef hrtc;
 #define NX_APP_DNS_IP_ADDRESS     			 0//IP_ADDRESS(8.8.8.8)
 #ifndef APP_H
 #define APP_H
+
+
 
 void app_run(void);
 
