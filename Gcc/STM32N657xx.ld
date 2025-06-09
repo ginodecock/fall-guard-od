@@ -14,7 +14,7 @@ _Min_Stack_Size = 0x1000; /* required amount of stack */
 /* Memories definition */
 MEMORY
 {
-  AXISRAM1_2_S (xrw) : ORIGIN = 0x34000400, LENGTH =  2047K
+  AXISRAM1_2_S (xrw) : ORIGIN = 0x34000400, LENGTH =  1536K
   PSRAM (xrw)      : ORIGIN = 0x91000000, LENGTH =  16M
   RAM    (xrw)    : ORIGIN = 0x341C0000,   LENGTH = 256K
 }

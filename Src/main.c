@@ -101,9 +101,7 @@ ETH_HandleTypeDef heth;
 RNG_HandleTypeDef hrng;
 I2C_HandleTypeDef hi2c1;
 UART_HandleTypeDef huart2;
-//DMA_HandleTypeDef hdma_usart2_rx;
 
-//I2C_HandleTypeDef hi2c2;
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_ETH_Init(void);
@@ -112,7 +110,7 @@ static void MX_RTC_Init(void);
 static void RISAF_Config(void);
 static void MX_I2C1_Init2(void);
 static void MX_USART2_UART_Init(void);
-//static void MX_DMA_Init(void);
+
 void MPU_Config(void);
 void Success_Handler(void)
 {
@@ -124,7 +122,7 @@ void Success_Handler(void)
    }
 }
 /* I2C Scanner Function */
-void I2C_ScanBus(void) {
+/*void I2C_ScanBus(void) {
     printf("\r\nScanning I2C bus...\r\n");
 
     for(uint8_t address = 1; address < 128; address++) {
@@ -135,7 +133,7 @@ void I2C_ScanBus(void) {
         }
     }
     printf("Scan complete\r\n\r\n");
-}
+}*/
 int main(void)
 {
   /* Power on ICACHE */
@@ -149,15 +147,12 @@ int main(void)
   HAL_PWREx_EnableVddIO2();
   HAL_Init();
   SystemClock_Config();
-  //MX_DMA_Init();
-  //MX_I2C1_Init(&hi2c1, 0x10707DBC);
   RISAF_Config();
   MX_GPIO_Init();
   MX_ETH_Init();
   MX_RNG_Init();
   MX_RTC_Init();
   MX_I2C1_Init2();
-
   MX_USART2_UART_Init();
 
   MX_ThreadX_Init();
@@ -334,8 +329,8 @@ static void SystemClock_Config(void)
   RCC_PeriphCLKInitStruct.PeriphClockSelection |= RCC_PERIPHCLK_XSPI2;
   RCC_PeriphCLKInitStruct.Xspi2ClockSelection = RCC_XSPI2CLKSOURCE_HCLK;
   /* I2C1 clock source */
-  RCC_PeriphCLKInitStruct.PeriphClockSelection = RCC_PERIPHCLK_I2C1;
-  RCC_PeriphCLKInitStruct.I2c1ClockSelection = RCC_I2C1CLKSOURCE_PCLK1;
+ /* RCC_PeriphCLKInitStruct.PeriphClockSelection = RCC_PERIPHCLK_I2C1;
+  RCC_PeriphCLKInitStruct.I2c1ClockSelection = RCC_I2C1CLKSOURCE_PCLK1;*/
 
   if (HAL_RCCEx_PeriphCLKConfig(&RCC_PeriphCLKInitStruct) != HAL_OK)
   {
@@ -447,7 +442,7 @@ static void MX_GPIO_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
   /* GPIO Ports Clock Enable */
-  __HAL_RCC_GPIOH_CLK_ENABLE();
+ /* __HAL_RCC_GPIOH_CLK_ENABLE();
   __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOE_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
@@ -457,7 +452,14 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOG_CLK_ENABLE();
   __HAL_RCC_GPIOF_CLK_ENABLE();
   __HAL_RCC_GPION_CLK_ENABLE();
+  __HAL_RCC_GPIOA_CLK_ENABLE();*/
+  __HAL_RCC_GPIOH_CLK_ENABLE();
+  __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
+  __HAL_RCC_GPIOD_CLK_ENABLE();
+  __HAL_RCC_GPIOG_CLK_ENABLE();
+  __HAL_RCC_GPIOO_CLK_ENABLE();
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
   /*Configure GPIO pin Output Level */
@@ -708,14 +710,6 @@ __attribute__ ((section (".keep_me"))) void app_clean_invalidate_dbg()
 }
 static void MX_I2C1_Init2(void)
 {
-
-  /* USER CODE BEGIN I2C1_Init 0 */
-
-  /* USER CODE END I2C1_Init 0 */
-
-  /* USER CODE BEGIN I2C1_Init 1 */
-
-  /* USER CODE END I2C1_Init 1 */
   hi2c1.Instance = I2C1;
   hi2c1.Init.Timing = 0x30C0EDFF;
   hi2c1.Init.OwnAddress1 = 0;
@@ -730,23 +724,15 @@ static void MX_I2C1_Init2(void)
     Error_Handler();
   }
 
-  /** Configure Analogue filter
-  */
   if (HAL_I2CEx_ConfigAnalogFilter(&hi2c1, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
   {
     Error_Handler();
   }
 
-  /** Configure Digital filter
-  */
   if (HAL_I2CEx_ConfigDigitalFilter(&hi2c1, 0) != HAL_OK)
   {
     Error_Handler();
   }
-  /* USER CODE BEGIN I2C1_Init 2 */
-
-  /* USER CODE END I2C1_Init 2 */
-
 }
 /**
   * @brief USART2 Initialization Function
@@ -755,14 +741,6 @@ static void MX_I2C1_Init2(void)
   */
 static void MX_USART2_UART_Init(void)
 {
-
-  /* USER CODE BEGIN USART2_Init 0 */
-
-  /* USER CODE END USART2_Init 0 */
-
-  /* USER CODE BEGIN USART2_Init 1 */
-
-  /* USER CODE END USART2_Init 1 */
   huart2.Instance = USART2;
   huart2.Init.BaudRate = 256000;
   huart2.Init.WordLength = UART_WORDLENGTH_8B;
@@ -792,39 +770,3 @@ static void MX_USART2_UART_Init(void)
   }
 
 }
-/*static void MX_DMA_Init(void)
-{
-    // 1. Enable the GPDMA1 clock
-    __HAL_RCC_GPDMA1_CLK_ENABLE();
-    __HAL_RCC_USART2_CLK_ENABLE();
-
-    // 2. Set NVIC priority and enable IRQ for USART2
-    HAL_NVIC_SetPriority(USART2_IRQn, 0, 0);
-    HAL_NVIC_EnableIRQ(USART2_IRQn);
-
-    // 3. Set NVIC priority and enable IRQ for GPDMA1 Channel 6
-    HAL_NVIC_SetPriority(GPDMA1_Channel14_IRQn, 0, 0);
-    HAL_NVIC_EnableIRQ(GPDMA1_Channel14_IRQn);
-
-    // 4. Configure DMA for USART2 RX (GPDMA1, Channel 6)
-    hdma_usart2_rx.Instance = GPDMA1_Channel14;
-    hdma_usart2_rx.Init.Request = GPDMA1_REQUEST_USART2_RX;
-    hdma_usart2_rx.Init.Direction = DMA_PERIPH_TO_MEMORY;
-    hdma_usart2_rx.Init.SrcInc = DMA_SINC_FIXED;
-    hdma_usart2_rx.Init.DestInc = DMA_DINC_INCREMENTED;
-    hdma_usart2_rx.Init.SrcDataWidth = DMA_SRC_DATAWIDTH_BYTE;
-    hdma_usart2_rx.Init.DestDataWidth = DMA_DEST_DATAWIDTH_BYTE;
-    hdma_usart2_rx.Init.Priority = DMA_LOW_PRIORITY_HIGH_WEIGHT;
-    hdma_usart2_rx.Init.SrcBurstLength = 1;
-    hdma_usart2_rx.Init.DestBurstLength = 1;
-    hdma_usart2_rx.Init.TransferAllocatedPort = DMA_SRC_ALLOCATED_PORT0 | DMA_DEST_ALLOCATED_PORT1;
-    hdma_usart2_rx.Init.TransferEventMode = DMA_TCEM_BLOCK_TRANSFER;
-    hdma_usart2_rx.Init.Mode = DMA_NORMAL;
-
-    if (HAL_DMA_Init(&hdma_usart2_rx) != HAL_OK) {
-        Error_Handler();
-    }
-
-    // 5. Link DMA handle to UART handle
-    __HAL_LINKDMA(&huart2, hdmarx, hdma_usart2_rx);
-}*/

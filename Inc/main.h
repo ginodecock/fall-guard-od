@@ -47,7 +47,6 @@ void Success_Handler(void);
 #define I2C1_SDA_GPIO_Port GPIOC
 #define I2C1_SCL_Pin GPIO_PIN_9
 #define I2C1_SCL_GPIO_Port GPIOH
-#define UART2_RX_BUFFER_SIZE 256  // Must be power of 2 for easy modulo
 /* USER CODE BEGIN Private defines */
 #endif /* MAIN_H */
 

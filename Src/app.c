@@ -559,7 +559,7 @@ static void LCD_init()
   UTIL_LCD_SetFuncDriver(&LCD_Driver);
   UTIL_LCD_SetLayer(LTDC_LAYER_2);
   UTIL_LCD_Clear(0x00000000);
-  UTIL_LCD_SetFont(&Font24);
+  UTIL_LCD_SetFont(&Font20);
   UTIL_LCD_SetTextColor(UTIL_LCD_COLOR_WHITE);
 }
 
@@ -657,18 +657,14 @@ static void Display_NetworkOutput(display_info_t *info)
   UTIL_LCDEx_PrintfAt(0, LINE(line_nb),  RIGHT_MODE, "Cpu: %.1f%%",cpu_load_one_second);
   UTIL_LCDEx_PrintfAt(0, LINE(line_nb), LEFT_MODE, "lux: %.2f", room_sensor_data.lux);
   line_nb += 1;
-  //UTIL_LCDEx_PrintfAt(0, LINE(line_nb),  RIGHT_MODE, "   %.1f%%", cpu_load_one_second);
   UTIL_LCDEx_PrintfAt(0, LINE(line_nb), RIGHT_MODE, "   FPS: %.2f",nn_fps);
   UTIL_LCDEx_PrintfAt(0, LINE(line_nb), LEFT_MODE, "Stat: %d", room_sensor_data.target_state);
   line_nb += 1;
-  //UTIL_LCDEx_PrintfAt(0, LINE(line_nb), RIGHT_MODE, "Inference");
   UTIL_LCDEx_PrintfAt(0, LINE(line_nb), RIGHT_MODE, " Obj: %u", nb_rois);
   UTIL_LCDEx_PrintfAt(0, LINE(line_nb), LEFT_MODE, "Move: %dcm,%d", room_sensor_data.moving_target_dist,room_sensor_data.moving_target_energy);
   line_nb += 1;
   UTIL_LCDEx_PrintfAt(0, LINE(line_nb), LEFT_MODE, "Stat: %dcm,%d", room_sensor_data.static_target_dist, room_sensor_data.static_target_energy);
   line_nb += 1;
-  //UTIL_LCDEx_PrintfAt(0, LINE(line_nb), RIGHT_MODE, "  %.2f", nn_fps);
- // UTIL_LCDEx_PrintfAt(0, LINE(line_nb), LEFT_MODE, "Static Target Energy: %d", ld2410_frame.static_target_energy);
   UTIL_LCDEx_PrintfAt(0, LINE(line_nb), LEFT_MODE, "Dist: %dcm", room_sensor_data.distance);
   line_nb += 1;
 
@@ -1039,77 +1035,7 @@ static void ld2410_thread_entry(ULONG thread_input) {
         }
     }
 }
-/*static void ld2410_thread_entry(ULONG thread_input) {
-    // Start DMA reception for a full frame
-    HAL_UART_Receive_DMA(&huart2, ld2410_dma_buf, LD2410_FRAME_TOTAL_LEN);
 
-    while (1) {
-        if (ld2410_dma_ready) {
-        	SCB_InvalidateDCache_by_Addr(ld2410_dma_buf, LD2410_DMA_BUF_LEN); // Invalidate cache
-            ld2410_dma_ready = 0;
-            // Print all received bytes in hex
-                        printf("LD2410 DMA RX: ");
-                        for (int i = 0; i < LD2410_FRAME_TOTAL_LEN; ++i) {
-                            printf("%02X ", ld2410_dma_buf[i]);
-                        }
-                        printf("\n\r");
-            // Check header and tail
-            if (ld2410_dma_buf[0] == 0xF4 && ld2410_dma_buf[1] == 0xF3 &&
-                ld2410_dma_buf[2] == 0xF2 && ld2410_dma_buf[3] == 0xF1 &&
-                ld2410_dma_buf[LD2410_FRAME_TOTAL_LEN-4] == 0xF8 &&
-                ld2410_dma_buf[LD2410_FRAME_TOTAL_LEN-3] == 0xF7 &&
-                ld2410_dma_buf[LD2410_FRAME_TOTAL_LEN-2] == 0xF6 &&
-                ld2410_dma_buf[LD2410_FRAME_TOTAL_LEN-1] == 0xF5) {
-                if (parse_ld2410_frame(ld2410_dma_buf, LD2410_FRAME_TOTAL_LEN, &ld2410_frame) == 0) {
-                	printf("Target State: %s\n\r", ld2410_frame.target_state);
-                }
-            }
-            // Re-start DMA for next frame
-            HAL_UART_Receive_DMA(&huart2, ld2410_dma_buf, LD2410_FRAME_TOTAL_LEN);
-            tx_thread_sleep(1000); // Or use a semaphore/event for efficiency
-
-        }
-
-    }
-}*/
-
-/*static void ld2410_thread_entry(ULONG thread_input) {
-    // Start the first DMA reception
-    HAL_UART_Receive_DMA(&huart2, ld2410_dma_buf, LD2410_FRAME_TOTAL_LEN);
-
-    while (1) {
-        // Wait until the DMA ready flag is set by the interrupt
-        if (ld2410_dma_ready) {
-            // Invalidate the cache to see the data written by the DMA
-        	SCB_InvalidateDCache_by_Addr(ld2410_dma_buf, LD2410_DMA_BUF_LEN);
-
-            // Clear the flag immediately so we don't process the same data twice
-            ld2410_dma_ready = 0;
-
-            // --- PROCESS THE DATA ---
-            printf("LD2410 DMA RX: ");
-            for (int i = 0; i < LD2410_FRAME_TOTAL_LEN; ++i) {
-                printf("%02X ", ld2410_dma_buf[i]);
-            }
-            printf("\n\r");
-
-            if (ld2410_dma_buf[0] == 0xF4 && ld2410_dma_buf[1] == 0xF3 &&
-                ld2410_dma_buf[2] == 0xF2 && ld2410_dma_buf[3] == 0xF1) {
-                if (parse_ld2410_frame(ld2410_dma_buf, LD2410_FRAME_TOTAL_LEN, &ld2410_frame) == 0) {
-                	printf("Target State: %s\n\r", ld2410_frame.target_state);
-                }
-            }
-
-            // --- RE-ARM DMA FOR THE NEXT FRAME ---
-            // Now that we are done with the buffer, start the next reception.
-            HAL_UART_Receive_DMA(&huart2, ld2410_dma_buf, LD2410_FRAME_TOTAL_LEN);
-
-        }
-
-        // Relinquish CPU or sleep briefly to prevent a tight busy-wait loop
-        tx_thread_sleep(10);
-    }
-}*/
 void app_run()
 {
   const UINT isp_priority = TX_MAX_PRIORITIES / 2 - 2;
@@ -1869,18 +1795,3 @@ static uint32_t GetRtcEpoch() {
     return (uint32_t)mktime(&tm_time);
 }
 
-/*void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
-    if (huart->Instance == USART2) {
-        ld2410_dma_ready = 1;
-        //HAL_UART_Receive_DMA(&huart2, ld2410_dma_buf, LD2410_FRAME_TOTAL_LEN);
-    }
-}
-void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
-{
-    if (huart->Instance == USART2)
-    {
-        printf("UART Error Detected. Code: 0x%lX\n\r", huart->ErrorCode);
-        // After an error, you may need to restart the reception
-        HAL_UART_Receive_DMA(&huart2, ld2410_dma_buf, LD2410_FRAME_TOTAL_LEN);
-    }
-}*/
