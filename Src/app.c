@@ -966,7 +966,25 @@ HAL_StatusTypeDef TSL2561_ReadData(I2C_HandleTypeDef *hi2c, uint16_t *ch0, uint1
 
     return HAL_OK;
 }
+bool TSL2561_IsConnected(I2C_HandleTypeDef *hi2c)
+{
+    const uint32_t trials = 3;
+    const uint32_t timeout = 100; // in milliseconds
+    HAL_StatusTypeDef result = HAL_I2C_IsDeviceReady(hi2c, (TSL2561_ADDR<< 1), trials, timeout);
 
+    // Check if the communication was successful.
+    if (result == HAL_OK)
+    {
+        // Device acknowledged its address.
+        return true;
+    }
+    else
+    {
+        // Device did not acknowledge its address. It might be disconnected,
+        // powered off, or have a different I2C address.
+        return false;
+    }
+}
 float TSL2561_CalculateLux(uint16_t ch0, uint16_t ch1) {
     if (ch0 == 0) return 0;
 
@@ -984,12 +1002,11 @@ float TSL2561_CalculateLux(uint16_t ch0, uint16_t ch1) {
 }
 /* Thread Entry Function */
 static VOID App_TSL2561_Thread_Entry(ULONG thread_input) {
-    if (TSL2561_Init(&hi2c1) != HAL_OK) {
-        printf("TSL2561 Init Failed!\n");
-        return;
-    }
-
-    while(1) {
+	if (TSL2561_Init(&hi2c1) != HAL_OK) {
+	      printf("TSL2561 Init Failed!\n");
+	      return;
+	}
+	while(1) {
         uint16_t ch0, ch1;
 
 
@@ -1085,12 +1102,17 @@ void app_run()
   ret = tx_thread_create(&isp_thread, "isp", isp_thread_fct, 0, isp_tread_stack,
                          sizeof(isp_tread_stack), isp_priority, isp_priority, time_slice, TX_AUTO_START);
   assert(ret == TX_SUCCESS);
-  ret = tx_thread_create(&AppTSL2561Thread, "TSL2561", App_TSL2561_Thread_Entry, 0,tsl2561_thread_stack, sizeof(tsl2561_thread_stack), 15, 15, 0, TX_AUTO_START);
-  assert(ret == TX_SUCCESS);
 
+  if (TSL2561_IsConnected(&hi2c1) == true){
+	  ret = tx_thread_create(&AppTSL2561Thread, "TSL2561", App_TSL2561_Thread_Entry, 0,tsl2561_thread_stack, sizeof(tsl2561_thread_stack), 15, 15, 0, TX_AUTO_START);
+	  assert(ret == TX_SUCCESS);
+  }else{
+	  printf("TSL2561 is not connected \n\r");
+  }
+/*
   ret = tx_thread_create(&ld2410_thread, "LD2410", ld2410_thread_entry, 0,ld2410_thread_stack, sizeof(ld2410_thread_stack),15, 15,0, TX_AUTO_START);
   assert(ret == TX_SUCCESS);
-
+*/
   UINT status = TX_SUCCESS;
   VOID *memory_ptr;
 

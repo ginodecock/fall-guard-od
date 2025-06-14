@@ -477,7 +477,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
   HAL_GPIO_Init(LED_RED_GPIO_Port, &GPIO_InitStruct);
   /* I2C1 GPIO Configuration */
-  /* In GPIO initialization */
   GPIO_InitStruct.Pin = GPIO_PIN_9 | GPIO_PIN_1;
   GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
   GPIO_InitStruct.Pull = GPIO_PULLUP;

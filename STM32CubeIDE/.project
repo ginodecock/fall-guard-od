@@ -434,37 +434,37 @@
 		<link>
 			<name>STM32Cube_FW_N6/Middlewares/NetXDuo/Addons DHCP Client/nxd_dhcp_client.c</name>
 			<type>1</type>
-			<locationURI>copy_PARENT/Middlewares/ST/netxduo/addons/dhcp/nxd_dhcp_client.c</locationURI>
+			<locationURI>$%7BPARENT-1-PROJECT_LOC%7D/STM32Cube_FW_N6/Middlewares/ST/netxduo/addons/dhcp/nxd_dhcp_client.c</locationURI>
 		</link>
 		<link>
 			<name>STM32Cube_FW_N6/Middlewares/NetXDuo/Addons DHCP Client/nxd_dhcpv6_client.c</name>
 			<type>1</type>
-			<locationURI>copy_PARENT/Middlewares/ST/netxduo/addons/dhcp/nxd_dhcpv6_client.c</locationURI>
+			<locationURI>$%7BPARENT-1-PROJECT_LOC%7D/STM32Cube_FW_N6/Middlewares/ST/netxduo/addons/dhcp/nxd_dhcpv6_client.c</locationURI>
 		</link>
 		<link>
 			<name>STM32Cube_FW_N6/Middlewares/NetXDuo/Addons DNS/nxd_dns.c</name>
 			<type>1</type>
-			<locationURI>copy_PARENT/Middlewares/ST/netxduo/addons/dns/nxd_dns.c</locationURI>
+			<locationURI>$%7BPARENT-1-PROJECT_LOC%7D/STM32Cube_FW_N6/Middlewares/ST/netxduo/addons/dns/nxd_dns.c</locationURI>
 		</link>
 		<link>
 			<name>STM32Cube_FW_N6/Middlewares/NetXDuo/Addons MQTT/nxd_mqtt_client.c</name>
 			<type>1</type>
-			<locationURI>copy_PARENT/Middlewares/ST/netxduo/addons/mqtt/nxd_mqtt_client.c</locationURI>
+			<locationURI>$%7BPARENT-1-PROJECT_LOC%7D/STM32Cube_FW_N6/Middlewares/ST/netxduo/addons/mqtt/nxd_mqtt_client.c</locationURI>
 		</link>
 		<link>
 			<name>STM32Cube_FW_N6/Middlewares/NetXDuo/Addons SNTP/nxd_sntp_client.c</name>
 			<type>1</type>
-			<locationURI>copy_PARENT/Middlewares/ST/netxduo/addons/sntp/nxd_sntp_client.c</locationURI>
+			<locationURI>$%7BPARENT-1-PROJECT_LOC%7D/STM32Cube_FW_N6/Middlewares/ST/netxduo/addons/sntp/nxd_sntp_client.c</locationURI>
 		</link>
 		<link>
 			<name>STM32Cube_FW_N6/Middlewares/NetXDuo/Crypto/nx_crypto_3des.c</name>
 			<type>1</type>
-			<locationURI>copy_PARENT/Middlewares/ST/netxduo/crypto_libraries/src/nx_crypto_3des.c</locationURI>
+			<locationURI>$%7BPARENT-1-PROJECT_LOC%7D/STM32Cube_FW_N6/Middlewares/ST/netxduo/crypto_libraries/src/nx_crypto_3des.c</locationURI>
 		</link>
 		<link>
 			<name>STM32Cube_FW_N6/Middlewares/NetXDuo/Crypto/nx_crypto_aes.c</name>
 			<type>1</type>
-			<locationURI>copy_PARENT/Middlewares/ST/netxduo/crypto_libraries/src/nx_crypto_aes.c</locationURI>
+			<locationURI>$%7BPARENT-1-PROJECT_LOC%7D/STM32Cube_FW_N6/Middlewares/ST/netxduo/crypto_libraries/src/nx_crypto_aes.c</locationURI>
 		</link>
 		<link>
 			<name>STM32Cube_FW_N6/Middlewares/NetXDuo/Crypto/nx_crypto_cbc.c</name>
@@ -674,7 +674,7 @@
 		<link>
 			<name>STM32Cube_FW_N6/Middlewares/NetXDuo/Ethernet Interface/nx_stm32_eth_driver.c</name>
 			<type>1</type>
-			<locationURI>copy_PARENT/Middlewares/ST/netxduo/common/drivers/ethernet/nx_stm32_eth_driver.c</locationURI>
+			<locationURI>$%7BPARENT-1-PROJECT_LOC%7D/STM32Cube_FW_N6/Middlewares/ST/netxduo/common/drivers/ethernet/nx_stm32_eth_driver.c</locationURI>
 		</link>
 		<link>
 			<name>STM32Cube_FW_N6/Middlewares/NetXDuo/NX Core/nx_arp_announce_send.c</name>
@@ -4174,7 +4174,7 @@
 		<link>
 			<name>STM32Cube_FW_N6/Middlewares/NetXDuo/Network/Ethernet Phy Interface/RTL8211_Phy_Interface/nx_stm32_phy_driver.c</name>
 			<type>1</type>
-			<locationURI>copy_PARENT/Middlewares/ST/netxduo/common/drivers/ethernet/rtl8211/nx_stm32_phy_driver.c</locationURI>
+			<locationURI>$%7BPARENT-1-PROJECT_LOC%7D/STM32Cube_FW_N6/Middlewares/ST/netxduo/common/drivers/ethernet/rtl8211/nx_stm32_phy_driver.c</locationURI>
 		</link>
 		<link>
 			<name>STM32Cube_FW_N6/Middlewares/ST/threadx/common/src/tx_block_allocate.c</name>

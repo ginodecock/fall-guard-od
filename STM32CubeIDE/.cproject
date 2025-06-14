@@ -133,17 +133,17 @@
 									<listOptionValue builtIn="false" value="../../STM32Cube_FW_N6/Middlewares/ST/threadx/common/inc"/>
 									<listOptionValue builtIn="false" value="../../STM32Cube_FW_N6/Middlewares/ST/threadx/ports/cortex_m55/gnu/inc"/>
 									<listOptionValue builtIn="false" value="../../STM32Cube_FW_N6/Middlewares/ST/threadx/utility/execution_profile_kit"/>
-									<listOptionValue builtIn="false" value="Y://VM/stm-workspace/STM32CubeN6/Middlewares/ST/netxduo/common/drivers/ethernet"/>
-									<listOptionValue builtIn="false" value="Y://VM/stm-workspace/STM32CubeN6/Middlewares/ST/netxduo/nx_secure/inc"/>
-									<listOptionValue builtIn="false" value="Y://VM/stm-workspace/STM32CubeN6/Middlewares/ST/netxduo/nx_secure/ports"/>
-									<listOptionValue builtIn="false" value="Y://VM/stm-workspace/STM32CubeN6/Middlewares/ST/netxduo/crypto_libraries/inc"/>
-									<listOptionValue builtIn="false" value="Y://VM/stm-workspace/STM32CubeN6/Middlewares/ST/netxduo/tsn/inc"/>
-									<listOptionValue builtIn="false" value="Y://VM/stm-workspace/STM32CubeN6/Middlewares/ST/netxduo/addons/mqtt"/>
-									<listOptionValue builtIn="false" value="Y://VM/stm-workspace/STM32CubeN6/Middlewares/ST/netxduo/addons/dhcp"/>
-									<listOptionValue builtIn="false" value="Y://VM/stm-workspace/STM32CubeN6/Middlewares/ST/netxduo/addons/sntp"/>
-									<listOptionValue builtIn="false" value="Y://VM/stm-workspace/STM32CubeN6/Middlewares/ST/netxduo/addons/dns"/>
-									<listOptionValue builtIn="false" value="Y://VM/stm-workspace/STM32CubeN6/Middlewares/ST/netxduo/common/inc"/>
-									<listOptionValue builtIn="false" value="Y://VM/stm-workspace/STM32CubeN6/Middlewares/ST/netxduo/ports/cortex_m55/gnu/inc"/>
+									<listOptionValue builtIn="false" value="../../STM32Cube_FW_N6/Middlewares/ST/netxduo/common/drivers/ethernet"/>
+									<listOptionValue builtIn="false" value="../../STM32Cube_FW_N6/Middlewares/ST/netxduo/nx_secure/inc"/>
+									<listOptionValue builtIn="false" value="../../STM32Cube_FW_N6/Middlewares/ST/netxduo/nx_secure/ports"/>
+									<listOptionValue builtIn="false" value="../../STM32Cube_FW_N6/Middlewares/ST/netxduo/crypto_libraries/inc"/>
+									<listOptionValue builtIn="false" value="../../STM32Cube_FW_N6/Middlewares/ST/netxduo/tsn/inc"/>
+									<listOptionValue builtIn="false" value="../../STM32Cube_FW_N6/Middlewares/ST/netxduo/addons/mqtt"/>
+									<listOptionValue builtIn="false" value="../../STM32Cube_FW_N6/Middlewares/ST/netxduo/addons/dhcp"/>
+									<listOptionValue builtIn="false" value="../../STM32Cube_FW_N6/Middlewares/ST/netxduo/addons/sntp"/>
+									<listOptionValue builtIn="false" value="../../STM32Cube_FW_N6/Middlewares/ST/netxduo/addons/dns"/>
+									<listOptionValue builtIn="false" value="../../STM32Cube_FW_N6/Middlewares/ST/netxduo/common/inc"/>
+									<listOptionValue builtIn="false" value="../../STM32Cube_FW_N6/Middlewares/ST/netxduo/ports/cortex_m55/gnu/inc"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.otherflags.315856049" name="Other flags" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.otherflags" useByScannerDiscovery="true" valueType="stringList">
 									<listOptionValue builtIn="false" value=""/>
@@ -188,6 +188,9 @@
 							<tool id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.objcopy.symbolsrec.1057900062" name="MCU Output Converter Motorola S-rec with symbols" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.objcopy.symbolsrec"/>
 						</toolChain>
 					</folderInfo>
+					<fileInfo id="com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.debug.1867675435.463822691" name="nxd_dhcp_client.c" rcbsApplicability="disable" resourcePath="STM32Cube_FW_N6/Middlewares/NetXDuo/Addons DHCP Client/nxd_dhcp_client.c" toolsToInvoke="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.1308569011.178539293">
+						<tool id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.1308569011.178539293" name="MCU GCC Compiler" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.1308569011"/>
+					</fileInfo>
 					<sourceEntries>
 						<entry excluding="STM32Cube_FW_N6/Middlewares/ThreadX|STM32Cube_FW_N6/Drivers/CMSIS/Device/ST/STM32N6xx/Source/Templates/system_stm32n6xx_fsbl.c|STM32Cube_FW_N6/Middlewares/ST/netxduo/samples|STM32Cube_FW_N6/Middlewares/ST/netxduo/addons/azure_iot|STM32Cube_FW_N6/Middlewares/ST/netxduo/utility|STM32Cube_FW_N6/Middlewares/ST/netxduo/common/drivers/template|STM32Cube_FW_N6/Middlewares/ST/netxduo/common/drivers/ethernet/lan8742|STM32Cube_FW_N6/Middlewares/ST/netxduo/addons/websocket|STM32Cube_FW_N6/Middlewares/ST/netxduo/addons/BSD|STM32Cube_FW_N6/Middlewares/ST/netxduo/addons/http|STM32Cube_FW_N6/Middlewares/ST/netxduo/addons/ftp|STM32Cube_FW_N6/Middlewares/ST/netxduo/addons/tftp|STM32Cube_FW_N6/Middlewares/ST/netxduo/addons/web|STM32Cube_FW_N6/Middlewares/ST/netxduo/common/drivers/wifi|STM32Cube_FW_N6/Middlewares/ST/netxduo/test|STM32Cube_FW_N6/Middlewares/ST/netxduo/test/regression/web_test|STM32Cube_FW_N6/Middlewares/ST/netxduo/test/regression/websocket_test" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
