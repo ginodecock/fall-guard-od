@@ -122,7 +122,7 @@ void Success_Handler(void)
    }
 }
 /* I2C Scanner Function */
-/*void I2C_ScanBus(void) {
+void I2C_ScanBus(void) {
     printf("\r\nScanning I2C bus...\r\n");
 
     for(uint8_t address = 1; address < 128; address++) {
@@ -133,7 +133,7 @@ void Success_Handler(void)
         }
     }
     printf("Scan complete\r\n\r\n");
-}*/
+}
 int main(void)
 {
   /* Power on ICACHE */

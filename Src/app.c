@@ -130,6 +130,8 @@ typedef struct {
     int16_t distance;
 } environment_sensor_data_t;
 static environment_sensor_data_t room_sensor_data;
+static uint32_t static_start_time = 0;  // Track start of state 2
+static bool static_triggered = false;   // Prevent duplicate events
 
 TX_EVENT_FLAGS_GROUP     SntpFlags;
 ULONG mqtt_client_stack[MQTT_CLIENT_STACK_SIZE];
@@ -651,6 +653,37 @@ static void Display_NetworkOutput(display_info_t *info)
   	     tx_queue_send(&measurement_queue, &thread_com_data, TX_NO_WAIT);
       }
     }
+  if (room_sensor_data.target_state == 2){
+     if (static_start_time == 0){
+        // First detection of state 2 - record start time
+        static_start_time = HAL_GetTick();
+        static_triggered = false;
+     }else if (!static_triggered &&
+        (HAL_GetTick() - static_start_time >= 20000)) {
+        // Static maintained for 20 seconds
+        thread_com_data.nb_detect = (int)nb_rois;
+        thread_com_data.event = 14;  // New event type
+
+        if (tx_queue_send(&measurement_queue, &thread_com_data, TX_NO_WAIT) == TX_SUCCESS) {
+             static_triggered = true;  // Prevent retriggering
+             printf("State 2 maintained for 20 seconds - Event 14 sent\n\r");
+        }
+     }
+  }else{
+     // Reset if state changes from 2
+     static_start_time = 0;
+     static_triggered = false;
+  }
+
+  // ... existing room state change detection ...
+  if (room_sensor_data.target_state != prev_target_state) {
+     // ... existing room change handling ...
+
+     // Reset state-2 timer on any state change
+     static_start_time = 0;
+     static_triggered = false;
+  }
+
   nn_fps = 1000.0 / info->nn_period_ms;
 
 #if 1
@@ -1017,7 +1050,7 @@ static VOID App_TSL2561_Thread_Entry(ULONG thread_input) {
             printf("TSL2561 Read Error!\n\r");
         }
 
-        tx_thread_sleep(1000);  // 1 second interval
+        tx_thread_sleep(993);  //timing of 10 pulses minus 1 period
     }
 }
 static void ld2410_thread_entry(ULONG thread_input) {
@@ -1109,10 +1142,10 @@ void app_run()
   }else{
 	  printf("TSL2561 is not connected \n\r");
   }
-/*
+
   ret = tx_thread_create(&ld2410_thread, "LD2410", ld2410_thread_entry, 0,ld2410_thread_stack, sizeof(ld2410_thread_stack),15, 15,0, TX_AUTO_START);
   assert(ret == TX_SUCCESS);
-*/
+
   UINT status = TX_SUCCESS;
   VOID *memory_ptr;
 
