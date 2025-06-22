@@ -133,6 +133,39 @@ static environment_sensor_data_t room_sensor_data;
 static uint32_t static_start_time = 0;  // Track start of state 2
 static bool static_triggered = false;   // Prevent duplicate events
 
+// State enumerations
+typedef enum {
+    FALLEN_NORMAL,
+    FALLEN_FALL
+} fallen_state_t;
+
+typedef enum {
+    MOVEMENT_FREEZE,
+    MOVEMENT_MOVE,
+    MOVEMENT_NO_ONE
+} movement_state_t;
+
+typedef enum {
+    LUMINANCE_DARK,
+    LUMINANCE_LIGHT
+} luminance_state_t;
+
+// Combined state structure
+typedef struct {
+    fallen_state_t fallen;
+    movement_state_t movement;
+    luminance_state_t luminance;
+} system_state_t;
+
+// Global Fall Guard state variable (volatile for ISR safety)
+volatile system_state_t fg_state = {
+    .fallen = FALLEN_NORMAL,
+    .movement = MOVEMENT_NO_ONE,
+    .luminance = LUMINANCE_LIGHT
+};
+
+
+
 TX_EVENT_FLAGS_GROUP     SntpFlags;
 ULONG mqtt_client_stack[MQTT_CLIENT_STACK_SIZE];
 TX_EVENT_FLAGS_GROUP mqtt_app_flag;
@@ -659,7 +692,7 @@ static void Display_NetworkOutput(display_info_t *info)
         static_start_time = HAL_GetTick();
         static_triggered = false;
      }else if (!static_triggered &&
-        (HAL_GetTick() - static_start_time >= 20000)) {
+        (HAL_GetTick() - static_start_time >= MOVEMENT_FREEZE_TIME)) {
         // Static maintained for 20 seconds
         thread_com_data.nb_detect = (int)nb_rois;
         thread_com_data.event = 14;  // New event type
@@ -667,12 +700,19 @@ static void Display_NetworkOutput(display_info_t *info)
         if (tx_queue_send(&measurement_queue, &thread_com_data, TX_NO_WAIT) == TX_SUCCESS) {
              static_triggered = true;  // Prevent retriggering
              printf("State 2 maintained for 20 seconds - Event 14 sent\n\r");
+             fg_state.movement = MOVEMENT_FREEZE;
         }
      }
   }else{
      // Reset if state changes from 2
      static_start_time = 0;
      static_triggered = false;
+  }
+  if (room_sensor_data.target_state == 0){
+	  fg_state.movement = MOVEMENT_NO_ONE;
+  }
+  if (room_sensor_data.target_state == 1 || room_sensor_data.target_state == 3){
+	  fg_state.movement = MOVEMENT_MOVE;
   }
 
   // ... existing room state change detection ...
@@ -683,7 +723,6 @@ static void Display_NetworkOutput(display_info_t *info)
      static_start_time = 0;
      static_triggered = false;
   }
-
   nn_fps = 1000.0 / info->nn_period_ms;
 
 #if 1
@@ -744,13 +783,14 @@ static void Display_NetworkOutput(display_info_t *info)
           message_sent = 0;
       } else {
           // Check if 7 seconds have passed since initial detection
-          if (!message_sent && (GetRtcEpoch() - fall_start_time) >= 7) {
+          if (!message_sent && (GetRtcEpoch() - fall_start_time) >= FALLEN_TIME) {
               thread_com_data.nb_detect = (int)nb_rois;
               //data.timestamp = GetRtcEpoch();
               thread_com_data.event = 13; // Fall confirmed
               tx_queue_send(&measurement_queue, &thread_com_data, TX_NO_WAIT);
               prev_state_detect = 13;
               message_sent = 1; // Prevent duplicate alerts
+              fg_state.fallen = FALLEN_FALL;
           }
       }
   } else {
@@ -766,6 +806,7 @@ static void Display_NetworkOutput(display_info_t *info)
               thread_com_data.event = 1; // Normal state
               tx_queue_send(&measurement_queue, &thread_com_data, TX_NO_WAIT);
               prev_state_detect = 1;
+              fg_state.fallen = FALLEN_NORMAL;
           }
       }
   }
@@ -1046,11 +1087,25 @@ static VOID App_TSL2561_Thread_Entry(ULONG thread_input) {
         if (TSL2561_ReadData(&hi2c1, &ch0, &ch1) == HAL_OK) {
         	room_sensor_data.lux = TSL2561_CalculateLux(ch0, ch1);
            // printf("[TSL2561] Ch0: %5u, Ch1: %5u, Lux: %.2f\n\r", ch0, ch1, lux);
+
+        	if (fg_state.luminance == LUMINANCE_DARK) {
+        	   // Only transition to LIGHT when exceeding upper threshold
+        	   if (room_sensor_data.lux > LUMINANCE_UPPER_THRESH) {
+        	        fg_state.luminance = LUMINANCE_LIGHT;
+        	        //printf("LUMINANCE_LIGHT\n\r");
+        	   }
+        	} else {
+        	   // Only transition to DARK when falling below lower threshold
+        	   if (room_sensor_data.lux < LUMINANCE_LOWER_THRESH) {
+        	        fg_state.luminance = LUMINANCE_DARK;
+        	        //printf("LUMINANCE_DARK\n\r");
+        	   }
+        	}
         } else {
             printf("TSL2561 Read Error!\n\r");
         }
 
-        tx_thread_sleep(993);  //timing of 10 pulses minus 1 period
+        tx_thread_sleep(1000);  //timing of 10 pulses minus 1 period
     }
 }
 static void ld2410_thread_entry(ULONG thread_input) {
@@ -1080,7 +1135,7 @@ static void ld2410_thread_entry(ULONG thread_input) {
                       //  printf("------------------------------\n\r");
                     }
                 }
-                tx_thread_sleep(1000);
+                tx_thread_sleep(994);
             }
         }
     }
@@ -1676,8 +1731,20 @@ static VOID App_MQTT_Client_Thread_Entry(ULONG thread_input)
 	  {
 	    Error_Handler();
 	  }
+	  char* fallen_str = (fg_state.fallen == FALLEN_FALL) ? "fall" : "normal";
+	  char* luminance_str = (fg_state.luminance == LUMINANCE_DARK) ? "dark" : "light";
+
+	  char* movement_str;
+	  switch(fg_state.movement) {
+	      case MOVEMENT_FREEZE: movement_str = "freeze"; break;
+	      case MOVEMENT_MOVE: movement_str = "move"; break;
+	      default: movement_str = "no_one"; break;
+	  }
+
+
 	  //snprintf(message, sizeof(message),"{\"ts\":%lu,""\"mac\":\"%02X%02X%02X%02X%02X%02X\",""\"status\":\"start\"}",GetRtcEpoch(), MACAddr[0], MACAddr[1], MACAddr[2],MACAddr[3],MACAddr[4],MACAddr[5]);
-	  snprintf(message, sizeof(message),"{\"ts\":%lu,\"mac\":\"%02X%02X%02X%02X%02X%02X\",\"nb_detect\":%i,\"event\":%i,\"lux\":%.2f,\"target_state\":%i}",GetRtcEpoch(),MACAddr[0], MACAddr[1], MACAddr[2],MACAddr[3], MACAddr[4], MACAddr[5],thread_com_data.nb_detect,thread_com_data.event,room_sensor_data.lux,room_sensor_data.target_state);
+	  snprintf(message, sizeof(message),"{\"ts\":%lu,\"mac\":\"%02X%02X%02X%02X%02X%02X\",\"nb_detect\":%i,\"event\":%i,\"lux\":%.2f,\"sfal\":\"%s\",\"smov\":\"%s\",\"slum\":\"%s\"}",GetRtcEpoch(),MACAddr[0], MACAddr[1], MACAddr[2],MACAddr[3], MACAddr[4], MACAddr[5],thread_com_data.nb_detect,thread_com_data.event,room_sensor_data.lux,fallen_str, movement_str, luminance_str);
+	  //printf("%s\n\r",message);
 
 	  len = 0;
 	  while (message[len] != '\0') {
@@ -1700,7 +1767,7 @@ static VOID App_MQTT_Client_Thread_Entry(ULONG thread_input)
 		       continue;
 		}
 		/* Format JSON message */
-		snprintf(message, sizeof(message),"{\"ts\":%lu,\"mac\":\"%02X%02X%02X%02X%02X%02X\",\"nb_detect\":%i,\"event\":%i,\"lux\":%.2f,\"target_state\":%i}",GetRtcEpoch(),MACAddr[0], MACAddr[1], MACAddr[2],MACAddr[3], MACAddr[4], MACAddr[5],thread_com_data.nb_detect,thread_com_data.event,room_sensor_data.lux,room_sensor_data.target_state);
+		snprintf(message, sizeof(message),"{\"ts\":%lu,\"mac\":\"%02X%02X%02X%02X%02X%02X\",\"nb_detect\":%i,\"event\":%i,\"lux\":%.2f,\"sfal\":\"%s\",\"smov\":\"%s\",\"slum\":\"%s\"}",GetRtcEpoch(),MACAddr[0], MACAddr[1], MACAddr[2],MACAddr[3], MACAddr[4], MACAddr[5],thread_com_data.nb_detect,thread_com_data.event,room_sensor_data.lux,fallen_str, movement_str, luminance_str);
 		/* Publish data */
 		len = 0;
 		while (message[len] != '\0') {

@@ -26,6 +26,15 @@
 #include "nxd_sntp_client.h"
 #include "nxd_dns.h"
 #include "broker.h"
+
+//Fall Guard settings
+#define LUMINANCE_UPPER_THRESH      0.35f  // Transition to LIGHT
+#define LUMINANCE_LOWER_THRESH      0.25f  // Transition to DARK
+#define MOVEMENT_FREEZE_TIME        30000  //Time to determine a Freeze ms
+#define FALLEN_TIME                 7      //Time to determine a fall using edge AI
+
+
+
 #define MOSQUITTO_CERT_FILE         "mosquitto.cert.h"
 
   /* Threads configuration */
