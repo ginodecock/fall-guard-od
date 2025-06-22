@@ -662,7 +662,45 @@ static void Display_NetworkOutput(display_info_t *info)
   /* cpu load */
   cpuload_update(&cpu_load);
   cpuload_get_info(&cpu_load, NULL, &cpu_load_one_second, NULL);
+  //room data
+  if (room_sensor_data.target_state == 2){
+     if (static_start_time == 0){
+        // First detection of state 2 - record start time
+        static_start_time = HAL_GetTick();
+        static_triggered = false;
+     }else if (!static_triggered &&
+        (HAL_GetTick() - static_start_time >= MOVEMENT_FREEZE_TIME)) {
+        // Static maintained for 20 seconds
+        thread_com_data.nb_detect = (int)nb_rois;
+        thread_com_data.event = 14;  // New event type
+        fg_state.movement = MOVEMENT_FREEZE;
+        if (tx_queue_send(&measurement_queue, &thread_com_data, TX_NO_WAIT) == TX_SUCCESS) {
+             static_triggered = true;  // Prevent retriggering
+             printf("State 2 maintained for 20 seconds - Event 14 sent\n\r");
 
+        }
+     }
+  }else{
+     // Reset if state changes from 2
+     static_start_time = 0;
+     static_triggered = false;
+  }
+  if (room_sensor_data.target_state == 0){
+	  fg_state.movement = MOVEMENT_NO_ONE;
+  }
+  if (room_sensor_data.target_state == 1 || room_sensor_data.target_state == 3){
+	  fg_state.movement = MOVEMENT_MOVE;
+  }
+
+  // ... existing room state change detection ...
+  if (room_sensor_data.target_state != prev_target_state) {
+     // ... existing room change handling ...
+
+     // Reset state-2 timer on any state change
+     static_start_time = 0;
+     static_triggered = false;
+  }
+  //Object data
   if ((GetRtcEpoch() - prev_timestamp) > 3)
     {
   	  prev_timestamp = GetRtcEpoch();
@@ -686,43 +724,7 @@ static void Display_NetworkOutput(display_info_t *info)
   	     tx_queue_send(&measurement_queue, &thread_com_data, TX_NO_WAIT);
       }
     }
-  if (room_sensor_data.target_state == 2){
-     if (static_start_time == 0){
-        // First detection of state 2 - record start time
-        static_start_time = HAL_GetTick();
-        static_triggered = false;
-     }else if (!static_triggered &&
-        (HAL_GetTick() - static_start_time >= MOVEMENT_FREEZE_TIME)) {
-        // Static maintained for 20 seconds
-        thread_com_data.nb_detect = (int)nb_rois;
-        thread_com_data.event = 14;  // New event type
 
-        if (tx_queue_send(&measurement_queue, &thread_com_data, TX_NO_WAIT) == TX_SUCCESS) {
-             static_triggered = true;  // Prevent retriggering
-             printf("State 2 maintained for 20 seconds - Event 14 sent\n\r");
-             fg_state.movement = MOVEMENT_FREEZE;
-        }
-     }
-  }else{
-     // Reset if state changes from 2
-     static_start_time = 0;
-     static_triggered = false;
-  }
-  if (room_sensor_data.target_state == 0){
-	  fg_state.movement = MOVEMENT_NO_ONE;
-  }
-  if (room_sensor_data.target_state == 1 || room_sensor_data.target_state == 3){
-	  fg_state.movement = MOVEMENT_MOVE;
-  }
-
-  // ... existing room state change detection ...
-  if (room_sensor_data.target_state != prev_target_state) {
-     // ... existing room change handling ...
-
-     // Reset state-2 timer on any state change
-     static_start_time = 0;
-     static_triggered = false;
-  }
   nn_fps = 1000.0 / info->nn_period_ms;
 
 #if 1
@@ -787,10 +789,11 @@ static void Display_NetworkOutput(display_info_t *info)
               thread_com_data.nb_detect = (int)nb_rois;
               //data.timestamp = GetRtcEpoch();
               thread_com_data.event = 13; // Fall confirmed
+              fg_state.fallen = FALLEN_FALL;
               tx_queue_send(&measurement_queue, &thread_com_data, TX_NO_WAIT);
               prev_state_detect = 13;
               message_sent = 1; // Prevent duplicate alerts
-              fg_state.fallen = FALLEN_FALL;
+
           }
       }
   } else {
@@ -804,9 +807,10 @@ static void Display_NetworkOutput(display_info_t *info)
               thread_com_data.nb_detect = (int)nb_rois;
               //data.timestamp = GetRtcEpoch();
               thread_com_data.event = 1; // Normal state
+              fg_state.fallen = FALLEN_NORMAL;
               tx_queue_send(&measurement_queue, &thread_com_data, TX_NO_WAIT);
               prev_state_detect = 1;
-              fg_state.fallen = FALLEN_NORMAL;
+
           }
       }
   }
@@ -1766,6 +1770,15 @@ static VOID App_MQTT_Client_Thread_Entry(ULONG thread_input)
 		       printf("Failed to receive data from queue: %u\n", ret);
 		       continue;
 		}
+		fallen_str = (fg_state.fallen == FALLEN_FALL) ? "fall" : "normal";
+		luminance_str = (fg_state.luminance == LUMINANCE_DARK) ? "dark" : "light";
+
+		switch(fg_state.movement) {
+		      case MOVEMENT_FREEZE: movement_str = "freeze"; break;
+		      case MOVEMENT_MOVE: movement_str = "move"; break;
+		      default: movement_str = "no_one"; break;
+		}
+
 		/* Format JSON message */
 		snprintf(message, sizeof(message),"{\"ts\":%lu,\"mac\":\"%02X%02X%02X%02X%02X%02X\",\"nb_detect\":%i,\"event\":%i,\"lux\":%.2f,\"sfal\":\"%s\",\"smov\":\"%s\",\"slum\":\"%s\"}",GetRtcEpoch(),MACAddr[0], MACAddr[1], MACAddr[2],MACAddr[3], MACAddr[4], MACAddr[5],thread_com_data.nb_detect,thread_com_data.event,room_sensor_data.lux,fallen_str, movement_str, luminance_str);
 		/* Publish data */
