@@ -704,7 +704,7 @@ static void Display_NetworkOutput(display_info_t *info)
   if ((GetRtcEpoch() - prev_timestamp) > 3)
     {
   	  prev_timestamp = GetRtcEpoch();
-      if (nb_rois != prev_nb_person){
+      if (nb_rois != prev_nb_person && (room_sensor_data.target_state == 1 || room_sensor_data.target_state == 2 || room_sensor_data.target_state == 3)){ //change detected and there must be a person. If not it's a false positive
   	     printf("persons detected = %lu\n\r",nb_rois);
          prev_nb_person = nb_rois;
   	     thread_com_data.nb_detect = (int)prev_nb_person;
@@ -1113,7 +1113,6 @@ static VOID App_TSL2561_Thread_Entry(ULONG thread_input) {
     }
 }
 static void ld2410_thread_entry(ULONG thread_input) {
-
     uint8_t buf[23];
     while (1) {
         // Read 1 byte at a time until header found
