@@ -386,6 +386,7 @@ int parse_ld2410_frame(const uint8_t *frame, size_t len, environment_sensor_data
     // Data fields
     const uint8_t *target_data = frame + 8; // skip header, len, type, head
     if (len < 8 + 9 + 6) return -4; // ensure enough data
+    if (target_data[0] > 3) return -5; //disregard unknown state
 
     // Parse target state
     /*switch (target_data[0]) {
