@@ -731,12 +731,13 @@ static void Display_NetworkOutput(display_info_t *info)
   UTIL_LCDEx_PrintfAt(0, LINE(line_nb), LEFT_MODE, "Stat: %d", room_sensor_data.target_state);
   line_nb += 1;
   UTIL_LCDEx_PrintfAt(0, LINE(line_nb), RIGHT_MODE, " Obj: %u", nb_rois);
-  UTIL_LCDEx_PrintfAt(0, LINE(line_nb), LEFT_MODE, "Move: %dcm,%d", room_sensor_data.moving_target_dist,room_sensor_data.moving_target_energy);
-  line_nb += 1;
-  UTIL_LCDEx_PrintfAt(0, LINE(line_nb), LEFT_MODE, "Stat: %dcm,%d", room_sensor_data.static_target_dist, room_sensor_data.static_target_energy);
-  line_nb += 1;
   UTIL_LCDEx_PrintfAt(0, LINE(line_nb), LEFT_MODE, "Dist: %dcm", room_sensor_data.distance);
-  line_nb += 1;
+ // UTIL_LCDEx_PrintfAt(0, LINE(line_nb), LEFT_MODE, "Move: %dcm,%d", room_sensor_data.moving_target_dist,room_sensor_data.moving_target_energy);
+ // line_nb += 1;
+  //UTIL_LCDEx_PrintfAt(0, LINE(line_nb), LEFT_MODE, "Stat: %dcm,%d", room_sensor_data.static_target_dist, room_sensor_data.static_target_energy);
+  //line_nb += 1;
+ // UTIL_LCDEx_PrintfAt(0, LINE(line_nb), LEFT_MODE, "Dist: %dcm", room_sensor_data.distance);
+ // line_nb += 1;
 
 #else
   (void) nn_fps;
@@ -1112,13 +1113,13 @@ static void ld2410_thread_entry(ULONG thread_input) {
     uint8_t buf[23];
     while (1) {
         // Read 1 byte at a time until header found
-        HAL_UART_Receive(&huart2, buf, 1, 10);
+        HAL_UART_Receive(&huart2, buf, 1, 5);
         if (buf[0] == 0xF4) {
             // Read next 3 bytes to check for full header
-            HAL_UART_Receive(&huart2, buf+1, 3, 10);
+            HAL_UART_Receive(&huart2, buf+1, 3, 5);
             if (buf[1]==0xF3 && buf[2]==0xF2 && buf[3]==0xF1) {
                 // Read rest of frame
-                HAL_UART_Receive(&huart2, buf+4, LD2410_FRAME_TOTAL_LEN-4, 10);
+                HAL_UART_Receive(&huart2, buf+4, LD2410_FRAME_TOTAL_LEN-4, 5);
                 // Check for tail
                 if (buf[LD2410_FRAME_TOTAL_LEN-4]==0xF8 &&
                     buf[LD2410_FRAME_TOTAL_LEN-3]==0xF7 &&
@@ -1134,7 +1135,7 @@ static void ld2410_thread_entry(ULONG thread_input) {
                       //  printf("------------------------------\n\r");
                     }
                 }
-                tx_thread_sleep(994);
+                tx_thread_sleep(995);
             }
         }
     }
