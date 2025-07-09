@@ -15,11 +15,7 @@
  */
 /* Includes ------------------------------------------------------------------*/
 #include "nx_api.h"
-
-/* Private includes ----------------------------------------------------------*/
 #include "nx_stm32_eth_driver.h"
-
-/* USER CODE BEGIN Includes */
 #include "main.h"
 #include "nxd_dhcp_client.h"
 #include "nxd_mqtt_client.h"
@@ -30,7 +26,7 @@
 //Fall Guard settings
 #define LUMINANCE_UPPER_THRESH      0.35f  // Transition to LIGHT
 #define LUMINANCE_LOWER_THRESH      0.25f  // Transition to DARK
-#define MOVEMENT_FREEZE_TIME        30000  //Time to determine a Freeze ms
+#define MOVEMENT_FREEZE_TIME        20  //Time to determine a Freeze ms
 #define FALLEN_TIME                 7      //Time to determine a fall using edge AI
 
 

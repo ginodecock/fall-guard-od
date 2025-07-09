@@ -163,7 +163,11 @@ volatile system_state_t fg_state = {
     .movement = MOVEMENT_NO_ONE,
     .luminance = LUMINANCE_LIGHT
 };
-
+volatile system_state_t prev_fg_state = {
+    .fallen = FALLEN_NORMAL,
+    .movement = MOVEMENT_NO_ONE,
+    .luminance = LUMINANCE_LIGHT
+};
 
 
 TX_EVENT_FLAGS_GROUP     SntpFlags;
@@ -667,10 +671,9 @@ static void Display_NetworkOutput(display_info_t *info)
   if (room_sensor_data.target_state == 2){
      if (static_start_time == 0){
         // First detection of state 2 - record start time
-        static_start_time = HAL_GetTick();
+        static_start_time = GetRtcEpoch();
         static_triggered = false;
-     }else if (!static_triggered &&
-        (HAL_GetTick() - static_start_time >= MOVEMENT_FREEZE_TIME)) {
+     }else if (!static_triggered && (GetRtcEpoch() - static_start_time >= MOVEMENT_FREEZE_TIME)) {
         // Static maintained for 20 seconds
         thread_com_data.nb_detect = (int)nb_rois;
         thread_com_data.event = 14;  // New event type
@@ -693,14 +696,6 @@ static void Display_NetworkOutput(display_info_t *info)
 	  fg_state.movement = MOVEMENT_MOVE;
   }
 
-  // ... existing room state change detection ...
-  if (room_sensor_data.target_state != prev_target_state) {
-     // ... existing room change handling ...
-
-     // Reset state-2 timer on any state change
-     static_start_time = 0;
-     static_triggered = false;
-  }
   //Object data
   if ((GetRtcEpoch() - prev_timestamp) > 3)
     {
@@ -715,17 +710,17 @@ static void Display_NetworkOutput(display_info_t *info)
   	     /* Send to MQTT thread */
   	     tx_queue_send(&measurement_queue, &thread_com_data, TX_NO_WAIT);
   	  }
-      if (room_sensor_data.target_state != prev_target_state){
-    	 printf("Room change detected = %d\n\r",room_sensor_data.target_state);
-    	 prev_target_state = room_sensor_data.target_state;
-    	 thread_com_data.nb_detect = (int)nb_rois;
-    	 thread_com_data.event = 2; //Room change detection
-
-  	     /* Send to MQTT thread */
-  	     tx_queue_send(&measurement_queue, &thread_com_data, TX_NO_WAIT);
-      }
     }
+  if (fg_state.movement != prev_fg_state.movement){ //only report room state changes
+     printf("Room change detected = %d\n\r",room_sensor_data.target_state);
+     //prev_target_state = room_sensor_data.target_state;
+     prev_fg_state.movement = fg_state.movement;
+     thread_com_data.nb_detect = (int)nb_rois;
+     thread_com_data.event = 2; //Room change detection
 
+     /* Send to MQTT thread */
+     tx_queue_send(&measurement_queue, &thread_com_data, TX_NO_WAIT);
+  }
   nn_fps = 1000.0 / info->nn_period_ms;
 
 #if 1
@@ -1117,13 +1112,13 @@ static void ld2410_thread_entry(ULONG thread_input) {
     uint8_t buf[23];
     while (1) {
         // Read 1 byte at a time until header found
-        HAL_UART_Receive(&huart2, buf, 1, 1000);
+        HAL_UART_Receive(&huart2, buf, 1, 10);
         if (buf[0] == 0xF4) {
             // Read next 3 bytes to check for full header
-            HAL_UART_Receive(&huart2, buf+1, 3, 1000);
+            HAL_UART_Receive(&huart2, buf+1, 3, 10);
             if (buf[1]==0xF3 && buf[2]==0xF2 && buf[3]==0xF1) {
                 // Read rest of frame
-                HAL_UART_Receive(&huart2, buf+4, LD2410_FRAME_TOTAL_LEN-4, 1000);
+                HAL_UART_Receive(&huart2, buf+4, LD2410_FRAME_TOTAL_LEN-4, 10);
                 // Check for tail
                 if (buf[LD2410_FRAME_TOTAL_LEN-4]==0xF8 &&
                     buf[LD2410_FRAME_TOTAL_LEN-3]==0xF7 &&
