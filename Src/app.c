@@ -658,7 +658,7 @@ static void Display_NetworkOutput(display_info_t *info)
   uint32_t nb_rois = info->nb_detect;
   float cpu_load_one_second;
   int line_nb = 0;
-  float nn_fps;
+  //float nn_fps;
   int i;
   thread_com_data_t thread_com_data;
   /* clear previous ui */
@@ -721,16 +721,17 @@ static void Display_NetworkOutput(display_info_t *info)
      /* Send to MQTT thread */
      tx_queue_send(&measurement_queue, &thread_com_data, TX_NO_WAIT);
   }
-  nn_fps = 1000.0 / info->nn_period_ms;
+  //nn_fps = 1000.0 / info->nn_period_ms;
 
 #if 1
   UTIL_LCDEx_PrintfAt(0, LINE(line_nb),  RIGHT_MODE, "Cpu: %.1f%%",cpu_load_one_second);
   UTIL_LCDEx_PrintfAt(0, LINE(line_nb), LEFT_MODE, "lux: %.2f", room_sensor_data.lux);
   line_nb += 1;
-  UTIL_LCDEx_PrintfAt(0, LINE(line_nb), RIGHT_MODE, "   FPS: %.2f",nn_fps);
+ // UTIL_LCDEx_PrintfAt(0, LINE(line_nb), RIGHT_MODE, "   FPS: %.2f",nn_fps);
+  UTIL_LCDEx_PrintfAt(0, LINE(line_nb), RIGHT_MODE, " Obj: %u", nb_rois);
   UTIL_LCDEx_PrintfAt(0, LINE(line_nb), LEFT_MODE, "Stat: %d", room_sensor_data.target_state);
   line_nb += 1;
-  UTIL_LCDEx_PrintfAt(0, LINE(line_nb), RIGHT_MODE, " Obj: %u", nb_rois);
+ // UTIL_LCDEx_PrintfAt(0, LINE(line_nb), RIGHT_MODE, " Obj: %u", nb_rois);
   UTIL_LCDEx_PrintfAt(0, LINE(line_nb), LEFT_MODE, "Dist: %dcm", room_sensor_data.distance);
  // UTIL_LCDEx_PrintfAt(0, LINE(line_nb), LEFT_MODE, "Move: %dcm,%d", room_sensor_data.moving_target_dist,room_sensor_data.moving_target_energy);
  // line_nb += 1;
@@ -854,6 +855,7 @@ static void nn_thread_fct(ULONG arg)
 	 int i;
      nn_period[0] = nn_period[1];
 	 nn_period[1] = HAL_GetTick();
+	 uint32_t start_tick = HAL_GetTick();
 	 nn_period_ms = nn_period[1] - nn_period[0];
 
 	 capture_buffer = bqueue_get_ready(&nn_input_queue);
@@ -880,7 +882,8 @@ static void nn_thread_fct(ULONG arg)
     /* release buffers */
     bqueue_put_free(&nn_input_queue);
     bqueue_put_ready(&nn_output_queue);
-
+    uint32_t elapsed = HAL_GetTick() - start_tick;
+    if (elapsed < 50) { tx_thread_sleep((50 - elapsed) * TX_TIMER_TICKS_PER_SECOND / 1000); } //inference at 20fps for load reduction
     /* update display stats */
     tx_mutex_get(&disp.lock, TX_WAIT_FOREVER);
     disp.info.inf_ms = inf_ms;
