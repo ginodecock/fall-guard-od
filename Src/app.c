@@ -33,6 +33,7 @@
 #include "tx_api.h"
 #include "utils.h"
 #include <string.h> // For memcpy
+#include "gdclogo.h"
 /* Includes ------------------------------------------------------------------*/
 //#include "app_netxduo.h"
 //UINT MX_NetXDuo_Init(VOID *memory_ptr);
@@ -765,10 +766,11 @@ static void Display_NetworkOutput(display_info_t *info)
   UTIL_LCDEx_PrintfAt(0, LINE(line_nb), RIGHT_MODE, " Objects %u", nb_rois);
   line_nb += 1;
 #endif
-
+  UTIL_LCD_FillRGBRect(690, 400, (uint8_t *) logo_g_dc, 78, 53);
   /* Draw bounding boxes */
   int current_fall_detected = 0;
   for (i = 0; i < nb_rois; i++) {
+
       Display_Detection(&rois[i]);
       if (rois[i].class_index == 2) {
           current_fall_detected = 1; // Mark fall detected in current frame
