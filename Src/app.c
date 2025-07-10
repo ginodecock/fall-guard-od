@@ -394,13 +394,13 @@ int parse_ld2410_frame(const uint8_t *frame, size_t len, environment_sensor_data
     if (target_data[0] > 3) return -5; //disregard unknown state
 
     // Parse target state
-    /*switch (target_data[0]) {
-        case 0x00: strcpy(out->target_state, "no_one"); break;
-        case 0x01: strcpy(out->target_state, "moving"); break;
-        case 0x02: strcpy(out->target_state, "static"); break;
-        case 0x03: strcpy(out->target_state, "both"); break;
-        default:   strcpy(out->target_state, "unknown"); break;
-    }*/
+    switch (target_data[0]) {
+        case 0x00: HAL_GPIO_WritePin(GPIOQ, GPIO_PIN_6, GPIO_PIN_RESET); break;  //no_one 0% Brightness  PQ6  LCD_BL_CTRL
+        case 0x01: HAL_GPIO_WritePin(GPIOQ, GPIO_PIN_6, GPIO_PIN_SET); break;  //moving 100% Brightness  PQ6  LCD_BL_CTRL
+        case 0x02: HAL_GPIO_WritePin(GPIOQ, GPIO_PIN_6, GPIO_PIN_SET); break;  //static 100% Brightness  PQ6  LCD_BL_CTRL
+        case 0x03: HAL_GPIO_WritePin(GPIOQ, GPIO_PIN_6, GPIO_PIN_SET); break;    //both 100% Brightness  PQ6  LCD_BL_CTRL
+        default:   HAL_GPIO_WritePin(GPIOQ, GPIO_PIN_6, GPIO_PIN_SET); break; //unknown 100% Brightness  PQ6  LCD_BL_CTRL
+    }
     out->target_state		  = target_data[0];
     out->moving_target_dist   = target_data[1] | (target_data[2] << 8);
     out->moving_target_energy = target_data[3];
