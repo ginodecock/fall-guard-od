@@ -49,11 +49,11 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  22 .debug_macro  000bc4b2  00000000  00000000  002f202f  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 23 .debug_line   00103244  00000000  00000000  003ae4e1  2**0
+ 23 .debug_line   00103242  00000000  00000000  003ae4e1  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 24 .debug_str    0040aa4a  00000000  00000000  004b1725  2**0
+ 24 .debug_str    0040aa4a  00000000  00000000  004b1723  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 25 .comment      000000c9  00000000  00000000  008bc16f  2**0
+ 25 .comment      000000c9  00000000  00000000  008bc16d  2**0
                   CONTENTS, READONLY
  26 .debug_frame  00013270  00000000  00000000  008bc238  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
@@ -94867,7 +94867,7 @@ static VOID my_disconnect_func(NXD_MQTT_CLIENT *client_ptr)
 3402462e:	f7ff f9cd 	bl	340239cc <_txe_semaphore_get>
     assert(ret == 0);
 34024632:	b130      	cbz	r0, 34024642 <isp_thread_fct+0x1e>
-34024634:	f240 31ed 	movw	r1, #1005	@ 0x3ed
+34024634:	f240 31c2 	movw	r1, #962	@ 0x3c2
 34024638:	4b04      	ldr	r3, [pc, #16]	@ (3402464c <isp_thread_fct+0x28>)
 3402463a:	4a05      	ldr	r2, [pc, #20]	@ (34024650 <isp_thread_fct+0x2c>)
 3402463c:	4805      	ldr	r0, [pc, #20]	@ (34024654 <isp_thread_fct+0x30>)
@@ -94980,12 +94980,12 @@ static uint32_t GetRtcEpoch() {
         printf("The network cable is connected.\n\r");
 340246e0:	4648      	mov	r0, r9
 340246e2:	f003 fc83 	bl	34027fec <iprintf>
-        nx_ip_driver_direct_command(&NetXDuoEthIpInstance, NX_LINK_ENABLE,
+        nx_ip_driver_direct_command(&NetXDuoEthIpInstance, NX_LINK_ENABLE,&actual_status);
 340246e6:	2102      	movs	r1, #2
 340246e8:	aa03      	add	r2, sp, #12
 340246ea:	4628      	mov	r0, r5
 340246ec:	f7f7 fcab 	bl	3401c046 <_nx_ip_driver_direct_command>
-        status = nx_ip_interface_status_check(&NetXDuoEthIpInstance, 0, NX_IP_ADDRESS_RESOLVED,
+        status = nx_ip_interface_status_check(&NetXDuoEthIpInstance, 0, NX_IP_ADDRESS_RESOLVED,&actual_status, 10);
 340246f0:	2202      	movs	r2, #2
 340246f2:	4621      	mov	r1, r4
 340246f4:	4628      	mov	r0, r5
@@ -95725,7 +95725,7 @@ static uint32_t GetRtcEpoch() {
 34024cc6:	f7ff ff99 	bl	34024bfc <bqueue_get_ready>
 	assert(output_buffer);
 34024cca:	b930      	cbnz	r0, 34024cda <pp_thread_fct+0x2e>
-34024ccc:	f240 31a1 	movw	r1, #929	@ 0x3a1
+34024ccc:	f240 3176 	movw	r1, #886	@ 0x376
 34024cd0:	4b2c      	ldr	r3, [pc, #176]	@ (34024d84 <pp_thread_fct+0xd8>)
 34024cd2:	4a2d      	ldr	r2, [pc, #180]	@ (34024d88 <pp_thread_fct+0xdc>)
 	assert(ret == 0);
@@ -95759,7 +95759,7 @@ static uint32_t GetRtcEpoch() {
 	assert(ret == 0);
 34024d02:	4606      	mov	r6, r0
 34024d04:	b120      	cbz	r0, 34024d10 <pp_thread_fct+0x64>
-34024d06:	f240 31a9 	movw	r1, #937	@ 0x3a9
+34024d06:	f240 317e 	movw	r1, #894	@ 0x37e
 34024d0a:	4b21      	ldr	r3, [pc, #132]	@ (34024d90 <pp_thread_fct+0xe4>)
 34024d0c:	4a1e      	ldr	r2, [pc, #120]	@ (34024d88 <pp_thread_fct+0xdc>)
 34024d0e:	e7e1      	b.n	34024cd4 <pp_thread_fct+0x28>
@@ -95902,7 +95902,7 @@ static uint32_t GetRtcEpoch() {
 34024e1c:	f7ff ff10 	bl	34024c40 <bqueue_get_free>
     assert(nn_pipe_dst);
 34024e20:	b990      	cbnz	r0, 34024e48 <nn_thread_fct+0x80>
-34024e22:	f240 3152 	movw	r1, #850	@ 0x352
+34024e22:	f240 3127 	movw	r1, #807	@ 0x327
 34024e26:	4b54      	ldr	r3, [pc, #336]	@ (34024f78 <nn_thread_fct+0x1b0>)
 34024e28:	4a54      	ldr	r2, [pc, #336]	@ (34024f7c <nn_thread_fct+0x1b4>)
 34024e2a:	e005      	b.n	34024e38 <nn_thread_fct+0x70>
@@ -95911,13 +95911,13 @@ static uint32_t GetRtcEpoch() {
     nn_out_info++;
 34024e2e:	e7d7      	b.n	34024de0 <nn_thread_fct+0x18>
   assert(NN_OUT_NB == model_get_output_nb(nn_out_info));
-34024e30:	f240 314b 	movw	r1, #843	@ 0x34b
+34024e30:	f44f 7148 	mov.w	r1, #800	@ 0x320
 34024e34:	4b52      	ldr	r3, [pc, #328]	@ (34024f80 <nn_thread_fct+0x1b8>)
 34024e36:	4a51      	ldr	r2, [pc, #324]	@ (34024f7c <nn_thread_fct+0x1b4>)
   assert(LL_Buffer_len(&nn_out_info[i]) == nn_out_len_user[i]);
 34024e38:	4852      	ldr	r0, [pc, #328]	@ (34024f84 <nn_thread_fct+0x1bc>)
 34024e3a:	f002 fb6f 	bl	3402751c <__assert_func>
-34024e3e:	f240 314d 	movw	r1, #845	@ 0x34d
+34024e3e:	f240 3122 	movw	r1, #802	@ 0x322
 34024e42:	4b51      	ldr	r3, [pc, #324]	@ (34024f88 <nn_thread_fct+0x1c0>)
 34024e44:	4a4d      	ldr	r2, [pc, #308]	@ (34024f7c <nn_thread_fct+0x1b4>)
 34024e46:	e7f7      	b.n	34024e38 <nn_thread_fct+0x70>
@@ -95944,7 +95944,7 @@ static uint32_t GetRtcEpoch() {
 	 assert(capture_buffer);
 34024e6c:	4606      	mov	r6, r0
 34024e6e:	b920      	cbnz	r0, 34024e7a <nn_thread_fct+0xb2>
-34024e70:	f44f 7158 	mov.w	r1, #864	@ 0x360
+34024e70:	f240 3135 	movw	r1, #821	@ 0x335
 34024e74:	4b46      	ldr	r3, [pc, #280]	@ (34024f90 <nn_thread_fct+0x1c8>)
 34024e76:	4a41      	ldr	r2, [pc, #260]	@ (34024f7c <nn_thread_fct+0x1b4>)
 34024e78:	e7de      	b.n	34024e38 <nn_thread_fct+0x70>
@@ -95955,7 +95955,7 @@ static uint32_t GetRtcEpoch() {
 	 assert(output_buffer);
 34024e82:	4683      	mov	fp, r0
 34024e84:	b920      	cbnz	r0, 34024e90 <nn_thread_fct+0xc8>
-34024e86:	f240 3162 	movw	r1, #866	@ 0x362
+34024e86:	f240 3137 	movw	r1, #823	@ 0x337
 34024e8a:	4b43      	ldr	r3, [pc, #268]	@ (34024f98 <nn_thread_fct+0x1d0>)
 34024e8c:	4a3b      	ldr	r2, [pc, #236]	@ (34024f7c <nn_thread_fct+0x1b4>)
 34024e8e:	e7d3      	b.n	34024e38 <nn_thread_fct+0x70>
@@ -95980,7 +95980,7 @@ static uint32_t GetRtcEpoch() {
 34024eae:	f7e5 fccb 	bl	3400a848 <LL_ATON_Set_User_Input_Buffer_Default>
     assert(ret == LL_ATON_User_IO_NOERROR);
 34024eb2:	b120      	cbz	r0, 34024ebe <nn_thread_fct+0xf6>
-34024eb4:	f240 316b 	movw	r1, #875	@ 0x36b
+34024eb4:	f44f 7150 	mov.w	r1, #832	@ 0x340
 34024eb8:	4b38      	ldr	r3, [pc, #224]	@ (34024f9c <nn_thread_fct+0x1d4>)
 34024eba:	4a30      	ldr	r2, [pc, #192]	@ (34024f7c <nn_thread_fct+0x1b4>)
 34024ebc:	e7bc      	b.n	34024e38 <nn_thread_fct+0x70>
@@ -96017,7 +96017,7 @@ static uint32_t GetRtcEpoch() {
         assert(ret == LL_ATON_User_IO_NOERROR);
 34024f08:	9b01      	ldr	r3, [sp, #4]
 34024f0a:	b120      	cbz	r0, 34024f16 <nn_thread_fct+0x14e>
-34024f0c:	f240 316f 	movw	r1, #879	@ 0x36f
+34024f0c:	f44f 7151 	mov.w	r1, #836	@ 0x344
 34024f10:	4b22      	ldr	r3, [pc, #136]	@ (34024f9c <nn_thread_fct+0x1d4>)
 34024f12:	4a1a      	ldr	r2, [pc, #104]	@ (34024f7c <nn_thread_fct+0x1b4>)
 34024f14:	e790      	b.n	34024e38 <nn_thread_fct+0x70>
@@ -96296,7 +96296,7 @@ static int bqueue_init(bqueue_t *bq, int buffer_nb, uint8_t **buffers)
 34025140:	f7fe fc44 	bl	340239cc <_txe_semaphore_get>
     assert(ret == 0);
 34025144:	b130      	cbz	r0, 34025154 <dp_thread_fct+0x2c>
-34025146:	f240 31d7 	movw	r1, #983	@ 0x3d7
+34025146:	f44f 716b 	mov.w	r1, #940	@ 0x3ac
 3402514a:	4b67      	ldr	r3, [pc, #412]	@ (340252e8 <dp_thread_fct+0x1c0>)
 3402514c:	4a67      	ldr	r2, [pc, #412]	@ (340252ec <dp_thread_fct+0x1c4>)
   assert(ret == HAL_OK);
@@ -96332,7 +96332,7 @@ static int bqueue_init(bqueue_t *bq, int buffer_nb, uint8_t **buffers)
 3402518c:	4601      	mov	r1, r0
   assert(ret == HAL_OK);
 3402518e:	b120      	cbz	r0, 3402519a <dp_thread_fct+0x72>
-34025190:	f240 31be 	movw	r1, #958	@ 0x3be
+34025190:	f240 3193 	movw	r1, #915	@ 0x393
 34025194:	4b5c      	ldr	r3, [pc, #368]	@ (34025308 <dp_thread_fct+0x1e0>)
 34025196:	4a5d      	ldr	r2, [pc, #372]	@ (3402530c <dp_thread_fct+0x1e4>)
 34025198:	e7d9      	b.n	3402514e <dp_thread_fct+0x26>
@@ -96628,11 +96628,11 @@ static int bqueue_init(bqueue_t *bq, int buffer_nb, uint8_t **buffers)
 34025422:	0049      	lsls	r1, r1, #1
 34025424:	4b80      	ldr	r3, [pc, #512]	@ (34025628 <dp_thread_fct+0x500>)
 34025426:	f001 fce1 	bl	34026dec <UTIL_LCDEx_PrintfAt>
-  UTIL_LCD_FillRGBRect(690, 400, (uint8_t *) logo_g_dc, 78, 53);
+  UTIL_LCD_FillRGBRect(690, 400, (uint8_t *) logo_g_dc, 78, 53); //draw logo
 3402542a:	2335      	movs	r3, #53	@ 0x35
   int current_fall_detected = 0;
 3402542c:	2600      	movs	r6, #0
-  UTIL_LCD_FillRGBRect(690, 400, (uint8_t *) logo_g_dc, 78, 53);
+  UTIL_LCD_FillRGBRect(690, 400, (uint8_t *) logo_g_dc, 78, 53); //draw logo
 3402542e:	9300      	str	r3, [sp, #0]
 34025430:	f44f 71c8 	mov.w	r1, #400	@ 0x190
 34025434:	234e      	movs	r3, #78	@ 0x4e
@@ -96698,7 +96698,7 @@ static int bqueue_init(bqueue_t *bq, int buffer_nb, uint8_t **buffers)
   assert(ret == HAL_OK);
 340254ac:	2800      	cmp	r0, #0
 340254ae:	f000 80a0 	beq.w	340255f2 <dp_thread_fct+0x4ca>
-340254b2:	f44f 7172 	mov.w	r1, #968	@ 0x3c8
+340254b2:	f240 319d 	movw	r1, #925	@ 0x39d
 340254b6:	4b67      	ldr	r3, [pc, #412]	@ (34025654 <dp_thread_fct+0x52c>)
 340254b8:	4a67      	ldr	r2, [pc, #412]	@ (34025658 <dp_thread_fct+0x530>)
 340254ba:	e648      	b.n	3402514e <dp_thread_fct+0x26>
@@ -97928,7 +97928,7 @@ static VOID App_TSL2561_Thread_Entry(ULONG thread_input) {
 34025eb6:	f7ff f8ef 	bl	34025098 <bqueue_init.constprop.0>
   assert(ret == 0);
 34025eba:	b130      	cbz	r0, 34025eca <app_run+0x11e>
-34025ebc:	f240 4191 	movw	r1, #1169	@ 0x491
+34025ebc:	f240 4166 	movw	r1, #1126	@ 0x466
 34025ec0:	4b79      	ldr	r3, [pc, #484]	@ (340260a8 <app_run+0x2fc>)
 34025ec2:	4a7a      	ldr	r2, [pc, #488]	@ (340260ac <app_run+0x300>)
   assert(ret == 0);
@@ -97943,7 +97943,7 @@ static VOID App_TSL2561_Thread_Entry(ULONG thread_input) {
   assert(ret == 0);
 34025eda:	4604      	mov	r4, r0
 34025edc:	b120      	cbz	r0, 34025ee8 <app_run+0x13c>
-34025ede:	f240 4193 	movw	r1, #1171	@ 0x493
+34025ede:	f44f 618d 	mov.w	r1, #1128	@ 0x468
 34025ee2:	4b71      	ldr	r3, [pc, #452]	@ (340260a8 <app_run+0x2fc>)
 34025ee4:	4a71      	ldr	r2, [pc, #452]	@ (340260ac <app_run+0x300>)
 34025ee6:	e7ed      	b.n	34025ec4 <app_run+0x118>
@@ -97963,7 +97963,7 @@ static VOID App_TSL2561_Thread_Entry(ULONG thread_input) {
   assert(ret == 0);
 34025f02:	4602      	mov	r2, r0
 34025f04:	b120      	cbz	r0, 34025f10 <app_run+0x164>
-34025f06:	f240 419a 	movw	r1, #1178	@ 0x49a
+34025f06:	f240 416f 	movw	r1, #1135	@ 0x46f
 34025f0a:	4b67      	ldr	r3, [pc, #412]	@ (340260a8 <app_run+0x2fc>)
 34025f0c:	4a67      	ldr	r2, [pc, #412]	@ (340260ac <app_run+0x300>)
 34025f0e:	e7d9      	b.n	34025ec4 <app_run+0x118>
@@ -97975,7 +97975,7 @@ static VOID App_TSL2561_Thread_Entry(ULONG thread_input) {
   assert(ret == 0);
 34025f1a:	4601      	mov	r1, r0
 34025f1c:	b120      	cbz	r0, 34025f28 <app_run+0x17c>
-34025f1e:	f240 419c 	movw	r1, #1180	@ 0x49c
+34025f1e:	f240 4171 	movw	r1, #1137	@ 0x471
 34025f22:	4b61      	ldr	r3, [pc, #388]	@ (340260a8 <app_run+0x2fc>)
 34025f24:	4a61      	ldr	r2, [pc, #388]	@ (340260ac <app_run+0x300>)
 34025f26:	e7cd      	b.n	34025ec4 <app_run+0x118>
@@ -97987,7 +97987,7 @@ static VOID App_TSL2561_Thread_Entry(ULONG thread_input) {
   assert(ret == 0);
 34025f32:	4604      	mov	r4, r0
 34025f34:	b120      	cbz	r0, 34025f40 <app_run+0x194>
-34025f36:	f240 419e 	movw	r1, #1182	@ 0x49e
+34025f36:	f240 4173 	movw	r1, #1139	@ 0x473
 34025f3a:	4b5b      	ldr	r3, [pc, #364]	@ (340260a8 <app_run+0x2fc>)
 34025f3c:	4a5b      	ldr	r2, [pc, #364]	@ (340260ac <app_run+0x300>)
 34025f3e:	e7c1      	b.n	34025ec4 <app_run+0x118>
@@ -98015,7 +98015,7 @@ static VOID App_TSL2561_Thread_Entry(ULONG thread_input) {
   assert(ret == TX_SUCCESS);
 34025f72:	4603      	mov	r3, r0
 34025f74:	b120      	cbz	r0, 34025f80 <app_run+0x1d4>
-34025f76:	f240 41a4 	movw	r1, #1188	@ 0x4a4
+34025f76:	f240 4179 	movw	r1, #1145	@ 0x479
 34025f7a:	4b57      	ldr	r3, [pc, #348]	@ (340260d8 <app_run+0x32c>)
 34025f7c:	4a4b      	ldr	r2, [pc, #300]	@ (340260ac <app_run+0x300>)
 34025f7e:	e7a1      	b.n	34025ec4 <app_run+0x118>
@@ -98034,7 +98034,7 @@ static VOID App_TSL2561_Thread_Entry(ULONG thread_input) {
   assert(ret == TX_SUCCESS);
 34025f9c:	4603      	mov	r3, r0
 34025f9e:	b120      	cbz	r0, 34025faa <app_run+0x1fe>
-34025fa0:	f240 41a7 	movw	r1, #1191	@ 0x4a7
+34025fa0:	f240 417c 	movw	r1, #1148	@ 0x47c
 34025fa4:	4b4c      	ldr	r3, [pc, #304]	@ (340260d8 <app_run+0x32c>)
 34025fa6:	4a41      	ldr	r2, [pc, #260]	@ (340260ac <app_run+0x300>)
 34025fa8:	e78c      	b.n	34025ec4 <app_run+0x118>
@@ -98051,7 +98051,7 @@ static VOID App_TSL2561_Thread_Entry(ULONG thread_input) {
   assert(ret == TX_SUCCESS);
 34025fc4:	4603      	mov	r3, r0
 34025fc6:	b120      	cbz	r0, 34025fd2 <app_run+0x226>
-34025fc8:	f240 41aa 	movw	r1, #1194	@ 0x4aa
+34025fc8:	f240 417f 	movw	r1, #1151	@ 0x47f
 34025fcc:	4b42      	ldr	r3, [pc, #264]	@ (340260d8 <app_run+0x32c>)
 34025fce:	4a37      	ldr	r2, [pc, #220]	@ (340260ac <app_run+0x300>)
 34025fd0:	e778      	b.n	34025ec4 <app_run+0x118>
@@ -98069,7 +98069,7 @@ static VOID App_TSL2561_Thread_Entry(ULONG thread_input) {
 34025fea:	f7fd fd39 	bl	34023a60 <_txe_thread_create>
   assert(ret == TX_SUCCESS);
 34025fee:	b120      	cbz	r0, 34025ffa <app_run+0x24e>
-34025ff0:	f240 41ad 	movw	r1, #1197	@ 0x4ad
+34025ff0:	f240 4182 	movw	r1, #1154	@ 0x482
 34025ff4:	4b38      	ldr	r3, [pc, #224]	@ (340260d8 <app_run+0x32c>)
 34025ff6:	4a2d      	ldr	r2, [pc, #180]	@ (340260ac <app_run+0x300>)
 34025ff8:	e764      	b.n	34025ec4 <app_run+0x118>
@@ -98095,7 +98095,7 @@ static VOID App_TSL2561_Thread_Entry(ULONG thread_input) {
 34026024:	f7fd fd1c 	bl	34023a60 <_txe_thread_create>
 	  assert(ret == TX_SUCCESS);
 34026028:	b138      	cbz	r0, 3402603a <app_run+0x28e>
-3402602a:	f240 41b1 	movw	r1, #1201	@ 0x4b1
+3402602a:	f240 4186 	movw	r1, #1158	@ 0x486
 3402602e:	4b2a      	ldr	r3, [pc, #168]	@ (340260d8 <app_run+0x32c>)
 34026030:	4a1e      	ldr	r2, [pc, #120]	@ (340260ac <app_run+0x300>)
 34026032:	e747      	b.n	34025ec4 <app_run+0x118>
@@ -98121,7 +98121,7 @@ static VOID App_TSL2561_Thread_Entry(ULONG thread_input) {
   assert(ret == TX_SUCCESS);
 34026060:	2800      	cmp	r0, #0
 34026062:	d069      	beq.n	34026138 <app_run+0x38c>
-34026064:	f240 41b7 	movw	r1, #1207	@ 0x4b7
+34026064:	f240 418c 	movw	r1, #1164	@ 0x48c
 34026068:	4b1b      	ldr	r3, [pc, #108]	@ (340260d8 <app_run+0x32c>)
 3402606a:	4a10      	ldr	r2, [pc, #64]	@ (340260ac <app_run+0x300>)
 3402606c:	e72a      	b.n	34025ec4 <app_run+0x118>

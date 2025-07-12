@@ -122690,7 +122690,7 @@ LOAD C:/ST/STM32CubeIDE_1.18.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
  .debug_macro   0x000bc134      0x1bb ./Src/system_stm32n6xx_fsbl.o
  .debug_macro   0x000bc2ef      0x1c3 ./Src/threadx_hal.o
 
-.debug_line     0x00000000   0x103244
+.debug_line     0x00000000   0x103242
  .debug_line    0x00000000      0xbca ./Gcc/Src/console.o
  .debug_line    0x00000bca      0x984 ./Gcc/Src/syscalls.o
  .debug_line    0x0000154e      0x895 ./Gcc/Src/threadx_libc.o
@@ -122985,18 +122985,18 @@ LOAD C:/ST/STM32CubeIDE_1.18.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
  .debug_line    0x000f453a       0xa6 ./STM32Cube_FW_N6/Middlewares/ST/threadx/ports/cortex_m55/gnu/src/tx_timer_interrupt.o
  .debug_line    0x000f45e0      0xbe1 ./STM32Cube_FW_N6/Middlewares/ST/threadx/utility/execution_profile_kit/tx_execution_profile.o
  .debug_line    0x000f51c1     0x14a6 ./STM32Cube_FW_N6/Utilities/lcd/stm32_lcd.o
- .debug_line    0x000f6667     0x352c ./Src/app.o
- .debug_line    0x000f9b93     0x153d ./Src/app_cam.o
- .debug_line    0x000fb0d0      0x7c1 ./Src/app_fuseprogramming.o
- .debug_line    0x000fb891      0xb22 ./Src/app_postprocess.o
- .debug_line    0x000fc3b3      0x6c7 ./Src/app_threadx.o
- .debug_line    0x000fca7a     0x2507 ./Src/main.o
- .debug_line    0x000fef81      0x6a0 ./Src/stm32_lcd_ex.o
- .debug_line    0x000ff621     0x10a8 ./Src/stm32n6xx_hal_msp.o
- .debug_line    0x001006c9      0xbc9 ./Src/stm32n6xx_hal_timebase_tim.o
- .debug_line    0x00101292      0xd95 ./Src/stm32n6xx_it.o
- .debug_line    0x00102027      0xa8a ./Src/system_stm32n6xx_fsbl.o
- .debug_line    0x00102ab1      0x793 ./Src/threadx_hal.o
+ .debug_line    0x000f6667     0x352a ./Src/app.o
+ .debug_line    0x000f9b91     0x153d ./Src/app_cam.o
+ .debug_line    0x000fb0ce      0x7c1 ./Src/app_fuseprogramming.o
+ .debug_line    0x000fb88f      0xb22 ./Src/app_postprocess.o
+ .debug_line    0x000fc3b1      0x6c7 ./Src/app_threadx.o
+ .debug_line    0x000fca78     0x2507 ./Src/main.o
+ .debug_line    0x000fef7f      0x6a0 ./Src/stm32_lcd_ex.o
+ .debug_line    0x000ff61f     0x10a8 ./Src/stm32n6xx_hal_msp.o
+ .debug_line    0x001006c7      0xbc9 ./Src/stm32n6xx_hal_timebase_tim.o
+ .debug_line    0x00101290      0xd95 ./Src/stm32n6xx_it.o
+ .debug_line    0x00102025      0xa8a ./Src/system_stm32n6xx_fsbl.o
+ .debug_line    0x00102aaf      0x793 ./Src/threadx_hal.o
 
 .debug_str      0x00000000   0x40aa4a
  .debug_str     0x00000000   0x40aa4a ./Gcc/Src/console.o

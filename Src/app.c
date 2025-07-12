@@ -722,61 +722,22 @@ static void Display_NetworkOutput(display_info_t *info)
      /* Send to MQTT thread */
      tx_queue_send(&measurement_queue, &thread_com_data, TX_NO_WAIT);
   }
-  //nn_fps = 1000.0 / info->nn_period_ms;
-
-#if 1
   UTIL_LCDEx_PrintfAt(0, LINE(line_nb),  RIGHT_MODE, "Cpu: %.1f%%",cpu_load_one_second);
   UTIL_LCDEx_PrintfAt(0, LINE(line_nb), LEFT_MODE, "lux: %.2f", room_sensor_data.lux);
   line_nb += 1;
- // UTIL_LCDEx_PrintfAt(0, LINE(line_nb), RIGHT_MODE, "   FPS: %.2f",nn_fps);
   UTIL_LCDEx_PrintfAt(0, LINE(line_nb), RIGHT_MODE, " Obj: %u", nb_rois);
   UTIL_LCDEx_PrintfAt(0, LINE(line_nb), LEFT_MODE, "Stat: %d", room_sensor_data.target_state);
   line_nb += 1;
- // UTIL_LCDEx_PrintfAt(0, LINE(line_nb), RIGHT_MODE, " Obj: %u", nb_rois);
   UTIL_LCDEx_PrintfAt(0, LINE(line_nb), LEFT_MODE, "Dist: %dcm", room_sensor_data.distance);
- // UTIL_LCDEx_PrintfAt(0, LINE(line_nb), LEFT_MODE, "Move: %dcm,%d", room_sensor_data.moving_target_dist,room_sensor_data.moving_target_energy);
- // line_nb += 1;
-  //UTIL_LCDEx_PrintfAt(0, LINE(line_nb), LEFT_MODE, "Stat: %dcm,%d", room_sensor_data.static_target_dist, room_sensor_data.static_target_energy);
-  //line_nb += 1;
- // UTIL_LCDEx_PrintfAt(0, LINE(line_nb), LEFT_MODE, "Dist: %dcm", room_sensor_data.distance);
- // line_nb += 1;
-
-#else
-  (void) nn_fps;
-  UTIL_LCDEx_PrintfAt(0, LINE(line_nb),  RIGHT_MODE, "Cpu");
-  line_nb += 1;
-  UTIL_LCDEx_PrintfAt(0, LINE(line_nb),  RIGHT_MODE, "   %.1f%%", cpu_load_one_second);
-  line_nb += 1;
-  UTIL_LCDEx_PrintfAt(0, LINE(line_nb), RIGHT_MODE, "nn period");
-  line_nb += 1;
-  UTIL_LCDEx_PrintfAt(0, LINE(line_nb), RIGHT_MODE, "   %ums", info->nn_period_ms);
-  line_nb += 1;
-  UTIL_LCDEx_PrintfAt(0, LINE(line_nb), RIGHT_MODE, "Inference");
-  line_nb += 1;
-  UTIL_LCDEx_PrintfAt(0, LINE(line_nb), RIGHT_MODE, "   %ums", info->inf_ms);
-  line_nb += 1;
-  UTIL_LCDEx_PrintfAt(0, LINE(line_nb), RIGHT_MODE, "Post process");
-  line_nb += 1;
-  UTIL_LCDEx_PrintfAt(0, LINE(line_nb), RIGHT_MODE, "   %ums", info->pp_ms);
-  line_nb += 1;
-  UTIL_LCDEx_PrintfAt(0, LINE(line_nb), RIGHT_MODE, "Display");
-  line_nb += 1;
-  UTIL_LCDEx_PrintfAt(0, LINE(line_nb), RIGHT_MODE, "   %ums", info->disp_ms);
-  line_nb += 1;
-  UTIL_LCDEx_PrintfAt(0, LINE(line_nb), RIGHT_MODE, " Objects %u", nb_rois);
-  line_nb += 1;
-#endif
-  UTIL_LCD_FillRGBRect(690, 400, (uint8_t *) logo_g_dc, 78, 53);
+  UTIL_LCD_FillRGBRect(690, 400, (uint8_t *) logo_g_dc, 78, 53); //draw logo
   /* Draw bounding boxes */
   int current_fall_detected = 0;
   for (i = 0; i < nb_rois; i++) {
-
       Display_Detection(&rois[i]);
       if (rois[i].class_index == 2) {
           current_fall_detected = 1; // Mark fall detected in current frame
       }
   }
-
   if (current_fall_detected) {
       if (!fall_detected) {
           // Fall detected for the first time
@@ -793,7 +754,6 @@ static void Display_NetworkOutput(display_info_t *info)
               tx_queue_send(&measurement_queue, &thread_com_data, TX_NO_WAIT);
               prev_state_detect = 13;
               message_sent = 1; // Prevent duplicate alerts
-
           }
       }
   } else {
@@ -810,7 +770,6 @@ static void Display_NetworkOutput(display_info_t *info)
               fg_state.fallen = FALLEN_NORMAL;
               tx_queue_send(&measurement_queue, &thread_com_data, TX_NO_WAIT);
               prev_state_detect = 1;
-
           }
       }
   }
@@ -818,12 +777,10 @@ static void Display_NetworkOutput(display_info_t *info)
 static int model_get_output_nb(const LL_Buffer_InfoTypeDef *nn_out_info)
 {
   int nb = 0;
-
   while (nn_out_info->name) {
     nb++;
     nn_out_info++;
   }
-
   return nb;
 }
 
@@ -1745,12 +1702,7 @@ static VOID App_MQTT_Client_Thread_Entry(ULONG thread_input)
 	      case MOVEMENT_MOVE: movement_str = "move"; break;
 	      default: movement_str = "no_one"; break;
 	  }
-
-
-	  //snprintf(message, sizeof(message),"{\"ts\":%lu,""\"mac\":\"%02X%02X%02X%02X%02X%02X\",""\"status\":\"start\"}",GetRtcEpoch(), MACAddr[0], MACAddr[1], MACAddr[2],MACAddr[3],MACAddr[4],MACAddr[5]);
 	  snprintf(message, sizeof(message),"{\"ts\":%lu,\"mac\":\"%02X%02X%02X%02X%02X%02X\",\"nb_detect\":%i,\"event\":%i,\"lux\":%.2f,\"sfal\":\"%s\",\"smov\":\"%s\",\"slum\":\"%s\"}",GetRtcEpoch(),MACAddr[0], MACAddr[1], MACAddr[2],MACAddr[3], MACAddr[4], MACAddr[5],thread_com_data.nb_detect,thread_com_data.event,room_sensor_data.lux,fallen_str, movement_str, luminance_str);
-	  //printf("%s\n\r",message);
-
 	  len = 0;
 	  while (message[len] != '\0') {
 	      len++;
@@ -1763,7 +1715,6 @@ static VOID App_MQTT_Client_Thread_Entry(ULONG thread_input)
 	        Error_Handler();
 	      }
 	  tx_event_flags_get(&mqtt_app_flag, DEMO_ALL_EVENTS, TX_OR_CLEAR, &events, TX_WAIT_FOREVER);
-
 	  while(1){
 		/* Wait for measurement data from other thread */
 		ret = tx_queue_receive(&measurement_queue, &thread_com_data, TX_WAIT_FOREVER);
@@ -1779,7 +1730,6 @@ static VOID App_MQTT_Client_Thread_Entry(ULONG thread_input)
 		      case MOVEMENT_MOVE: movement_str = "move"; break;
 		      default: movement_str = "no_one"; break;
 		}
-
 		/* Format JSON message */
 		snprintf(message, sizeof(message),"{\"ts\":%lu,\"mac\":\"%02X%02X%02X%02X%02X%02X\",\"nb_detect\":%i,\"event\":%i,\"lux\":%.2f,\"sfal\":\"%s\",\"smov\":\"%s\",\"slum\":\"%s\"}",GetRtcEpoch(),MACAddr[0], MACAddr[1], MACAddr[2],MACAddr[3], MACAddr[4], MACAddr[5],thread_com_data.nb_detect,thread_com_data.event,room_sensor_data.lux,fallen_str, movement_str, luminance_str);
 		/* Publish data */
@@ -1793,10 +1743,8 @@ static VOID App_MQTT_Client_Thread_Entry(ULONG thread_input)
 	    {
 	      Error_Handler();
 	    }
-
 	    /* wait for the broker to publish the message. */
 	    tx_event_flags_get(&mqtt_app_flag, DEMO_ALL_EVENTS, TX_OR_CLEAR, &events, TX_WAIT_FOREVER);
-
 	    /* check event received */
 	    if(events & DEMO_MESSAGE_EVENT)
 	    {
@@ -1836,17 +1784,12 @@ static VOID App_Link_Thread_Entry(ULONG thread_input)
       if(linkdown == 1)
       {
         linkdown = 0;
-
         /* The network cable is connected. */
         printf("The network cable is connected.\n\r");
-
         /* Send request to enable PHY Link. */
-        nx_ip_driver_direct_command(&NetXDuoEthIpInstance, NX_LINK_ENABLE,
-                                      &actual_status);
-
+        nx_ip_driver_direct_command(&NetXDuoEthIpInstance, NX_LINK_ENABLE,&actual_status);
         /* Send request to check if an address is resolved. */
-        status = nx_ip_interface_status_check(&NetXDuoEthIpInstance, 0, NX_IP_ADDRESS_RESOLVED,
-                                      &actual_status, 10);
+        status = nx_ip_interface_status_check(&NetXDuoEthIpInstance, 0, NX_IP_ADDRESS_RESOLVED,&actual_status, 10);
         if(status == NX_SUCCESS)
         {
           /* Stop DHCP */
@@ -1930,4 +1873,3 @@ static uint32_t GetRtcEpoch() {
 
     return (uint32_t)mktime(&tm_time);
 }
-
